@@ -9,45 +9,39 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseL
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponseE;
-import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.User;
+import com.livngroup.gds.exception.WexException;
 
 @RestController
 @RequestMapping("/demo")
-public class CallPurchase {
-
-	final static private String WEX_WSDL_URL = "https://services.encompass-suite.com/services/PurchaseLogService.asmx?wsdl";
+public class CallPurchase extends WexController {
 
 	@RequestMapping("/call")
-	public String hello(@RequestParam String name) {
+	public String hello(@RequestParam String name) throws WexException {
 		String historyLog = "";
 		
 		try {
-			PurchaseLogServiceStub wexService = new PurchaseLogServiceStub(WEX_WSDL_URL);
 			
 			GetPurchaseLogHistory obj = new GetPurchaseLogHistory();
 
-			User credential = new User();
-			credential.setOrgGroupLoginId("AOCTEST");
-			credential.setUsername(name);
-			credential.setPassword("plogtestpw");
-			obj.setUser(credential);
+			obj.setUser(wexUser);
 			GetPurchaseLogHistoryRequest reqData = new GetPurchaseLogHistoryRequest();
 			reqData.setBankNumber("1234");
 			reqData.setCompanyNumber("1234567");
 			reqData.setPurchaseLogUniqueID("32");
 			obj.setRequest(reqData);
 			
-			GetPurchaseLogHistoryResponseE res = wexService.getPurchaseLogHistory(obj);
+			GetPurchaseLogHistoryResponseE res = purchaseLogServiceStub.getPurchaseLogHistory(obj);
 			
 			GetPurchaseLogHistoryResponse result = res.getGetPurchaseLogHistoryResult();
 			System.out.println("Response Code : " + result.getResponseCode());
 			System.out.println("Description : " + result.getDescription());
 			historyLog = result.getDescription();
+
+			return historyLog;
 			
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(Exception exc) {
+			throw new WexException(exc);
 		}
 		
-		return historyLog;
 	}
 }
