@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="org-group-login-id">TESTGROUP</entry>
+  <entry key="username">plogtest</entry>
+  <entry key="password">plogtestpw</entry>
+  <entry key="purchase-log-service-target-endpoint">https://services.encompass-suite.com/services/PurchaseLogService.asmx</entry>
+</properties>
