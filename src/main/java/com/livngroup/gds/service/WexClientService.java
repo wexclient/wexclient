@@ -21,8 +21,9 @@ public class WexClientService {
 	private WexClientFactory clientFactory;
 //	final static private String WEX_WSDL_URL = "https://services.encompass-suite.com/services/PurchaseLogService.asmx?wsdl";
 	
-	public HashMap<String, String> getPurchaseLogHistory(WexUser aUser, WexAccount aAccount, String uniqueId) {
+	public Object getPurchaseLogHistory(WexUser aUser, WexAccount aAccount, String uniqueId) {
 		HashMap<String, String> historyLog = new HashMap<>();
+		GetPurchaseLogHistoryResponse result = null;
 		
 		PurchaseLogServiceStub wexService = clientFactory.getWexClient();
 		try {
@@ -38,17 +39,16 @@ public class WexClientService {
 			reqObj.setRequest(reqData);
 			
 			res = wexService.getPurchaseLogHistory(reqObj);
-			GetPurchaseLogHistoryResponse result = res.getGetPurchaseLogHistoryResult();
+			result = res.getGetPurchaseLogHistoryResult();
 			
-			
-			System.out.println("Response Code : " + result.getResponseCode());
-			System.out.println("Description : " + result.getDescription());
-			historyLog.put("repcode", result.getResponseCode().getValue());
-			historyLog.put("description", result.getDescription());
+//			System.out.println("Response Code : " + result.getResponseCode());
+//			System.out.println("Description : " + result.getDescription());
+//			historyLog.put("repcode", result.getResponseCode().getValue());
+//			historyLog.put("description", result.getDescription());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		return historyLog;
+		return result;
 	}
 }

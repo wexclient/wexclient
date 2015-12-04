@@ -42,15 +42,11 @@ public class PurchaseHistoryLog {
 		aAccount.setComNo("");
 		String uniquedId = "32";
 
-		Map<String, String> historyLog = wexService.getPurchaseLogHistory(aUser, aAccount, uniquedId);
-		for(String key : historyLog.keySet()) {
-			logs.append(key + " : " + historyLog.get(key));
-		}
-		
-		
+		Object historyLog = wexService.getPurchaseLogHistory(aUser, aAccount, uniquedId);
+
 		response.setOk(true);
 		response.setMessage("Successful");
-		response.setResult("");
+		response.setResult(historyLog);
 		
 		return response;
 	}
