@@ -16,9 +16,9 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseL
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponseE;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.User;
 import com.google.gson.Gson;
-import com.livngroup.gds.domain.GeneralListResponse;
 import com.livngroup.gds.domain.WexAccount;
 import com.livngroup.gds.domain.WexUser;
+import com.livngroup.gds.response.GeneralResponse;
 import com.livngroup.gds.service.WexClientService;
 
 @RestController
@@ -29,8 +29,8 @@ public class PurchaseHistoryLog {
 	WexClientService wexService;
 	
 	@RequestMapping("/getPurchaseHistory")
-	public @ResponseBody GeneralListResponse call(@RequestParam String username, @RequestParam String password, @RequestParam String group) {
-		GeneralListResponse response = new GeneralListResponse();
+	public @ResponseBody GeneralResponse call(@RequestParam String username, @RequestParam String password, @RequestParam String group) {
+		GeneralResponse response = new GeneralResponse();
 		StringBuffer logs = new StringBuffer();
 		
 		WexUser aUser = new WexUser();
@@ -47,16 +47,11 @@ public class PurchaseHistoryLog {
 			logs.append(key + " : " + historyLog.get(key));
 		}
 		
-//		response.setOk(true);
-//		response.setMessage("Successful");
-//		response.setResult("");
+		
+		response.setOk(true);
+		response.setMessage("Successful");
+		response.setResult("");
 		
 		return response;
 	}
-	
-	public static String convertJson(Map<String, String> map) {
-        Gson gson = new Gson();
-        String json = gson.toJson(map);
-        return json;
-    }
 }
