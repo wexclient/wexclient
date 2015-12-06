@@ -9,30 +9,31 @@ import org.springframework.web.bind.annotation.RestController;
 import com.livngroup.gds.domain.WexAccount;
 import com.livngroup.gds.exception.WexException;
 import com.livngroup.gds.response.GeneralResponse;
-import com.livngroup.gds.service.WexClientService;
+import com.livngroup.gds.service.WexPurchaseLogService;
 
 @RestController
 @RequestMapping("/WEX")
 public class PurchaseHistoryLog extends WexController {
 	
 	@Autowired
-	WexClientService wexService;
+	WexPurchaseLogService wexService;
 	
 	@RequestMapping("/getPurchaseHistory")
 	public @ResponseBody GeneralResponse call() throws WexException {
 		GeneralResponse response = new GeneralResponse();
-		StringBuffer logs = new StringBuffer();
 		
 		WexAccount aAccount = new WexAccount();
 		aAccount.setBankNo("");
 		aAccount.setComNo("");
 		String uniquedId = "32";
 
-		Object historyLog = wexService.getPurchaseLogHistory(wexUser, aAccount, uniquedId);
+		Object historyLog = wexService.getPurchaseLogHistory(aAccount, uniquedId);
 
-		response.setOk(true);
-		response.setMessage("Successful");
-		response.setResult(historyLog);
+		if(historyLog != null) {
+			response.setOk(true);
+			response.setMessage("Successful");
+			response.setResult(historyLog);
+		}
 		
 		return response;
 	}

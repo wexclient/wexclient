@@ -2,6 +2,7 @@ package com.livngroup.gds.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub;
@@ -18,31 +19,28 @@ import com.livngroup.gds.domain.WexUser;
 import com.livngroup.gds.domain.WexUserToken;
 
 @Service
-public class WexBackupCardService {
-	@Autowired
-	private WexClientFactory clientFactory;
-	protected static Logger log = Logger.getLogger("WexBackupCardService");
+public class WexBackupCardService extends WexService {
 
 	public Object getBackupCards(WexUserToken aToken, WexAccount aAccount, String orderId) {
 		GetBackupCardsResponse result = null;
 		
-		PurchaseLogServiceStub wexService = clientFactory.getWexClient();
 //		try {
 //			
 //			GetBackupCards reqObj = new GetBackupCards();
 //			
 //			reqObj.setUser((UserToken)aToken);
-//			GetBackupCardsRequest reqData = new GetBackupCardsRequest();
+//			GetBackupCardsRequest reqData = new BackupCardOrderRequest();
+//			
 //			reqData.setBankNumber(aAccount.getBankNo());
 //			reqData.setCompanyNumber(aAccount.getComNo());
 //			reqData.setPurchaseLogUniqueID(orderId);
 //			reqObj.setRequest(reqData);
 //			
-//			result = wexService.getBackupCards(reqObj);
+//			result = purchaseLogServiceStub.getBackupCards(reqObj);
 //			
 //		} catch(java.rmi.RemoteException e) {
-//			log.error("WEX has exception. It could be caused by Server side and network.");
-//			log.debug(e);
+//			logger.error("WEX has exception. It could be caused by Server side and network.");
+//			logger.debug(e);
 //		}
 		
 		return result;

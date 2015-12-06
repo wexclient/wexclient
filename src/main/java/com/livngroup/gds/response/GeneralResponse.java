@@ -4,6 +4,12 @@ public class GeneralResponse {
 	private Boolean ok;
 	private String message;
 	private Object result;
+	
+	public GeneralResponse() {
+		this.ok = false;
+		this.message = "Fail";
+	}
+	
 	public Boolean getOk() {
 		return ok;
 	}

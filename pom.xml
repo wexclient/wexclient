@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>LivnDemo</name>
+	<name>WexClient</name>
 	<description>Wex Interface Demo on Spring Boot</description>
 
 	<parent>
@@ -41,6 +41,11 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 		</dependency>
 		
+		<dependency>
+	  		<groupId>org.springframework.boot</groupId>
+	  		<artifactId>spring-boot-starter-aop</artifactId>
+	  	</dependency>
+	  	
 		<dependency>
 			<groupId>com.livngroup</groupId>
 			<artifactId>PurchaseLogServiceAPI</artifactId>
@@ -81,15 +86,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.5</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
 	</dependencies>
 	
