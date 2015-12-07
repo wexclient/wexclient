@@ -24,6 +24,7 @@ public class BackupCardController extends WexController {
 												@RequestParam String orderId) throws WexException {
 		CallResponse response = backupCardService.getBackupCards(bankNo, compNo, orderId);
 
+		logger.debug(response.getMessage());
 		return (GeneralResponse)response;
 	}
 
@@ -31,9 +32,9 @@ public class BackupCardController extends WexController {
 	public @ResponseBody GeneralResponse orderCard(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
 												@RequestParam String orderId) throws WexException {
-		
 		CallResponse response = backupCardService.orderBackupCards(bankNo, compNo, orderId);
 
+		logger.debug(response.getMessage());
 		return (GeneralResponse)response;
 	}
 

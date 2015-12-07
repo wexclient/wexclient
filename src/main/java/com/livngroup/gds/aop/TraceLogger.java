@@ -27,7 +27,7 @@ public class TraceLogger {
 		String formatTimestamp = "[" + now +"] ";
 		CallResponse callResoponse = (CallResponse)result;
 		
-		logger.info(formatTimestamp + "WexPurchaseLogService" + joinPoint.getSourceLocation() + " Call Result : " + callResoponse.getMessage());
+		logger.info(formatTimestamp + joinPoint.getTarget() + " Call Result : " + callResoponse.getMessage());
 	}
 
 }

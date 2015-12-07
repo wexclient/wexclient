@@ -24,6 +24,7 @@ public class PurchaseLogController extends WexController {
 														@RequestParam String uniqueId) throws WexException {
 		CallResponse response = wexService.getPurchaseLogHistory(bankNo, compNo, uniqueId);
 
+		logger.debug(response.getMessage());
 		return (GeneralResponse)response;
 	}
 	
@@ -33,6 +34,7 @@ public class PurchaseLogController extends WexController {
 															@RequestParam String uniqueId) throws WexException {
 		CallResponse response = wexService.queryPurchaseLog(bankNo, compNo, uniqueId);
 		
+		logger.debug(response.getMessage());
 		return (GeneralResponse)response;
 	}
 
