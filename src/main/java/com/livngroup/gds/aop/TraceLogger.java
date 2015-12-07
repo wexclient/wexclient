@@ -19,7 +19,7 @@ public class TraceLogger {
 	@AfterReturning(
 			pointcut="execution(* com.livngroup.gds.service.WexPurchaseLogService.*(..))",
 			returning="result")
-	public void truncateToLog(JoinPoint joinPoint, Object result) {
+	public void tracePurchaseLog(JoinPoint joinPoint, Object result) {
 		LocalDateTime now = LocalDateTime.now();
 		
 		String formatTimestamp = "[" + now +"] ";
