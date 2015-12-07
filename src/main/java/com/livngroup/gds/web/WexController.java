@@ -13,7 +13,7 @@ import com.livngroup.gds.domain.WexUser;
 public abstract class WexController {
 	
 	final protected Logger logger = Logger.getLogger(this.getClass());
-	
+		
 	final static private Gson GSON = new Gson();  
 	
 	@Autowired

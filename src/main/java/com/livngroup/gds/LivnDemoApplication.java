@@ -2,11 +2,8 @@ package com.livngroup.gds;
 
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
@@ -14,11 +11,11 @@ import org.springframework.context.annotation.ImportResource;
 @ComponentScan(basePackages = "com.livngroup.gds")
 public class LivnDemoApplication {
 	
-	final static Logger logger = Logger.getLogger(LivnDemoApplication.class);
+	final private static Logger logger = Logger.getLogger(LivnDemoApplication.class);
 
     public static void main(String[] args) {
     	System.setProperty("banner.location", "classpath:wex-client-banner.txt");
         SpringApplication.run(LivnDemoApplication.class, args);
-        logger.info("application started ...");
+        logger.debug("application started ...");
     }
 }

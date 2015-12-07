@@ -7,12 +7,12 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+ 	<beans:import resource="classpath:persistence-context.xml" />
+
 	<context:annotation-config />
    	<context:component-scan base-package="com.livngroup.gds" />
 
-	<beans:bean id="applicationProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    	<beans:property name="location" value="classpath:application-properties.xml" />
-	</beans:bean>
+    <context:property-placeholder location="classpath:application-properties.xml" ignore-resource-not-found="false" ignore-unresolvable="true" />
 
 	<beans:bean id="wexUser" class="com.livngroup.gds.domain.WexUser" scope="singleton">
 	    <beans:property name="orgGroupLoginId" value="${org-group-login-id}" />
