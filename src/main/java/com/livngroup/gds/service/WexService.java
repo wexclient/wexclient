@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub;
 import com.livngroup.gds.domain.WexUser;
+import com.livngroup.gds.domain.WexUserToken;
 
 public abstract class WexService {
 	
@@ -14,6 +15,10 @@ public abstract class WexService {
 	@Autowired
 	@Qualifier("wexUser")
 	protected WexUser wexUser;
+	
+	@Autowired
+	@Qualifier("wexUserToken")
+	protected WexUserToken wexUserToken;
 	
 	@Autowired
 	@Qualifier("purchaseLogServiceStub")

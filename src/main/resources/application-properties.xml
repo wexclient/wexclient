@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="ipaddress">10.10.10.1</entry>
   <entry key="org-group-login-id">TESTGROUP</entry>
   <entry key="username">plogtest</entry>
   <entry key="password">plogtestpw</entry>

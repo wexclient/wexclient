@@ -20,6 +20,13 @@
 	    <beans:property name="password" value="${password}" />
 	</beans:bean>
 
+	<beans:bean id="wexUserToken" class="com.livngroup.gds.domain.WexUserToken" scope="singleton">
+	    <beans:property name="iPAddress" value="${ipaddress}" />
+	    <beans:property name="orgGroupLoginId" value="${org-group-login-id}" />
+	    <beans:property name="username" value="${username}" />
+	    <beans:property name="password" value="${password}" />
+	</beans:bean>
+
 	<beans:bean id="purchaseLogServiceStub" class="com.aocsolutions.encompasswebservices.PurchaseLogServiceStub" scope="singleton">
 	    <beans:constructor-arg name="targetEndpoint"  value="${purchase-log-service-target-endpoint}" />
 	</beans:bean>
