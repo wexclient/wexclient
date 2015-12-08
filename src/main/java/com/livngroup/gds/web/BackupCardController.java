@@ -23,7 +23,23 @@ public class BackupCardController extends WexController {
 												@RequestParam String compNo, 
 												@RequestParam String orderId) throws WexException {
 		CallResponse response = backupCardService.getBackupCards(bankNo, compNo, orderId);
-
+//
+//		BackupCard backupCard = new BackupCard();
+//		backupCard.setCardNumber(new Date().toString());
+//		backupCard.setCvc2("123");
+//		backupCard.setNameLine1("name line one");
+//		backupCard.setCreateDate(new Date());
+//		Calendar expirationDate = Calendar.getInstance();
+//		expirationDate.add(Calendar.YEAR, 1);
+//		backupCard.setCurrency(Currency.getInstance("AUD"));
+//    	backupCard.setCreditLimit(new BigDecimal("10000.00"));
+//        backupCardRepository.save(backupCard);			
+//        
+//        List<BackupCard> cardList = backupCardRepository.findAll();
+//        logger.debug("Card list:");
+//        cardList.forEach(n -> logger.debug(n.getUuid() + ":" + n.getCardNumber()));
+		
+		
 		logger.debug(response.getMessage());
 		return (GeneralResponse)response;
 	}
