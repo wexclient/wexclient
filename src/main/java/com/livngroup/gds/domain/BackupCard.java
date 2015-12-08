@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -46,9 +45,6 @@ public class BackupCard {
 
 	@Column(name = "CREATE_DATE", unique = false)
 	private Date createDate;
-
-	@Transient
-	private String transField;
 	
 	public String getUuid() {
 		return uuid;
@@ -121,14 +117,4 @@ public class BackupCard {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-
-	public String getTransField() {
-		return transField;
-	}
-
-	public void setTransField(String transField) {
-		this.transField = transField;
-	}
-	
-	
 }

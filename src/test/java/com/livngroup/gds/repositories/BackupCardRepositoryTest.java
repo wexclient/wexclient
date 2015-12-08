@@ -40,7 +40,6 @@ public class BackupCardRepositoryTest {
 		expirationDate.add(Calendar.YEAR, 1);
 		backupCard.setCurrency(Currency.getInstance("AUD"));
     	backupCard.setCreditLimit(new BigDecimal("10000.00"));
-    	backupCard.setTransField("MUST NOT BE STORED");
     	
         assertNull(backupCard.getUuid()); 
         backupCardRepository.save(backupCard);
@@ -50,7 +49,6 @@ public class BackupCardRepositoryTest {
         assertNotNull(fetchedBackupCard);
         assertEquals(backupCard.getUuid(), fetchedBackupCard.getUuid());
         assertEquals(backupCard.getCardNumber(), fetchedBackupCard.getCardNumber());
-        assertNull(fetchedBackupCard.getTransField());
         
         fetchedBackupCard.setNameLine2("name line two");
         backupCardRepository.save(fetchedBackupCard);
