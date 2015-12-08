@@ -46,7 +46,7 @@ public class WexPurchaseLogService extends WexService {
 				result.setMessage("Success");
 			}
 		} catch(java.rmi.RemoteException e) {
-			logger.debug(e);
+//			logger.debug(e);
 			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
 		}
 		
@@ -79,7 +79,7 @@ public class WexPurchaseLogService extends WexService {
 			}
 			
 		} catch(java.rmi.RemoteException e) {
-			logger.debug(e);
+//			logger.debug(e);
 			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
 		}
 		
@@ -112,7 +112,7 @@ public class WexPurchaseLogService extends WexService {
 			}
 			
 		} catch(java.rmi.RemoteException e) {
-			logger.debug(e);
+//			logger.debug(e);
 			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
 		}
 		
