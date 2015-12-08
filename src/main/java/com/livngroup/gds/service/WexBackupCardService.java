@@ -3,6 +3,7 @@ package com.livngroup.gds.service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCards;
@@ -13,11 +14,14 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.OrderBackupC
 import com.livngroup.gds.exception.WexException;
 import com.livngroup.gds.response.CallResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardOrderRequest;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardOrderResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.ArrayOfBackupCardOrderBlock;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardOrderBlock;
 
 @Service
 public class WexBackupCardService extends WexService {
+	@Autowired
+	GdsDbService gdsDbService;
 
 	public CallResponse getBackupCards(String bankNo, String compNo, String orderId) throws WexException {
 		CallResponse result = new CallResponse();
@@ -76,7 +80,12 @@ public class WexBackupCardService extends WexService {
 			
 			response = purchaseLogServiceStub.orderBackupCards(reqObj);
 			if(response != null) {
+				result.setResult(response);
+				result.setOk(true);
+				result.setMessage("Succes");
+				BackupCardOrderResponse aResult = response.getOrderBackupCardsResult();
 				
+				gdsDbService.insertBackupCard(aResult);
 			}
 			
 		} catch(java.rmi.RemoteException e) {
