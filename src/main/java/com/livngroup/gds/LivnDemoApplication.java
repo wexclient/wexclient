@@ -5,12 +5,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @ImportResource(locations = "classpath:wex-client-rest-app-context.xml")
 @ComponentScan(basePackages = "com.livngroup.gds")
 @EnableScheduling
+@PropertySource("classpath:application-properties.xml")
 public class LivnDemoApplication {
 	
 	final private static Logger logger = Logger.getLogger(LivnDemoApplication.class);
