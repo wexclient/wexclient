@@ -6,4 +6,5 @@
   <entry key="username">plogtest</entry>
   <entry key="password">plogtestpw</entry>
   <entry key="purchase-log-service-target-endpoint">https://services.encompass-suite.com/services/PurchaseLogService.asmx</entry>
+  <entry key="payment-queue-cron-expression">0 0 * * * *</entry><!-- every hour -->
 </properties>

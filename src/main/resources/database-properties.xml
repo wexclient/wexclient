@@ -6,7 +6,7 @@
 	<entry key="spring.datasource.username">sa</entry>
 	<entry key="spring.datasource.password">sa</entry> 
 	
-	<entry key="spring.jpa.hibernate.ddl-auto">validate</entry>
+	<entry key="spring.jpa.hibernate.ddl-auto">create-drop</entry>
 	<entry key="spring.jpa.database">H2</entry>
 	<entry key="spring.jpa.show-sql">true</entry>
 	<entry key="spring.h2.console.enabled">false</entry>
