@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class WexBackupCardService extends WexService {
 	@Autowired
 	private BackupCardRepository backupCardRepository;
 	
-	@Transactional
+	@Transactional()
 	public CallResponse getBackupCards(String bankNo, String compNo, String orderId) throws WexException {
 		CallResponse result = new CallResponse();
 		
@@ -65,12 +66,10 @@ public class WexBackupCardService extends WexService {
 		backupCard.setCurrency(Currency.getInstance("AUD"));
     	backupCard.setCreditLimit(new BigDecimal("10000.00"));
     	backupCardRepository.save(backupCard);			
-//        
-//        List<BackupCard> cardList = backupCardRepository.findAll();
-//        logger.debug("Card list:");
-//        cardList.forEach(n -> logger.debug(n.getUuid() + ":" + n.getCardNumber()));
-
-    	logger.debug("@@@@@@@ ${payment-queue-cron-expression}");
+        
+        List<BackupCard> cardList = backupCardRepository.findAll();
+        logger.debug("Card list:");
+        cardList.forEach(n -> logger.debug(n.getUuid() + ":" + n.getCardNumber()));
 		
 		return result;
 	}

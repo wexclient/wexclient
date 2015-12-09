@@ -2,11 +2,13 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties> 
 	<entry key="spring.datasource.driver-class-name">org.h2.Driver</entry>
-	<entry key="spring.datasource.url">jdbc:h2:file:~/testdb</entry>
+	<entry key="spring.datasource.url">jdbc:h2:file:C:/Temp/H2DATA;DB_CLOSE_ON_EXIT=FALSE</entry>
 	<entry key="spring.datasource.username">sa</entry>
 	<entry key="spring.datasource.password">sa</entry> 
 	
-	<entry key="spring.jpa.hibernate.ddl-auto">create-drop</entry>
+	<entry key="spring.jpa.database-platform">org.hibernate.dialect.H2Dialect</entry>
+	<entry key="spring.jpa.properties.hibernate.dialect">org.hibernate.dialect.H2Dialect</entry>
+	<entry key="spring.jpa.hibernate.ddl-auto">create</entry>
 	<entry key="spring.jpa.database">H2</entry>
 	<entry key="spring.jpa.show-sql">true</entry>
 	<entry key="spring.h2.console.enabled">false</entry>

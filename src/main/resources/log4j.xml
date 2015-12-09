@@ -14,6 +14,16 @@
 	   <appender-ref ref="console" />
 	</logger>
 
+	<logger name="org.hibernate" additivity="false">
+	   <level value="all" />
+	   <appender-ref ref="console" />
+	</logger>
+
+	<logger name="org.hibernate.SQL" additivity="false">
+	   <level value="all" />
+	   <appender-ref ref="console" />
+	</logger>
+
 	<root>
 		<level value="info" />
 		<appender-ref ref="console" />
