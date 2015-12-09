@@ -2,6 +2,7 @@ package com.livngroup.gds.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,7 @@ public class PurchaseLogController extends WexController {
 	@Autowired
 	WexPurchaseLogService wexService;
 	
-	@RequestMapping("/historyLog")
+	@RequestMapping(value="/historyLog", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse getHistoryLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
 														@RequestParam String uniqueId) throws WexException {
@@ -28,7 +29,7 @@ public class PurchaseLogController extends WexController {
 		return (GeneralResponse)response;
 	}
 	
-	@RequestMapping("/queryLog")
+	@RequestMapping(value="/queryLog", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse queryPurchaseLog(@RequestParam String bankNo, 
 															@RequestParam String compNo, 
 															@RequestParam String uniqueId) throws WexException {
