@@ -26,7 +26,7 @@ public class TraceLogger {
 		String formatTimestamp = "[" + now +"] ";
 		CallResponse callResoponse = (CallResponse)result;
 		
-		logger.info(formatTimestamp + joinPoint.getTarget() + " Call Result : " + callResoponse.getMessage());
+		logger.info("{} {} Call Result : {}", formatTimestamp, joinPoint.getTarget(), callResoponse.getMessage());
 	}
 
 }

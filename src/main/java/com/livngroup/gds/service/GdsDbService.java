@@ -22,6 +22,6 @@ public class GdsDbService {
 //		issuedCard.getCardsAvailable();
 //		issuedCard.getPullParser(qName);
 //		newCardInfo.setCardNumber();
-//		backupCardRepo.save(newCardInfo);
+		backupCardRepo.save(newCardInfo);
 	}
 }

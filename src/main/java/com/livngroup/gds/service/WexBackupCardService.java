@@ -40,9 +40,14 @@ public class WexBackupCardService extends WexService {
 			reqObj.setRequest(reqData);
 			
 			response = purchaseLogServiceStub.getBackupCards(reqObj);
+			if(response != null) {
+				result.setResult(response);
+				result.setOk(true);
+				result.setMessage("Succes");
+			}
 			
 		} catch(java.rmi.RemoteException e) {
-//			logger.debug(e);
+			logger.error("RmoteException Error Message : " + e.getMessage());
 			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
 		}
 		
@@ -89,7 +94,7 @@ public class WexBackupCardService extends WexService {
 			}
 			
 		} catch(java.rmi.RemoteException e) {
-//			logger.debug(e);
+			logger.error("RmoteException Error Message : " + e.getMessage());
 			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
 		}
 		
