@@ -10,6 +10,4 @@
 
 	<jpa:repositories base-package="com.livngroup.gds.repositories" />
 
-    <context:property-placeholder location="classpath:database-properties.xml" ignore-resource-not-found="false" ignore-unresolvable="true" />
-
 </beans:beans>

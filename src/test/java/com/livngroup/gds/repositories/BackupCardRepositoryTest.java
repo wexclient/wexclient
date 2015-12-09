@@ -10,8 +10,6 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
-//import guru.springframework.configuration.RepositoryConfiguration;
-//import guru.springframework.domain.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

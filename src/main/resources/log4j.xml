@@ -15,12 +15,12 @@
 	</logger>
 
 	<logger name="org.hibernate" additivity="false">
-	   <level value="all" />
+	   <level value="off" />
 	   <appender-ref ref="console" />
 	</logger>
 
 	<logger name="org.hibernate.SQL" additivity="false">
-	   <level value="all" />
+	   <level value="off" />
 	   <appender-ref ref="console" />
 	</logger>
 
