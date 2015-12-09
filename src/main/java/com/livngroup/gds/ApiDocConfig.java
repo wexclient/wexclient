@@ -1,7 +1,7 @@
 package com.livngroup.gds;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.base.Predicate.*;
+import static com.google.common.base.Predicates.*;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
 import static springfox.documentation.builders.PathSelectors.*;
 
@@ -55,9 +55,9 @@ public class ApiDocConfig {
 	private TypeResolver typeResolver;
 	
 	private Predicate<String> paths() {
-		return regex("/backupcard.*");
+		return or(regex("/backupcard.*"), regex("/purchase.*"));
 	}
- 
+
 	private ApiKey apiKey() {
 		return new ApiKey("mykey", "api_key", "header");
 	}
