@@ -10,8 +10,8 @@ import com.livngroup.gds.repositories.BackupCardRepository;
 @Service
 public class GdsDbService {
 
-//	@Autowired
-//	BackupCardRepository backupCardRepo;
+	@Autowired
+	BackupCardRepository backupCardRepo;
 	
 	public void insertBackupCard(BackupCardOrderResponse issuedCard) {
 		BackupCard newCardInfo = new BackupCard();

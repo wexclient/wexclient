@@ -2,6 +2,7 @@ package com.livngroup.gds.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,7 @@ public class BackupCardController extends WexController {
 	@Autowired
 	WexBackupCardService backupCardService;
 	
-	@RequestMapping("/get")
+	@RequestMapping(value="/get", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse getCard(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
 												@RequestParam String orderId) throws WexException {
@@ -44,7 +45,7 @@ public class BackupCardController extends WexController {
 		return (GeneralResponse)response;
 	}
 
-	@RequestMapping("/order")
+	@RequestMapping(value="/order", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse orderCard(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
 												@RequestParam String orderId) throws WexException {
