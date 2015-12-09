@@ -23,5 +23,5 @@
 
 	<entry key="spring.h2.console.enabled">false</entry>
 	<entry key="spring.h2.console.path">/h2-console</entry>
-	
+
 </properties>

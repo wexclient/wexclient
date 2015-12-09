@@ -3,7 +3,6 @@
 See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-through-the-java-loggers/ -->
 <configuration scan="true" scanPeriod="30 seconds">
   
-	<property resource="resource.properties"/>
 	<property name="LOG_HOME" value="C:\\temp"/>
 	<property name="RUN_MODE" value="PRODUCT"/>
 	
@@ -37,16 +36,17 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
     <logger name="com.aocsolutions.encompasswebservices" level="error"/>
     <logger name="com.livngroup.gds" level="info"/>
 
-    <if condition='property("RUN_MODE").equals("PRODUCT")'>
+    <if condition='property("spring.profiles.active").equals("dev")'>
         <then>
             <root level="info">
                 <appender-ref ref="console"/>
                 <appender-ref ref="FILE"/>
             </root>
         </then>
+    </if>
+    <if condition='property("spring.profiles.active").equals("prod")'>
         <else>
-            <root level="debug">
-                <appender-ref ref="console"/>
+            <root level="error">
                 <appender-ref ref="FILE"/>
             </root>
         </else>
