@@ -30,10 +30,10 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
         </encoder>
     </appender>
 
-    <logger name="org.springframework" level="info"/>
-    <logger name="org.hibernate" level="debug"/>
+    <logger name="org.springframework" level="error"/>
+    <logger name="org.hibernate" level="error"/>
     <logger name="com.aocsolutions.encompasswebservices" level="error"/>
-    <logger name="com.livngroup.gds" level="debug"/>
+    <logger name="com.livngroup.gds" level="info"/>
 
     <if condition='property("RUN_MODE").equals("PRODUCT")'>
         <then>
