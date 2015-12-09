@@ -2,9 +2,11 @@
 <!-- configuration file for LogBack (slf4J implementation)
 See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-through-the-java-loggers/ -->
 <configuration scan="true" scanPeriod="30 seconds">
-
+  
 	<property resource="resource.properties"/>
-
+	<property name="LOG_HOME" value="C:\\temp"/>
+	<property name="RUN_MODE" value="PRODUCT"/>
+	
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
     </contextListener>
@@ -31,7 +33,7 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
     </appender>
 
     <logger name="org.springframework" level="info"/>
-    <logger name="org.hibernate" level="debug"/>
+    <logger name="org.hibernate" level="info"/>
     <logger name="com.aocsolutions.encompasswebservices" level="error"/>
     <logger name="com.livngroup.gds" level="debug"/>
 

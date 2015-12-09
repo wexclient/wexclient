@@ -31,5 +31,4 @@
 	    <beans:constructor-arg name="targetEndpoint"  value="${purchase-log-service-target-endpoint}" />
 	</beans:bean>
 
-	<beans:bean class="com.livngroup.gds.ApiDocConfig"/>
 </beans:beans>
