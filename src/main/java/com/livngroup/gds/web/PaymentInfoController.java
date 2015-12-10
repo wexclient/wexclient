@@ -10,35 +10,36 @@ import org.springframework.web.bind.annotation.RestController;
 import com.livngroup.gds.exception.WexException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.GeneralResponse;
-import com.livngroup.gds.service.WexBackupCardService;
+import com.livngroup.gds.service.WexPaymentService;
 
 import io.swagger.annotations.Api;
 
 @RestController
-@RequestMapping("/backupcard")
-@Api(value="/backupcard")
-public class BackupCardController extends WexController {
+@RequestMapping("/payment")
+@Api(value="/payment")
+public class PaymentInfoController extends WexController {
 
 	@Autowired
-	private WexBackupCardService backupCardService;
+	private WexPaymentService paymentService;
 	
-	@RequestMapping(value="/get", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody GeneralResponse getCard(@RequestParam String bankNo, 
+	@RequestMapping(value="/getSchedule", produces="application/json", method=RequestMethod.GET)
+	public @ResponseBody GeneralResponse getSchedule(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
-												@RequestParam String orderId) throws WexException {
+												@RequestParam String uniqueId) throws WexException {
 		
-		CallResponse response = backupCardService.getBackupCards(bankNo, compNo, orderId);		
+		CallResponse response = paymentService.getPaymentSchedule(bankNo, compNo, uniqueId);		
 		
 		logger.debug(response.getMessage());
 		return (GeneralResponse)response;
 	}
 
-	@RequestMapping(value="/order", produces="application/json", method=RequestMethod.POST)
-	public @ResponseBody GeneralResponse orderCard(@RequestParam String bankNo, 
+	@RequestMapping(value="/getInfoUrl", produces="application/json", method=RequestMethod.GET)
+	public @ResponseBody GeneralResponse getInformationUrl(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
-												@RequestParam(value="orderId", required=false) String orderId) throws WexException {
-		CallResponse response = backupCardService.orderBackupCards(bankNo, compNo, orderId);
-
+												@RequestParam String uniqueId) throws WexException {
+		
+		CallResponse response = paymentService.getPaymentInformationUrl(bankNo, compNo, uniqueId);		
+		
 		logger.debug(response.getMessage());
 		return (GeneralResponse)response;
 	}
