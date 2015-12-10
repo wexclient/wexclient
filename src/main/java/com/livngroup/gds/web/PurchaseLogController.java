@@ -12,14 +12,40 @@ import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.GeneralResponse;
 import com.livngroup.gds.service.WexPurchaseLogService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/purchase")
+@Api(value="/purchase")
 public class PurchaseLogController extends WexController {
 	
 	@Autowired
 	WexPurchaseLogService wexService;
 	
-	@RequestMapping(value="/historyLog", method=RequestMethod.GET)
+	@ApiResponses(@ApiResponse(code=402, message="Input amount is not number", response=CallResponse.class))
+	@RequestMapping(value="/createLog", produces="application/json", method=RequestMethod.POST)
+	public @ResponseBody GeneralResponse createPurchaseLog(@RequestParam String bankNo, 
+														@RequestParam String compNo, 
+														@RequestParam String amount) throws WexException {
+		CallResponse response = wexService.createPurchaseLog(bankNo, compNo, amount);
+
+		logger.debug(response.getMessage());
+		return (GeneralResponse)response;
+	}
+	
+	@RequestMapping(value="/cancelLog", produces="application/json", method=RequestMethod.POST)
+	public @ResponseBody GeneralResponse cancelPurchaseLog(@RequestParam String bankNo, 
+														@RequestParam String compNo, 
+														@RequestParam String uniqueId) throws WexException {
+		CallResponse response = wexService.cancelPurchaseLog(bankNo, compNo, uniqueId);
+
+		logger.debug(response.getMessage());
+		return (GeneralResponse)response;
+	}
+	
+	@RequestMapping(value="/historyLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse getHistoryLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
 														@RequestParam String uniqueId) throws WexException {
@@ -29,7 +55,7 @@ public class PurchaseLogController extends WexController {
 		return (GeneralResponse)response;
 	}
 	
-	@RequestMapping(value="/queryLog", method=RequestMethod.GET)
+	@RequestMapping(value="/queryLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse queryPurchaseLog(@RequestParam String bankNo, 
 															@RequestParam String compNo, 
 															@RequestParam String uniqueId) throws WexException {

@@ -1,4 +1,4 @@
-package com.livngroup.gds;
+package com.livngroup.gds.config;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.base.Predicates.*;
@@ -19,13 +19,17 @@ import org.springframework.web.context.request.async.DeferredResult;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.base.Predicate;
 
+import io.swagger.models.RefModel;
+import io.swagger.models.Response;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.schema.WildcardType;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.ResponseMessage;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -37,16 +41,22 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @ComponentScan(basePackages = "com.livngroup.gds.web")
-public class ApiDocConfig {
+public class ApiDocConfiguration {
     
 	@Bean
 	public Docket swaggerApi() {
-		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
+		return new Docket(DocumentationType.SWAGGER_2).select()
+				.apis(RequestHandlerSelectors.any())
 				.paths(paths()).build().pathMapping("/")
-				.directModelSubstitute(LocalDate.class, String.class).genericModelSubstitutes(ResponseEntity.class)
-				.alternateTypeRules(newRule(typeResolver.resolve(DeferredResult.class, typeResolver.resolve(ResponseEntity.class, WildcardType.class)), typeResolver.resolve(WildcardType.class)))
+				.directModelSubstitute(LocalDate.class, String.class)
+				.genericModelSubstitutes(ResponseEntity.class)
+				.alternateTypeRules(newRule(typeResolver.resolve(DeferredResult.class, 
+												typeResolver.resolve(ResponseEntity.class, WildcardType.class)), 
+													typeResolver.resolve(WildcardType.class)))
 				.useDefaultResponseMessages(false)
-				.globalResponseMessage(RequestMethod.GET, newArrayList(new ResponseMessageBuilder().code(500).message("500 message").responseModel(new ModelRef("Error")).build()))
+				.globalResponseMessage(RequestMethod.GET, responseMessages())
+				.globalResponseMessage(RequestMethod.POST, responseMessages())
+				.apiInfo(apiInfo())
 				.securitySchemes(newArrayList(apiKey()))
 				.securityContexts(newArrayList(securityContext()));
 	}
@@ -54,16 +64,35 @@ public class ApiDocConfig {
 	@Autowired
 	private TypeResolver typeResolver;
 	
+	@SuppressWarnings("unchecked")
 	private Predicate<String> paths() {
-		return or(regex("/backupcard.*"), regex("/purchase.*"));
+		return or(regex("/backupcard.*"), regex("/purchase.*"), regex("/payment.*"));
 	}
 
+	private List<ResponseMessage> responseMessages() {
+		ResponseMessage invalidMessage = new ResponseMessageBuilder()
+												.code(400).message("Invalid arguments")
+												.responseModel(new ModelRef("CallResponse")).build();
+		ResponseMessage noreponseMessage = new ResponseMessageBuilder()
+												.code(401).message("WEX not responding")
+												.responseModel(new ModelRef("CallResponse")).build();
+		
+		return newArrayList(noreponseMessage, invalidMessage);
+	}
+	
 	private ApiKey apiKey() {
 		return new ApiKey("mykey", "api_key", "header");
 	}
+	
+	private ApiInfo apiInfo() {
+		return new ApiInfo("WEX-GDS Interface", "Interface Api Documentation", "1.0", "urn:tos",
+		          "Contact Email", "Document License", "http://www.livngroup.com/");
+	}
  
 	private SecurityContext securityContext() {
-		return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.regex("/anyPath.*")).build();
+		return SecurityContext.builder()
+				.securityReferences(defaultAuth())
+				.forPaths(PathSelectors.regex("/anyPath.*")).build();
 	}
  
 	List<SecurityReference> defaultAuth() {
