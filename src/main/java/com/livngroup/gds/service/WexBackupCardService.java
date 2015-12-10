@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,9 @@ import com.livngroup.gds.repositories.BackupCardRepository;
 import com.livngroup.gds.response.CallResponse;
 
 @Service
+@Qualifier("wexBackupCardService")
 public class WexBackupCardService extends WexService {
+	
 	@Autowired
 	GdsDbService gdsDbService;
 
@@ -37,7 +40,6 @@ public class WexBackupCardService extends WexService {
 		CallResponse result = new CallResponse();
 		
 		try {
-			GetBackupCardsResponse response;
 			GetBackupCards reqObj = new GetBackupCards();
 			
 			BackupCardRequest reqData = new BackupCardRequest();
@@ -49,7 +51,7 @@ public class WexBackupCardService extends WexService {
 			reqObj.setUser(wexUserToken);
 			reqObj.setRequest(reqData);
 			
-			response = purchaseLogServiceStub.getBackupCards(reqObj);
+			GetBackupCardsResponse response = purchaseLogServiceStub.getBackupCards(reqObj);
 			if(response != null) {
 				result.setResult(response);
 				result.setOk(true);

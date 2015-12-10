@@ -36,7 +36,7 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
     <logger name="com.aocsolutions.encompasswebservices" level="error"/>
     <logger name="com.livngroup.gds" level="info"/>
 
-    <if condition='property("spring.profiles.active").equals("dev")'>
+    <if condition='property("spring.profiles.active").equals("dev") || property("spring.profiles.active").equals("")'>
         <then>
             <root level="info">
                 <appender-ref ref="console"/>

@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.livngroup.gds.LivnDemoApplication;
 import com.livngroup.gds.domain.BackupCard;
