@@ -33,21 +33,21 @@ public class BackupCardControllerTest {
 	
 	@Autowired 
 	WebApplicationContext webApplicationContext; 
-
+	
 	@Mock
 	private WexBackupCardService backupCardService;
-
+	
 	@Autowired
 	@InjectMocks
 	private BackupCardController backupCardController;
 	
-    private MockMvc mockMvc;
-
-    private final String BANK_NO = "bankNo";
-    private final String COMP_NO = "compNo";
-    private final String ORDER_ID = "orderId";
-    private final String ORDER_ID_NOT_FOUND = "orderId_NOT_FOUND";
-    
+	private MockMvc mockMvc;
+	
+	private final String BANK_NO = "bankNo";
+	private final String COMP_NO = "compNo";
+	private final String ORDER_ID = "orderId";
+	private final String ORDER_ID_NOT_FOUND = "orderId_NOT_FOUND";
+	
     @Before
     public void setup() throws Exception {
     	MockitoAnnotations.initMocks(this);
