@@ -48,22 +48,22 @@ public class BackupCardControllerTest {
 	private final String ORDER_ID = "orderId";
 	private final String ORDER_ID_NOT_FOUND = "orderId_NOT_FOUND";
 	
-    @Before
-    public void setup() throws Exception {
-    	MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-        
-        CallResponse success = new CallResponse();
-        success.setOk(true);
-        success.setMessage(CallResponse.SUCCESS);
+	@Before
+	public void setup() throws Exception {
+		MockitoAnnotations.initMocks(this);
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+		
+		CallResponse success = new CallResponse();
+		success.setOk(true);
+		success.setMessage(CallResponse.SUCCESS);
 		when(backupCardService.getBackupCards(BANK_NO, COMP_NO, ORDER_ID)).thenReturn(success);
-
+		
 		CallResponse failure = new CallResponse();
 		failure.setOk(false);
 		failure.setMessage(CallResponse.FAILURE);
 		when(backupCardService.getBackupCards(BANK_NO, COMP_NO, ORDER_ID_NOT_FOUND)).thenReturn(failure);
-    }  
-    
+	}  
+	
 	@Test
 	public void testGetBackupCards() throws Exception {
 		mockMvc.perform(get(String.format("/backupcard/get?bankNo=%s&compNo=%s&orderId=%s", BANK_NO, COMP_NO, ORDER_ID)))
@@ -73,7 +73,7 @@ public class BackupCardControllerTest {
 		verify(backupCardService, times(1)).getBackupCards(BANK_NO, COMP_NO, ORDER_ID);
 		verifyNoMoreInteractions(backupCardService);
 	}
-    
+	
 	@Test
 	public void testGetBackupCardsNotFound() throws Exception {
 		mockMvc.perform(get(String.format("/backupcard/get?bankNo=%s&compNo=%s&orderId=%s", BANK_NO, COMP_NO, ORDER_ID_NOT_FOUND)))
