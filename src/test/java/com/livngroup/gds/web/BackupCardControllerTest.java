@@ -68,7 +68,7 @@ public class BackupCardControllerTest {
 	public void testGetBackupCards() throws Exception {
 		mockMvc.perform(get(String.format("/backupcard/get?bankNo=%s&compNo=%s&orderId=%s", BANK_NO, COMP_NO, ORDER_ID)))
 		.andExpect(status().isOk())
-		.andExpect(content().json("{\'ok': true, 'message': 'Success'}", false));
+		.andExpect(content().json("{'ok': true, 'message': 'Success'}", false));
 		 
 		verify(backupCardService, times(1)).getBackupCards(BANK_NO, COMP_NO, ORDER_ID);
 		verifyNoMoreInteractions(backupCardService);
@@ -78,7 +78,7 @@ public class BackupCardControllerTest {
 	public void testGetBackupCardsNotFound() throws Exception {
 		mockMvc.perform(get(String.format("/backupcard/get?bankNo=%s&compNo=%s&orderId=%s", BANK_NO, COMP_NO, ORDER_ID_NOT_FOUND)))
 		.andExpect(status().isOk())
-		.andExpect(content().json("{\'ok': false, 'message': 'Failure'}", false));
+		.andExpect(content().json("{'ok': false, 'message': 'Failure'}", false));
 		 
 		verify(backupCardService, times(1)).getBackupCards(BANK_NO, COMP_NO, ORDER_ID_NOT_FOUND);
 		verifyNoMoreInteractions(backupCardService);
