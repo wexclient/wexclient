@@ -1,13 +1,21 @@
 package com.livngroup.gds.response;
 
-public class GeneralResponse {
+import java.io.Serializable;
+
+public class GeneralResponse implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	public static final String SUCCESS = "Success";
+	public static final String FAILURE = "Failure";
+	
 	private Boolean ok;
 	private String message;
 	private Object result;
 	
 	public GeneralResponse() {
 		this.ok = false;
-		this.message = "Fail";
+		this.message = FAILURE;
 	}
 	
 	public Boolean getOk() {

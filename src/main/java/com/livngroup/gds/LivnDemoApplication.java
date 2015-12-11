@@ -25,6 +25,6 @@ public class LivnDemoApplication {
     public static void main(String[] args) {
     	System.setProperty("banner.location", "classpath:wex-client-banner.txt");
     	APPLICATION_CONTEXT = SpringApplication.run(LivnDemoApplication.class, args);
-        logger.debug("application started [" + System.getProperty("spring.profiles.active") + "]...");
+        logger.info("application started [" + System.getProperty("spring.profiles.active") + "]...");
     }
 }
