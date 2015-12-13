@@ -1,8 +1,15 @@
 package com.livngroup.gds.response;
 
 import org.springframework.http.HttpStatus;
+import java.io.Serializable;
 
-public class GeneralResponse {
+public class GeneralResponse implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	public static final String SUCCESS = "Success";
+	public static final String FAILURE = "Failure";
+	
 	private Boolean ok;
 	private String message;
 	private HttpStatus status;
@@ -10,7 +17,7 @@ public class GeneralResponse {
 	
 	public GeneralResponse() {
 		this.ok = false;
-		this.message = "Fail";
+		this.message = FAILURE;
 	}
 	
 	public GeneralResponse(Boolean ok, String message) {
