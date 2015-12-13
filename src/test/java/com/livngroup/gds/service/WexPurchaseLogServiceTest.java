@@ -1,6 +1,6 @@
 package com.livngroup.gds.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,15 +13,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.livngroup.gds.LivnDemoApplication;
 import com.livngroup.gds.response.CallResponse;
-import com.livngroup.gds.service.WexPaymentService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = LivnDemoApplication.class)
 @WebIntegrationTest("server.port=8080")
-public class WexPaymentServiceTest {
+public class WexPurchaseLogServiceTest {
 
 	@Mock
-    private WexPaymentService wexPaymentServiceMock;
+    private WexPurchaseLogService wexPurchaseLogServiceMock;
 
     @Before
     public void doSetup() {
@@ -30,7 +29,7 @@ public class WexPaymentServiceTest {
 
     @Test
 	public void testPaymentService() throws Exception {
-    	CallResponse result = wexPaymentServiceMock.getPaymentInformationUrl("1234", "1234567", "12345");
+    	CallResponse result = wexPurchaseLogServiceMock.queryPurchaseLog("1234", "1234567", "COMMIT");
         assertNull(result.getResult());
 	}
 
