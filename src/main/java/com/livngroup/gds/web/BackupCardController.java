@@ -13,6 +13,8 @@ import com.livngroup.gds.response.GeneralResponse;
 import com.livngroup.gds.service.WexBackupCardService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/backupcard")
@@ -26,18 +28,19 @@ public class BackupCardController extends WexController {
 	public @ResponseBody GeneralResponse getCard(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
 												@RequestParam String orderId) throws WexException {
-		
 		CallResponse response = backupCardService.getBackupCards(bankNo, compNo, orderId);		
 		
 		logger.debug(response.getMessage());
 		return (GeneralResponse)response;
 	}
 
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=CallResponse.class), 
+					@ApiResponse(code=402, message="Input amount is not number", response=CallResponse.class)})
 	@RequestMapping(value="/order", produces="application/json", method=RequestMethod.POST)
-	public @ResponseBody GeneralResponse orderCard(@RequestParam String bankNo, 
-												@RequestParam String compNo, 
-												@RequestParam(value="orderId", required=false) String orderId) throws WexException {
-		CallResponse response = backupCardService.orderBackupCards(bankNo, compNo, orderId);
+	public @ResponseBody GeneralResponse orderCard(@RequestParam String bankNo,
+												@RequestParam String compNo,
+												@RequestParam(value="cardLimit", required=false) String cardLimit) throws WexException {
+		CallResponse response = backupCardService.orderBackupCards(bankNo, compNo, cardLimit);
 
 		logger.debug(response.getMessage());
 		return (GeneralResponse)response;

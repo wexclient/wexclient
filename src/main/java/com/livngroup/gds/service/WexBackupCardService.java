@@ -82,7 +82,7 @@ public class WexBackupCardService extends WexService {
 		return result;
 	}
 
-	public CallResponse orderBackupCards(String bankNo, String compNo, String orderId) throws WexException {
+	public CallResponse orderBackupCards(String bankNo, String compNo, String cardLimit) throws WexException {
 		CallResponse result = new CallResponse();
 		
 		try {
@@ -93,7 +93,6 @@ public class WexBackupCardService extends WexService {
 			
 			reqData.setBankNumber(bankNo);
 			reqData.setCompanyNumber(compNo);
-			reqData.setOrderID(orderId);
 
 			ArrayOfBackupCardOrderBlock orderArray = new ArrayOfBackupCardOrderBlock();
 			BackupCardOrderBlock aOrder = new BackupCardOrderBlock();

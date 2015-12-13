@@ -70,14 +70,14 @@ public class ApiDocConfiguration {
 	}
 
 	private List<ResponseMessage> responseMessages() {
-		ResponseMessage invalidMessage = new ResponseMessageBuilder()
-												.code(400).message("Invalid arguments")
-												.responseModel(new ModelRef("CallResponse")).build();
-		ResponseMessage noreponseMessage = new ResponseMessageBuilder()
-												.code(401).message("WEX not responding")
-												.responseModel(new ModelRef("CallResponse")).build();
+		ResponseMessage notProperRequestMessage = new ResponseMessageBuilder()
+												.code(400).message("Not proper request")
+												.responseModel(new ModelRef("ErrorResponse")).build();
+		ResponseMessage notAuthorisedRequestMessage = new ResponseMessageBuilder()
+												.code(401).message("Not authorised request")
+												.responseModel(new ModelRef("ErrorResponse")).build();
 		
-		return newArrayList(noreponseMessage, invalidMessage);
+		return newArrayList(notAuthorisedRequestMessage, notProperRequestMessage);
 	}
 	
 	private ApiKey apiKey() {

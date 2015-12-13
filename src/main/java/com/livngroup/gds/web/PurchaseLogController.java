@@ -1,16 +1,22 @@
 package com.livngroup.gds.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponse;
 import com.livngroup.gds.exception.WexException;
 import com.livngroup.gds.response.CallResponse;
+import com.livngroup.gds.response.ErrorResponse;
 import com.livngroup.gds.response.GeneralResponse;
 import com.livngroup.gds.service.WexPurchaseLogService;
+import com.livngroup.gds.util.Validator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
@@ -55,14 +61,24 @@ public class PurchaseLogController extends WexController {
 		return (GeneralResponse)response;
 	}
 	
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=QueryPurchaseLogsResponse.class), 
+			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/queryLog", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody GeneralResponse queryPurchaseLog(@RequestParam String bankNo, 
+	public @ResponseBody ResponseEntity<?> queryPurchaseLog(@RequestParam String bankNo, 
 															@RequestParam String compNo, 
 															@RequestParam String uniqueId) throws WexException {
-		CallResponse response = wexService.queryPurchaseLog(bankNo, compNo, uniqueId);
+		ResponseEntity<?> response;
+		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
+			CallResponse result = wexService.queryPurchaseLog(bankNo, compNo, uniqueId);
+			response = new ResponseEntity<>(result.getResult(), result.getStatus());
+		} else {
+			ErrorResponse warnRes = new ErrorResponse(false, "One of input values should be a number. Please check again the value of input parameter(s).");
+//			response = new ResponseEntity<>(warnRes, GdsHttpStatus.NOT_NUMBER_VALUE);
+			response = new ResponseEntity<>(warnRes, HttpStatus.NOT_ACCEPTABLE);
+		}
+//		ResponseStatus responseStatus = new ResponseStatus("400", "Bad Request. " + ex);
 		
-		logger.debug(response.getMessage());
-		return (GeneralResponse)response;
+		return response;
 	}
 
 }

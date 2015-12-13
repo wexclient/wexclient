@@ -6,6 +6,8 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.ArrayOfPaymentScheduleItem;
@@ -23,6 +25,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseL
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponseE;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PaymentScheduleItem;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PaymentTypeEnum;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogs;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponse;
@@ -35,6 +38,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.User;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.VendorInfo;
 import com.livngroup.gds.exception.WexException;
 import com.livngroup.gds.response.CallResponse;
+import com.livngroup.gds.response.ErrorResponse;
 
 @Service
 public class WexPurchaseLogService extends WexService {
@@ -148,10 +152,10 @@ public class WexPurchaseLogService extends WexService {
 	 * QueryPurchaseLog
 	 */
 	public CallResponse queryPurchaseLog(String bankNo, String compNo, String status) throws WexException {
-		CallResponse result = new CallResponse();
+		CallResponse response = new CallResponse();
 		
 		try {
-			QueryPurchaseLogsResponse response;
+			QueryPurchaseLogsResponse result;
 			QueryPurchaseLogsResponseE resEncap;
 			
 			QueryPurchaseLogs reqObj = new QueryPurchaseLogs();
@@ -166,10 +170,24 @@ public class WexPurchaseLogService extends WexService {
 			
 			resEncap = purchaseLogServiceStub.queryPurchaseLogs(reqObj);
 			if(resEncap != null) {
-				response = resEncap.getQueryPurchaseLogsResult();
-				result.setResult((Object)response);
-				result.setOk(true);
-				result.setMessage("Success");
+				result = resEncap.getQueryPurchaseLogsResult();
+				
+				if(result != null) {
+					
+					logger.debug(result.getDescription());
+					PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
+//					if(resultCode.getValue().equals(PurchaseLogResponseCodeEnum._Success)) {
+//						resultCode.getValue();
+//						re
+//					} else {
+//						ErrorResponse errorResp = new ErrorResponse(false, "The response of WEX server is failed. Please have a look at logs.");
+//						return = new ResponseEntity<>(errorResp, HttpStatus.FAILED_DEPENDENCY);
+//					}
+//				} else {
+//					ErrorResponse errorResp = new ErrorResponse(false, "WEX server no respond. Please contact to GDS administrator.");
+//					return = new ResponseEntity<>(errorResp, HttpStatus.REQUEST_TIMEOUT);
+				}
+
 			}
 			
 		} catch(java.rmi.RemoteException e) {
@@ -177,7 +195,7 @@ public class WexPurchaseLogService extends WexService {
 			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
 		}
 		
-		return result;
+		return response;
 	}
 
 	/*

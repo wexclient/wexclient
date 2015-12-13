@@ -4,7 +4,6 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
 <configuration scan="true" scanPeriod="30 seconds">
   
 	<property name="LOG_HOME" value="C:\\temp"/>
-	<property name="RUN_MODE" value="PRODUCT"/>
 	
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
@@ -35,6 +34,7 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
     <logger name="org.hibernate" level="info"/>
     <logger name="com.aocsolutions.encompasswebservices" level="error"/>
     <logger name="com.livngroup.gds" level="info"/>
+    <logger name="com.livngroup.gds.controller" level="debug"/>
 
     <if condition='property("spring.profiles.active").equals("dev")'>
         <then>
