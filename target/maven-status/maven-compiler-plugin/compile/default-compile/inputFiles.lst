@@ -10,6 +10,7 @@ C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\config\ProdCo
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\response\GeneralListResponse.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\domain\WexAccount.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\service\GdsDbService.java
+C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\response\ErrorResponse.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\web\CallPurchaseDemo.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\service\WexPaymentService.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\schedule\PaymentQueue.java
@@ -21,7 +22,9 @@ C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\web\WexContro
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\service\WexBackupCardService.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\repositories\BackupCardRepository.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\web\PurchaseLogController.java
+C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\util\Validator.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\config\DevConfiguration.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\domain\BackupCardInfo.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\web\PaymentInfoController.java
+C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\util\GdsHttpStatus.java
 C:\Users\admin\workspace\wexclient\src\main\java\com\livngroup\gds\response\GeneralResponse.java
