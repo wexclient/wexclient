@@ -1,9 +1,3 @@
 /.apt_generated/
-/.mvn
-/.settings
+/taget/
 /target/
-/.classpath
-/.factorypath
-/.springBeans
-/mvnw
-/mvnw.cmd
