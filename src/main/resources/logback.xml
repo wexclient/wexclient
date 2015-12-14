@@ -29,12 +29,24 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
+    
+    <appender name="FILE-PERFORMANCE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/wexclient-performance.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>wexclient-performance.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+         <encoder>
+            <pattern>%date{yyyy-MM-dd;HH:mm:ss.SSS},%msg%n</pattern>
+        </encoder>
+    </appender>
 
     <logger name="org.springframework" level="info"/>
     <logger name="org.hibernate" level="info"/>
     <logger name="com.aocsolutions.encompasswebservices" level="error"/>
     <logger name="com.livngroup.gds.service" level="debug"/>
     <logger name="com.livngroup.gds.controller" level="debug"/>
+	<logger name="org.mockito" level="all"/>
 
     <if condition='property("spring.profiles.active").equals("dev") || property("spring.profiles.active").equals("")'>
         <then>
@@ -42,14 +54,20 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
                 <appender-ref ref="console"/>
                 <appender-ref ref="FILE"/>
             </root>
+		    <logger name="performance-monitor" level="trace">
+		    	<appender-ref ref="FILE-PERFORMANCE" />
+		    </logger>
         </then>
     </if>
     <if condition='property("spring.profiles.active").equals("prod")'>
-        <else>
+        <then>
             <root level="error">
                 <appender-ref ref="FILE"/>
             </root>
-        </else>
+		    <logger name="performance-monitor" level="off">
+		    	<appender-ref ref="FILE-PERFORMANCE" />
+		    </logger>
+        </then>
     </if>
 
 </configuration>
