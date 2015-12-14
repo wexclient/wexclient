@@ -52,6 +52,9 @@ public class PurchaseLogController extends WexController {
 		return (GeneralResponse)response;
 	}
 	
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=QueryPurchaseLogsResponse.class), 
+			@ApiResponse(code=400, message="WEX Response Reason", response=ErrorResponse.class),
+			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/historyLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse getHistoryLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
