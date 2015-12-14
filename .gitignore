@@ -1,15 +1,2 @@
 /.apt_generated/
-<<<<<<< HEAD
-/taget/
 /target/
-=======
-/.mvn
-/.settings
-/target/
-/.classpath
-/.factorypath
-/.project
-/.springBeans
-/mvnw
-/mvnw.cmd
->>>>>>> refs/remotes/origin/master
