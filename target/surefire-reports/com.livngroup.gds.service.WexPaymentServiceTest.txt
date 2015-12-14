@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.livngroup.gds.service.WexPaymentServiceTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.531 sec <<< FAILURE! - in com.livngroup.gds.service.WexPaymentServiceTest
-testPaymentService(com.livngroup.gds.service.WexPaymentServiceTest)  Time elapsed: 0.526 sec  <<< ERROR!
-java.lang.NullPointerException: null
-	at com.livngroup.gds.service.WexPaymentServiceTest.testPaymentService(WexPaymentServiceTest.java:34)
-
