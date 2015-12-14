@@ -12,7 +12,6 @@ public class GeneralResponse implements Serializable {
 	
 	private Boolean ok;
 	private String message;
-	private HttpStatus status;
 	private Object result;
 	
 	public GeneralResponse() {
@@ -39,14 +38,6 @@ public class GeneralResponse implements Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
-	}
-
-	public HttpStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(HttpStatus status) {
-		this.status = status;
 	}
 
 	public Object getResult() {

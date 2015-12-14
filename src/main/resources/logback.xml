@@ -33,12 +33,12 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
     <logger name="org.springframework" level="info"/>
     <logger name="org.hibernate" level="info"/>
     <logger name="com.aocsolutions.encompasswebservices" level="error"/>
-    <logger name="com.livngroup.gds" level="info"/>
+    <logger name="com.livngroup.gds.service" level="debug"/>
     <logger name="com.livngroup.gds.controller" level="debug"/>
 
     <if condition='property("spring.profiles.active").equals("dev") || property("spring.profiles.active").equals("")'>
         <then>
-            <root level="info">
+            <root level="debug">
                 <appender-ref ref="console"/>
                 <appender-ref ref="FILE"/>
             </root>
