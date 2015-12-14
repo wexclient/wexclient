@@ -55,12 +55,12 @@ public class WexBackupCardService extends WexService {
 			if(response != null) {
 				result.setResult(response);
 				result.setOk(true);
-				result.setMessage("Succes");
+				result.setMessage(CallResponse.SUCCESS);
 			}
 			
-		} catch(java.rmi.RemoteException e) {
-			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+		} catch(java.rmi.RemoteException exc) {
+			logger.error("RmoteException Error Message : " + exc.getMessage());
+			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.", exc);
 		}
 		
 		// dummy code to test persistence
@@ -116,7 +116,7 @@ public class WexBackupCardService extends WexService {
 			if(response != null) {
 				result.setResult(response);
 				result.setOk(true);
-				result.setMessage("Succes");
+				result.setMessage(CallResponse.SUCCESS);
 				BackupCardOrderResponse aResult = response.getOrderBackupCardsResult();
 				
 				gdsDbService.insertBackupCard(aResult);

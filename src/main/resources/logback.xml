@@ -46,6 +46,7 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
     <logger name="com.aocsolutions.encompasswebservices" level="error"/>
     <logger name="com.livngroup.gds" level="info"/>
     <logger name="com.livngroup.gds.controller" level="debug"/>
+	<logger name="org.mockito" level="all"/>
 
     <if condition='property("spring.profiles.active").equals("dev") || property("spring.profiles.active").equals("")'>
         <then>

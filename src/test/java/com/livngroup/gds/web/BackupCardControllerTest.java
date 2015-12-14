@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -32,12 +33,11 @@ import com.livngroup.gds.service.WexBackupCardService;
 public class BackupCardControllerTest {
 	
 	@Autowired 
-	WebApplicationContext webApplicationContext; 
+	private WebApplicationContext webApplicationContext; 
 	
-	@Mock
+	@Mock(name = "wexBackupCardService")
 	private WexBackupCardService backupCardService;
 	
-	@Autowired
 	@InjectMocks
 	private BackupCardController backupCardController;
 	

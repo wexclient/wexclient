@@ -101,7 +101,7 @@ public class WexPurchaseLogService extends WexService {
 				response = resEncap.getGetPurchaseLogHistoryResult();
 				result.setResult((Object)response);
 				result.setOk(true);
-				result.setMessage("Success");
+				result.setMessage(CallResponse.SUCCESS);
 			}
 			
 		} catch(java.rmi.RemoteException e) {
@@ -137,7 +137,7 @@ public class WexPurchaseLogService extends WexService {
 				response = resEncap.getCancelPurchaseLogResult();
 				result.setResult((Object)response);
 				result.setOk(true);
-				result.setMessage("Success");
+				result.setMessage(CallResponse.SUCCESS);
 			}
 			
 		} catch(java.rmi.RemoteException e) {
@@ -247,7 +247,7 @@ public class WexPurchaseLogService extends WexService {
 				response = resEncap.getUpdatePurchaseLogResult();
 				result.setResult((Object)response);
 				result.setOk(true);
-				result.setMessage("Success");
+				result.setMessage(CallResponse.SUCCESS);
 			}
 			
 		} catch(java.rmi.RemoteException e) {

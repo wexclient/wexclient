@@ -13,20 +13,20 @@
    	<context:component-scan base-package="com.livngroup.gds" />
 
 	<beans:bean id="wexUser" class="com.livngroup.gds.domain.WexUser" scope="singleton">
-	    <beans:property name="orgGroupLoginId" value="${org-group-login-id}" />
-	    <beans:property name="username" value="${username}" />
-	    <beans:property name="password" value="${password}" />
+	    <beans:property name="orgGroupLoginId" value="${encompass.org-group-login-id}" />
+	    <beans:property name="username" value="${encompass.username}" />
+	    <beans:property name="password" value="${encompass.password}" />
 	</beans:bean>
 
 	<beans:bean id="wexUserToken" class="com.livngroup.gds.domain.WexUserToken" scope="singleton">
-	    <beans:property name="iPAddress" value="${ipaddress}" />
-	    <beans:property name="orgGroupLoginId" value="${org-group-login-id}" />
-	    <beans:property name="username" value="${username}" />
-	    <beans:property name="password" value="${password}" />
+	    <beans:property name="iPAddress" value="${encompass.ipaddress}" />
+	    <beans:property name="orgGroupLoginId" value="${encompass.org-group-login-id}" />
+	    <beans:property name="username" value="${encompass.username}" />
+	    <beans:property name="password" value="${encompass.password}" />
 	</beans:bean>
 
 	<beans:bean id="purchaseLogServiceStub" class="com.aocsolutions.encompasswebservices.PurchaseLogServiceStub" scope="singleton">
-	    <beans:constructor-arg name="targetEndpoint"  value="${purchase-log-service-target-endpoint}" />
+	    <beans:constructor-arg name="targetEndpoint"  value="${encompass.purchase-log-service-target-endpoint}" />
 	</beans:bean>
 
 </beans:beans>
