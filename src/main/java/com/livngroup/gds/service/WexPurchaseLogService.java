@@ -181,7 +181,7 @@ public class WexPurchaseLogService extends WexService {
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(resultCode.getValue().equals(PurchaseLogResponseCodeEnum.Success)) {
 					response.setOk(true);
-					response.setMessage("Successful Call");
+					response.setMessage("Successful call response");
 					response.setStatus(HttpStatus.OK);
 					response.setResult(result);
 				} else {
