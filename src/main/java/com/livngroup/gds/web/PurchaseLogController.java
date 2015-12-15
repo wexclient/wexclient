@@ -15,6 +15,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CancelPurcha
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLogResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurchaseLogResponse;
 import com.livngroup.gds.exception.WexException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
@@ -96,5 +97,31 @@ public class PurchaseLogController extends WexController {
 		
 		return response;
 	}
+
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=UpdatePurchaseLogResponse.class), 
+			@ApiResponse(code=400, message="WEX Response Reason", response=ErrorResponse.class),
+			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/updateLog", produces="application/json", method=RequestMethod.GET)
+	public @ResponseBody ResponseEntity<?> updatePurchaseLog(@RequestParam String bankNo, 
+															@RequestParam String compNo, 
+															@RequestParam String uniqueId,
+															@RequestParam String creditLimit) throws WexException {
+		ResponseEntity<?> response;
+		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo) && Validator.isNumber(creditLimit)) {
+			CallResponse result = wexService.updatePurchaseLog(bankNo, compNo, uniqueId, creditLimit);
+			if(result.getOk()) {
+				response = new ResponseEntity<>(result.getResult(), result.getStatus());
+			} else {
+				ErrorResponse warnRes = new ErrorResponse(false, result.getMessage());
+				response = new ResponseEntity<>(warnRes, result.getStatus());
+			}
+		} else {
+			ErrorResponse errRes = new ErrorResponse(false, "One(s) of input values should be a number.\nPlease check again the value of input parameter(s).");
+			response = new ResponseEntity<>(errRes, HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		return response;
+	}
+
 
 }

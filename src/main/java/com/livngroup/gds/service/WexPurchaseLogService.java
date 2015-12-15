@@ -258,11 +258,11 @@ public class WexPurchaseLogService extends WexService {
 	 * UpdatesPurchaseLog
 	 */
 	public CallResponse updatePurchaseLog(String bankNo, String compNo, 
-											String uniqueId, BigDecimal amount) throws WexException {
-		CallResponse result = new CallResponse();
+											String uniqueId, String creditLimit) throws WexException {
+		CallResponse response = new CallResponse();
 		
 		try {
-			UpdatePurchaseLogResponse response;
+			UpdatePurchaseLogResponse result;
 			UpdatePurchaseLogResponseE resEncap;
 			
 			UpdatePurchaseLog reqObj = new UpdatePurchaseLog();
@@ -283,13 +283,12 @@ public class WexPurchaseLogService extends WexService {
 			aSchedule.setActiveFromDate(fromCalendar);
 			aSchedule.setActiveToDate(toCalendar);
 			aSchedule.setAmount(new BigDecimal("120"));
-			aSchedule.setCreditLimit(new BigDecimal("1000"));
+			aSchedule.setCreditLimit(new BigDecimal(creditLimit));
 			
 			UpdatePurchaseLogRequest reqData = new UpdatePurchaseLogRequest();
 			reqData.setBankNumber(bankNo);
 			reqData.setCompanyNumber(compNo);
 			reqData.setPurchaseLogUniqueID(uniqueId);
-			reqData.setAmount(amount);
 			reqData.setVendor(aVendor);
 
 			ArrayOfPaymentScheduleItem arraySchedule = new ArrayOfPaymentScheduleItem();
@@ -300,10 +299,26 @@ public class WexPurchaseLogService extends WexService {
 			
 			resEncap = purchaseLogServiceStub.updatePurchaseLog(reqObj);
 			if(resEncap != null) {
-				response = resEncap.getUpdatePurchaseLogResult();
-				result.setResult((Object)response);
-				result.setOk(true);
-				result.setMessage(CallResponse.SUCCESS);
+				result = resEncap.getUpdatePurchaseLogResult();
+				
+				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
+				if(resultCode.getValue().equals(PurchaseLogResponseCodeEnum.Success)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+												+ resultCode.getValue() 
+												+ " [description] - " 
+												+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
 			}
 			
 		} catch(java.rmi.RemoteException e) {
@@ -311,7 +326,7 @@ public class WexPurchaseLogService extends WexService {
 			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
 		}
 		
-		return result;
+		return response;
 	}
 
 }
