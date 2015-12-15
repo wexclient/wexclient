@@ -55,7 +55,7 @@ public class WexBackupCardService extends WexService {
 			if(response != null) {
 				result.setResult(response);
 				result.setOk(true);
-				result.setMessage("Succes");
+				result.setMessage(CallResponse.SUCCESS);
 			}
 			
 		} catch(java.rmi.RemoteException e) {
@@ -116,7 +116,7 @@ public class WexBackupCardService extends WexService {
 			if(response != null) {
 				result.setResult(response);
 				result.setOk(true);
-				result.setMessage("Succes");
+				result.setMessage(CallResponse.SUCCESS);
 				BackupCardOrderResponse aResult = response.getOrderBackupCardsResult();
 				
 				gdsDbService.insertBackupCard(aResult);
