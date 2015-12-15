@@ -1,6 +1,7 @@
 package com.livngroup.gds.service;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.livngroup.gds.LivnDemoApplication;
@@ -27,11 +29,19 @@ public class WexPurchaseLogServiceTest {
     	MockitoAnnotations.initMocks(this);    	
     }
 
-    @Test
-	public void testPaymentService() throws Exception {
-    	try {
-    		CallResponse result = wexPurchaseLogServiceMock.queryPurchaseLog("1234", "1234567", "COMMIT");
-	        assertNull(result.getResult());
-    	} catch(Exception e) {}
+	@Test
+	public void testPurchaseLogService() throws Exception {
+    	when(wexPurchaseLogServiceMock.queryPurchaseLog("1234", "1234567", "COMMIT")).thenReturn(new CallResponse());
+
+    	verify(wexPurchaseLogServiceMock).createPurchaseLog("1234", "1234567", "COMMIT");
+    	assertFalse(wexPurchaseLogServiceMock.queryPurchaseLog("1234", "1234567", "COMMIT").getOk());
+	}
+
+	@Test
+	public void testPurchaseLogServiceWithCredential() throws Exception {
+        when(wexPurchaseLogServiceMock.queryPurchaseLog("1234", "1234567", "COMMIT")).thenReturn(new CallResponse(true, "Success", HttpStatus.OK));
+
+        assertTrue(wexPurchaseLogServiceMock.queryPurchaseLog("1234", "1234567", "COMMIT").getOk());
+        assertEquals(wexPurchaseLogServiceMock.queryPurchaseLog("1234", "1234567", "COMMIT").getStatus(), HttpStatus.OK);
 	}
 }

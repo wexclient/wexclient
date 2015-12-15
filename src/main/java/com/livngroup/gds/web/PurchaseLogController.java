@@ -1,5 +1,7 @@
 package com.livngroup.gds.web;
 
+import javax.xml.ws.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +63,7 @@ public class PurchaseLogController extends WexController {
 	}
 	
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=QueryPurchaseLogsResponse.class), 
+			@ApiResponse(code=400, message="WEX Response Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/queryLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> queryPurchaseLog(@RequestParam String bankNo, 
@@ -69,13 +72,16 @@ public class PurchaseLogController extends WexController {
 		ResponseEntity<?> response;
 		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
 			CallResponse result = wexService.queryPurchaseLog(bankNo, compNo, uniqueId);
-			response = new ResponseEntity<>(result.getResult(), result.getStatus());
+			if(result.getOk()) {
+				response = new ResponseEntity<>(result.getResult(), result.getStatus());
+			} else {
+				ErrorResponse warnRes = new ErrorResponse(false, result.getMessage());
+				response = new ResponseEntity<>(warnRes, result.getStatus());
+			}
 		} else {
-			ErrorResponse warnRes = new ErrorResponse(false, "One of input values should be a number. Please check again the value of input parameter(s).");
-//			response = new ResponseEntity<>(warnRes, GdsHttpStatus.NOT_NUMBER_VALUE);
-			response = new ResponseEntity<>(warnRes, HttpStatus.NOT_ACCEPTABLE);
+			ErrorResponse errRes = new ErrorResponse(false, "One of input values should be a number.\nPlease check again the value of input parameter(s).");
+			response = new ResponseEntity<>(errRes, HttpStatus.NOT_ACCEPTABLE);
 		}
-//		ResponseStatus responseStatus = new ResponseStatus("400", "Bad Request. " + ex);
 		
 		return response;
 	}

@@ -159,40 +159,45 @@ public class WexPurchaseLogService extends WexService {
 			QueryPurchaseLogsResponseE resEncap;
 			
 			QueryPurchaseLogs reqObj = new QueryPurchaseLogs();
+			logger.debug("OrgGroupLoginId : {} ", wexUser.getOrgGroupLoginId());
+			logger.debug("Username : {} ", wexUser.getUsername());
+			logger.debug("Password : {} ", wexUser.getPassword());
 			reqObj.setUser((User)wexUser);
 			
 			QueryPurchaseLogsRequest reqData = new QueryPurchaseLogsRequest();
 			reqData.setBankNumber(bankNo);
 			reqData.setCompanyNumber(compNo);
+			logger.debug("BankNo : {} ", bankNo);
+			logger.debug("CompanyNo : {} ", compNo);
 			reqData.setStatus(status);
 			
 			reqObj.setRequest(reqData);
 			
 			resEncap = purchaseLogServiceStub.queryPurchaseLogs(reqObj);
-			if(resEncap != null) {
+			if(resEncap != null && resEncap.getQueryPurchaseLogsResult() != null) {
 				result = resEncap.getQueryPurchaseLogsResult();
-				
-				if(result != null) {
+				logger.debug(result.getDescription());
 					
-					logger.debug(result.getDescription());
-					PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
-//					if(resultCode.getValue().equals(PurchaseLogResponseCodeEnum._Success)) {
-//						resultCode.getValue();
-//						re
-//					} else {
-//						ErrorResponse errorResp = new ErrorResponse(false, "The response of WEX server is failed. Please have a look at logs.");
-//						return = new ResponseEntity<>(errorResp, HttpStatus.FAILED_DEPENDENCY);
-//					}
-//				} else {
-//					ErrorResponse errorResp = new ErrorResponse(false, "WEX server no respond. Please contact to GDS administrator.");
-//					return = new ResponseEntity<>(errorResp, HttpStatus.REQUEST_TIMEOUT);
+				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
+				if(resultCode.getValue().equals(PurchaseLogResponseCodeEnum.Success)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " + resultCode.getValue() + " [description] - " + result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
 				}
-
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
 			}
 			
 		} catch(java.rmi.RemoteException e) {
 			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+			throw new WexException("WEX has RMI exception.\nIt could be caused by Server side and network.");
 		}
 		
 		return response;
