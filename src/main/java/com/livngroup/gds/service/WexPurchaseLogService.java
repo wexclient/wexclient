@@ -97,13 +97,27 @@ public class WexPurchaseLogService extends WexService {
 			reqObj.setRequest(reqData);
 			
 			resEncap = purchaseLogServiceStub.getPurchaseLogHistory(reqObj);
-			if(resEncap != null) {
+			if(resEncap != null && resEncap.getGetPurchaseLogHistoryResult() != null) {
 				result = resEncap.getGetPurchaseLogHistoryResult();
-				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 
-				response.setResult((Object)result);
-				response.setOk(true);
-				response.setMessage(CallResponse.SUCCESS);
+				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
+				if(resultCode.getValue().equals(PurchaseLogResponseCodeEnum.Success)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
 			}
 			
 		} catch(java.rmi.RemoteException e) {
