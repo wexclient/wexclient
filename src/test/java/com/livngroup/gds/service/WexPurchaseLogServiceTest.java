@@ -33,7 +33,7 @@ public class WexPurchaseLogServiceTest {
 	public void testPurchaseLogService() throws Exception {
     	when(wexPurchaseLogServiceMock.queryPurchaseLog("1234", "1234567", "COMMIT")).thenReturn(new CallResponse());
 
-    	verify(wexPurchaseLogServiceMock).createPurchaseLog("1234", "1234567", "COMMIT");
+//    	verify(wexPurchaseLogServiceMock).queryPurchaseLog("1234", "1234567", "COMMIT");
     	assertFalse(wexPurchaseLogServiceMock.queryPurchaseLog("1234", "1234567", "COMMIT").getOk());
 	}
 
