@@ -30,7 +30,7 @@ import com.livngroup.gds.service.WexBackupCardService;
 public class BackupCardControllerTest {
 	
 	@Mock(name = "wexBackupCardService")
-	private WexBackupCardService backupCardService;
+	private WexBackupCardService backupCardServiceMock;
 	
 	@InjectMocks
 	private BackupCardController backupCardController;
@@ -51,12 +51,12 @@ public class BackupCardControllerTest {
 		CallResponse success = new CallResponse();
 		success.setOk(true);
 		success.setMessage(CallResponse.SUCCESS);
-		when(backupCardService.getBackupCards(BANK_NO, COMP_NO, ORDER_ID)).thenReturn(success);
+		when(backupCardServiceMock.getBackupCards(BANK_NO, COMP_NO, ORDER_ID)).thenReturn(success);
 		
 		CallResponse failure = new CallResponse();
 		failure.setOk(false);
 		failure.setMessage(CallResponse.FAILURE);
-		when(backupCardService.getBackupCards(BANK_NO, COMP_NO, ORDER_ID_NOT_FOUND)).thenReturn(failure);
+		when(backupCardServiceMock.getBackupCards(BANK_NO, COMP_NO, ORDER_ID_NOT_FOUND)).thenReturn(failure);
 	}  
 	
 	@Test
@@ -65,8 +65,8 @@ public class BackupCardControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().json("{'ok': true, 'message': 'Success'}", false));
 		 
-		verify(backupCardService, times(1)).getBackupCards(BANK_NO, COMP_NO, ORDER_ID);
-		verifyNoMoreInteractions(backupCardService);
+		verify(backupCardServiceMock, times(1)).getBackupCards(BANK_NO, COMP_NO, ORDER_ID);
+		verifyNoMoreInteractions(backupCardServiceMock);
 	}
 	
 	@Test
@@ -75,8 +75,8 @@ public class BackupCardControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().json("{'ok': false, 'message': 'Failure'}", false));
 		 
-		verify(backupCardService, times(1)).getBackupCards(BANK_NO, COMP_NO, ORDER_ID_NOT_FOUND);
-		verifyNoMoreInteractions(backupCardService);
+		verify(backupCardServiceMock, times(1)).getBackupCards(BANK_NO, COMP_NO, ORDER_ID_NOT_FOUND);
+		verifyNoMoreInteractions(backupCardServiceMock);
 	}
 	
 }

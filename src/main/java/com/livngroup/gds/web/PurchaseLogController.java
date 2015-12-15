@@ -1,7 +1,5 @@
 package com.livngroup.gds.web;
 
-import javax.xml.ws.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +69,7 @@ public class PurchaseLogController extends WexController {
 															@RequestParam String uniqueId) throws WexException {
 		ResponseEntity<?> response;
 		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
-			CallResponse result = wexService.queryPurchaseLog(bankNo, compNo, uniqueId);
+			CallResponse result = wexService.queryPurchaseLogs(bankNo, compNo, uniqueId);
 			if(result.getOk()) {
 				response = new ResponseEntity<>(result.getResult(), result.getStatus());
 			} else {

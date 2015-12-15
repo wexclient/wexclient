@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.ArrayOfPaymentScheduleItem;
@@ -38,14 +37,11 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.User;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.VendorInfo;
 import com.livngroup.gds.exception.WexException;
 import com.livngroup.gds.response.CallResponse;
-import com.livngroup.gds.response.ErrorResponse;
 
 @Service
 public class WexPurchaseLogService extends WexService {
-	
-	/*
-	 * CreatePurchaseLog
-	 */
+		
+	/** CreatePurchaseLog */
 	public CallResponse createPurchaseLog(String bankNo, String compNo, String amount) throws WexException {
 		CallResponse result = new CallResponse();
 		
@@ -151,7 +147,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * QueryPurchaseLog
 	 */
-	public CallResponse queryPurchaseLog(String bankNo, String compNo, String status) throws WexException {
+	public CallResponse queryPurchaseLogs(String bankNo, String compNo, String status) throws WexException {
 		CallResponse response = new CallResponse();
 		
 		try {
@@ -179,7 +175,7 @@ public class WexPurchaseLogService extends WexService {
 				logger.debug(result.getDescription());
 					
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
-				if(resultCode.getValue().equals(PurchaseLogResponseCodeEnum.Success)) {
+				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
 					response.setOk(true);
 					response.setMessage("Successful call response");
 					response.setStatus(HttpStatus.OK);
