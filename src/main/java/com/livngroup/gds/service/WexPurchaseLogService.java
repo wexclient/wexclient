@@ -47,10 +47,10 @@ public class WexPurchaseLogService extends WexService {
 	 * CreatePurchaseLog
 	 */
 	public CallResponse createPurchaseLog(String bankNo, String compNo, String amount) throws WexException {
-		CallResponse result = new CallResponse();
+		CallResponse response = new CallResponse();
 		
 		try {
-			CreatePurchaseLogResponse response;
+			CreatePurchaseLogResponse result;
 			CreatePurchaseLogResponseE resEncap;
 			
 			CreatePurchaseLog reqObj = new CreatePurchaseLog();
@@ -63,17 +63,19 @@ public class WexPurchaseLogService extends WexService {
 			
 			resEncap = purchaseLogServiceStub.createPurchaseLog(reqObj);
 			if(resEncap != null) {
-				response = resEncap.getCreatePurchaseLogResult();
-				result.setResult((Object)response);
-				result.setOk(true);
-				result.setMessage("Success");
+				result = resEncap.getCreatePurchaseLogResult();
+
+				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
+				response.setResult((Object)response);
+				response.setOk(true);
+				response.setMessage("Success");
 			}
 		} catch(java.rmi.RemoteException e) {
 			logger.error("RmoteException Error Message : " + e.getMessage());
 			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
 		}
 		
-		return result;
+		return response;
 	}
 	
 	/*
