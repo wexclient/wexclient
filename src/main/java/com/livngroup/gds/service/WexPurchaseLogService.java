@@ -199,7 +199,10 @@ public class WexPurchaseLogService extends WexService {
 					response.setResult(result);
 				} else {
 					response.setOk(false);
-					response.setMessage("WEX : [code] - " + resultCode.getValue() + " [description] - " + result.getDescription());
+					response.setMessage("WEX : [code] - " 
+												+ resultCode.getValue() 
+												+ " [description] - " 
+												+ result.getDescription());
 					response.setStatus(HttpStatus.BAD_REQUEST);
 				}
 			} else {
