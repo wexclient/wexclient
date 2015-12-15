@@ -123,5 +123,4 @@ public class PurchaseLogController extends WexController {
 		return response;
 	}
 
-
 }
