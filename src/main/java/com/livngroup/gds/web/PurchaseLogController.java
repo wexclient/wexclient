@@ -36,7 +36,7 @@ public class PurchaseLogController extends WexController {
 	WexPurchaseLogService wexService;
 	
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=CreatePurchaseLogResponse.class), 
-			@ApiResponse(code=400, message="WEX Response Reason", response=ErrorResponse.class),
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/createLog", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody GeneralResponse createPurchaseLog(@RequestParam String bankNo, 
@@ -49,7 +49,7 @@ public class PurchaseLogController extends WexController {
 	}
 	
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=CancelPurchaseLogResponse.class), 
-			@ApiResponse(code=400, message="WEX Response Reason", response=ErrorResponse.class),
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/cancelLog", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody GeneralResponse cancelPurchaseLog(@RequestParam String bankNo, 
@@ -62,7 +62,7 @@ public class PurchaseLogController extends WexController {
 	}
 	
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetPurchaseLogHistoryResponse.class), 
-			@ApiResponse(code=400, message="WEX Response Reason", response=ErrorResponse.class),
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/historyLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse getHistoryLog(@RequestParam String bankNo, 
@@ -75,7 +75,7 @@ public class PurchaseLogController extends WexController {
 	}
 	
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=QueryPurchaseLogsResponse.class), 
-			@ApiResponse(code=400, message="WEX Response Reason", response=ErrorResponse.class),
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/queryLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> queryPurchaseLog(@RequestParam String bankNo, 
@@ -99,7 +99,7 @@ public class PurchaseLogController extends WexController {
 	}
 
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=UpdatePurchaseLogResponse.class), 
-			@ApiResponse(code=400, message="WEX Response Reason", response=ErrorResponse.class),
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/updateLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> updatePurchaseLog(@RequestParam String bankNo, 
