@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class CallResponse extends GeneralResponse {
 
-	private static final long serialVersionUID = 1L;
 	private HttpStatus status;
 	
 	public CallResponse() {

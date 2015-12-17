@@ -3,7 +3,6 @@ package com.livngroup.gds.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub;
@@ -11,8 +10,10 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseL
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponseE;
+import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.domain.WexUser;
-import com.livngroup.gds.exception.WexException;
+import com.livngroup.gds.exception.ExceptionFactory;
+import com.livngroup.gds.exception.WexAppException;
 
 @RestController
 @RequestMapping("/demo")
@@ -26,7 +27,7 @@ public class CallPurchaseDemo extends WexController {
 	protected PurchaseLogServiceStub purchaseLogServiceStub;
 
 	@RequestMapping("/call")
-	public String call() throws WexException {
+	public String call() throws WexAppException {
 		String historyLog = "";
 		
 		try {
@@ -49,7 +50,7 @@ public class CallPurchaseDemo extends WexController {
 			return historyLog;
 			
 		} catch(Exception exc) {
-			throw new WexException(exc);
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
 		}
 	}
 }

@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponse;
-import com.livngroup.gds.exception.WexException;
+import com.livngroup.gds.domain.WexEntity;
+import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
 import com.livngroup.gds.response.GeneralResponse;
@@ -33,17 +34,17 @@ public class PurchaseLogController extends WexController {
 	@RequestMapping(value="/createLog", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody GeneralResponse createPurchaseLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
-														@RequestParam String amount) throws WexException {
+														@RequestParam String amount) throws WexAppException {
 		CallResponse response = wexService.createPurchaseLog(bankNo, compNo, amount);
 
 		logger.debug(response.getMessage());
-		return (GeneralResponse)response;
+		return (GeneralResponse) response;
 	}
 	
 	@RequestMapping(value="/cancelLog", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody GeneralResponse cancelPurchaseLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
-														@RequestParam String uniqueId) throws WexException {
+														@RequestParam String uniqueId) throws WexAppException {
 		CallResponse response = wexService.cancelPurchaseLog(bankNo, compNo, uniqueId);
 
 		logger.debug(response.getMessage());
@@ -53,7 +54,7 @@ public class PurchaseLogController extends WexController {
 	@RequestMapping(value="/historyLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse getHistoryLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
-														@RequestParam String uniqueId) throws WexException {
+														@RequestParam String uniqueId) throws WexAppException {
 		CallResponse response = wexService.getPurchaseLogHistory(bankNo, compNo, uniqueId);
 
 		logger.debug(response.getMessage());
@@ -64,21 +65,35 @@ public class PurchaseLogController extends WexController {
 			@ApiResponse(code=400, message="WEX Response Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/queryLog", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<?> queryPurchaseLog(@RequestParam String bankNo, 
+	public @ResponseBody ResponseEntity<Object> queryPurchaseLog(@RequestParam String bankNo, 
 															@RequestParam String compNo, 
-															@RequestParam String uniqueId) throws WexException {
-		ResponseEntity<?> response;
+															@RequestParam String uniqueId) throws WexAppException {
+		ResponseEntity<Object> response;
 		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
 			CallResponse result = wexService.queryPurchaseLogs(bankNo, compNo, uniqueId);
 			if(result.getOk()) {
-				response = new ResponseEntity<>(result.getResult(), result.getStatus());
+				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 			} else {
-				ErrorResponse warnRes = new ErrorResponse(false, result.getMessage());
-				response = new ResponseEntity<>(warnRes, result.getStatus());
+				ErrorResponse warnRes = new ErrorResponse(
+						result.getStatus(), 
+						result.getStatus().toString(),
+						WexEntity.PURCHASE_LOG,
+						result.getMessage(), 
+						ErrorResponse.URL_DEFAULT, 
+						null, 
+						result.getResult());
+				response = new ResponseEntity<Object>(warnRes, result.getStatus());
 			}
 		} else {
-			ErrorResponse errRes = new ErrorResponse(false, "One of input values should be a number.\nPlease check again the value of input parameter(s).");
-			response = new ResponseEntity<>(errRes, HttpStatus.NOT_ACCEPTABLE);
+			ErrorResponse errRes = new ErrorResponse(
+					HttpStatus.NOT_ACCEPTABLE, 
+					HttpStatus.NOT_ACCEPTABLE.toString(),
+					WexEntity.PURCHASE_LOG,
+					"One of input values should be a number.\nPlease check again the value of input parameter(s).", 
+					ErrorResponse.URL_DEFAULT, 
+					null, 
+					null);
+			response = new ResponseEntity<Object>(errRes, HttpStatus.NOT_ACCEPTABLE);
 		}
 		
 		return response;

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.livngroup.gds.exception.WexException;
+import com.livngroup.gds.exception.WexAppException;
 
 @Component
 public class PaymentQueue {
@@ -15,7 +15,7 @@ public class PaymentQueue {
 	private static Logger logger = LoggerFactory.getLogger(PaymentQueue.class); 
 	
 	@Scheduled(cron="${payment-queue-cron-expression}")
-	public void payToSupplier() throws WexException {
+	public void payToSupplier() throws WexAppException {
 		Date now = new Date();
 		
 		// business logic here

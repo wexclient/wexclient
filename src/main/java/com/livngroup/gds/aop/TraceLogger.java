@@ -21,12 +21,17 @@ public class TraceLogger {
 			pointcut="execution(* com.livngroup.gds.service..*(..))",
 			returning="result")
 	public void traceWexApiCall(JoinPoint joinPoint, Object result) {
-		LocalDateTime now = LocalDateTime.now();
-		
-		String formatTimestamp = "[" + now +"] ";
-		CallResponse callResoponse = (CallResponse)result;
-		
-		logger.info("{} {} Call Result : {}", formatTimestamp, joinPoint.getTarget(), callResoponse.getMessage());
+		if (logger.isInfoEnabled()) {
+			LocalDateTime now = LocalDateTime.now();
+			
+			String formatTimestamp = "[" + now +"] ";
+			CallResponse callResoponse = (CallResponse) result;
+			
+			logger.info("{} {} Call Result : {}", 
+					formatTimestamp, 
+					joinPoint.getTarget(), 
+					callResoponse == null ? "EMPTY" : callResoponse.getMessage());
+		}
 	}
 
 }

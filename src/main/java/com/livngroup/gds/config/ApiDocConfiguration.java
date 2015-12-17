@@ -1,9 +1,9 @@
 package com.livngroup.gds.config;
 
+import static com.google.common.base.Predicates.or;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.base.Predicates.*;
+import static springfox.documentation.builders.PathSelectors.regex;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
-import static springfox.documentation.builders.PathSelectors.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,8 +19,6 @@ import org.springframework.web.context.request.async.DeferredResult;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.base.Predicate;
 
-import io.swagger.models.RefModel;
-import io.swagger.models.Response;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;

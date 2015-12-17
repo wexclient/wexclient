@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.livngroup.gds.exception.WexException;
+import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.GeneralResponse;
 import com.livngroup.gds.service.WexPaymentService;
@@ -25,7 +25,7 @@ public class PaymentInfoController extends WexController {
 	@RequestMapping(value="/getSchedule", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse getSchedule(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
-												@RequestParam String uniqueId) throws WexException {
+												@RequestParam String uniqueId) throws WexAppException {
 		
 		CallResponse response = paymentService.getPaymentSchedule(bankNo, compNo, uniqueId);		
 		
@@ -36,7 +36,7 @@ public class PaymentInfoController extends WexController {
 	@RequestMapping(value="/getInfoUrl", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse getInformationUrl(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
-												@RequestParam String uniqueId) throws WexException {
+												@RequestParam String uniqueId) throws WexAppException {
 		
 		CallResponse response = paymentService.getPaymentInformationUrl(bankNo, compNo, uniqueId);		
 		

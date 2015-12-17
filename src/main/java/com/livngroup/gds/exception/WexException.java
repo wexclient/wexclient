@@ -1,32 +1,14 @@
 package com.livngroup.gds.exception;
 
-public class WexException extends Exception {
+import com.livngroup.gds.response.ErrorResponse;
 
-	private static final long serialVersionUID = 1L;
+public interface WexException {
 
-	public WexException() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public WexException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
-	}
-
-	public WexException(String message, Throwable cause) {
-		super(message, cause);
-		// TODO Auto-generated constructor stub
-	}
-
-	public WexException(String message) {
-		super(message);
-		// TODO Auto-generated constructor stub
-	}
-
-	public WexException(Throwable cause) {
-		super(cause);
-		// TODO Auto-generated constructor stub
-	}
-
+	public String MESSAGE_DEFAULT = "Default error";
+	
+	public String MESSAGE_REMOTE_CALL_ERROR = "WEX has RMI exception. It could be caused by Server side and network";
+	public String MESSAGE_INVALID_CREDENTIALS = "Invalid credentials";
+	
+ 	public ErrorResponse getErrorResponse();
+	
 }

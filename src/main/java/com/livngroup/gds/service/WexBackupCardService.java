@@ -1,6 +1,7 @@
 package com.livngroup.gds.service;
 
 import java.math.BigDecimal;
+import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
@@ -21,7 +22,9 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCar
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.OrderBackupCards;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.OrderBackupCardsResponse;
 import com.livngroup.gds.domain.BackupCard;
-import com.livngroup.gds.exception.WexException;
+import com.livngroup.gds.domain.WexEntity;
+import com.livngroup.gds.exception.ExceptionFactory;
+import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.repositories.BackupCardRepository;
 import com.livngroup.gds.response.CallResponse;
 
@@ -36,7 +39,7 @@ public class WexBackupCardService extends WexService {
 	private BackupCardRepository backupCardRepository;
 	
 	@Transactional()
-	public CallResponse getBackupCards(String bankNo, String compNo, String orderId) throws WexException {
+	public CallResponse getBackupCards(String bankNo, String compNo, String orderId) throws WexAppException {
 		CallResponse result = new CallResponse();
 		
 		try {
@@ -52,15 +55,14 @@ public class WexBackupCardService extends WexService {
 			reqObj.setRequest(reqData);
 			
 			GetBackupCardsResponse response = purchaseLogServiceStub.getBackupCards(reqObj);
-			if(response != null) {
+			if (response != null) {
 				result.setResult(response);
 				result.setOk(true);
 				result.setMessage(CallResponse.SUCCESS);
 			}
 			
-		} catch(java.rmi.RemoteException exc) {
-			logger.error("RmoteException Error Message : " + exc.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.", exc);
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
 		}
 		
 		// dummy code to test persistence
@@ -84,7 +86,7 @@ public class WexBackupCardService extends WexService {
 		return result;
 	}
 
-	public CallResponse orderBackupCards(String bankNo, String compNo, String cardLimit) throws WexException {
+	public CallResponse orderBackupCards(String bankNo, String compNo, String cardLimit) throws WexAppException {
 		CallResponse result = new CallResponse();
 		
 		try {
@@ -122,9 +124,8 @@ public class WexBackupCardService extends WexService {
 				gdsDbService.insertBackupCard(aResult);
 			}
 			
-		} catch(java.rmi.RemoteException e) {
-			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
 		}
 		
 		return result;

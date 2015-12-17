@@ -1,5 +1,7 @@
 package com.livngroup.gds.service;
 
+import java.rmi.RemoteException;
+
 import org.springframework.stereotype.Service;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentInformationUrl;
@@ -10,13 +12,15 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentSc
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentScheduleRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentScheduleResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentScheduleResponseE;
-import com.livngroup.gds.exception.WexException;
+import com.livngroup.gds.domain.WexEntity;
+import com.livngroup.gds.exception.ExceptionFactory;
+import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 
 @Service
 public class WexPaymentService extends WexService {
 
-	public CallResponse getPaymentSchedule(String bankNo, String compNo, String uniqueId) throws WexException {
+	public CallResponse getPaymentSchedule(String bankNo, String compNo, String uniqueId) throws WexAppException {
 		CallResponse result = new CallResponse();
 		
 		try {
@@ -39,15 +43,14 @@ public class WexPaymentService extends WexService {
 				result.setMessage("Success");
 				result.setOk(true);
 			}
-		} catch(java.rmi.RemoteException e) {
-			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
 		}
 		
 		return result;
 	}
 	
-	public CallResponse getPaymentInformationUrl(String bankNo, String compNo, String uniqueId) throws WexException {
+	public CallResponse getPaymentInformationUrl(String bankNo, String compNo, String uniqueId) throws WexAppException {
 		CallResponse result = new CallResponse();
 		
 		try {
@@ -70,9 +73,8 @@ public class WexPaymentService extends WexService {
 				result.setMessage("Success");
 				result.setOk(true);
 			}
-		} catch(java.rmi.RemoteException e) {
-			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
 		}
 		
 		return result;

@@ -1,6 +1,7 @@
 package com.livngroup.gds.service;
 
 import java.math.BigDecimal;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -35,14 +36,16 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurcha
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurchaseLogResponseE;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.User;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.VendorInfo;
-import com.livngroup.gds.exception.WexException;
+import com.livngroup.gds.domain.WexEntity;
+import com.livngroup.gds.exception.ExceptionFactory;
+import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 
 @Service
 public class WexPurchaseLogService extends WexService {
 		
 	/** CreatePurchaseLog */
-	public CallResponse createPurchaseLog(String bankNo, String compNo, String amount) throws WexException {
+	public CallResponse createPurchaseLog(String bankNo, String compNo, String amount) throws WexAppException {
 		CallResponse result = new CallResponse();
 		
 		try {
@@ -64,9 +67,8 @@ public class WexPurchaseLogService extends WexService {
 				result.setOk(true);
 				result.setMessage("Success");
 			}
-		} catch(java.rmi.RemoteException e) {
-			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
 		}
 		
 		return result;
@@ -75,7 +77,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * GetPurchaseLogHistory
 	 */
-	public CallResponse getPurchaseLogHistory(String bankNo, String compNo, String uniqueId) throws WexException {
+	public CallResponse getPurchaseLogHistory(String bankNo, String compNo, String uniqueId) throws WexAppException {
 		CallResponse result = new CallResponse();
 		
 		try {
@@ -100,9 +102,8 @@ public class WexPurchaseLogService extends WexService {
 				result.setMessage(CallResponse.SUCCESS);
 			}
 			
-		} catch(java.rmi.RemoteException e) {
-			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
 		}
 		
 		return result;
@@ -111,7 +112,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * CancelPurchaseLog
 	 */
-	public CallResponse cancelPurchaseLog(String bankNo, String compNo, String uniqueId) throws WexException {
+	public CallResponse cancelPurchaseLog(String bankNo, String compNo, String uniqueId) throws WexAppException {
 		CallResponse result = new CallResponse();
 		
 		try {
@@ -136,9 +137,8 @@ public class WexPurchaseLogService extends WexService {
 				result.setMessage(CallResponse.SUCCESS);
 			}
 			
-		} catch(java.rmi.RemoteException e) {
-			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
 		}
 		
 		return result;
@@ -147,7 +147,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * QueryPurchaseLog
 	 */
-	public CallResponse queryPurchaseLogs(String bankNo, String compNo, String status) throws WexException {
+	public CallResponse queryPurchaseLogs(String bankNo, String compNo, String status) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
@@ -191,9 +191,8 @@ public class WexPurchaseLogService extends WexService {
 				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
 			}
 			
-		} catch(java.rmi.RemoteException e) {
-			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception.\nIt could be caused by Server side and network.");
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
 		}
 		
 		return response;
@@ -203,7 +202,7 @@ public class WexPurchaseLogService extends WexService {
 	 * UpdatesPurchaseLog
 	 */
 	public CallResponse updatePurchaseLog(String bankNo, String compNo, 
-											String uniqueId, BigDecimal amount) throws WexException {
+											String uniqueId, BigDecimal amount) throws WexAppException {
 		CallResponse result = new CallResponse();
 		
 		try {
@@ -251,9 +250,8 @@ public class WexPurchaseLogService extends WexService {
 				result.setMessage(CallResponse.SUCCESS);
 			}
 			
-		} catch(java.rmi.RemoteException e) {
-			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
 		}
 		
 		return result;

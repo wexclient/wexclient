@@ -1,14 +1,6 @@
 package com.livngroup.gds.response;
 
-import org.springframework.http.HttpStatus;
-import java.io.Serializable;
-
-public class GeneralResponse implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	public static final String SUCCESS = "Success";
-	public static final String FAILURE = "Failure";
+public class GeneralResponse implements IWexResponse<Object> {
 	
 	private Boolean ok;
 	private String message;
@@ -24,6 +16,7 @@ public class GeneralResponse implements Serializable {
 		this.message = message;
 	}
 
+	@Override
 	public Boolean getOk() {
 		return ok;
 	}
@@ -32,6 +25,7 @@ public class GeneralResponse implements Serializable {
 		this.ok = ok;
 	}
 
+	@Override
 	public String getMessage() {
 		return message;
 	}
@@ -40,6 +34,7 @@ public class GeneralResponse implements Serializable {
 		this.message = message;
 	}
 
+	@Override
 	public Object getResult() {
 		return result;
 	}
