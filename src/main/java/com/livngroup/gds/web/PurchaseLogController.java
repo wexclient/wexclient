@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CancelPurchaseLogResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLogResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponse;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
@@ -30,7 +33,9 @@ public class PurchaseLogController extends WexController {
 	@Autowired
 	WexPurchaseLogService wexService;
 	
-	@ApiResponses(@ApiResponse(code=402, message="Input amount is not number", response=CallResponse.class))
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=CreatePurchaseLogResponse.class), 
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/createLog", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody GeneralResponse createPurchaseLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
@@ -41,6 +46,9 @@ public class PurchaseLogController extends WexController {
 		return (GeneralResponse) response;
 	}
 	
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=CancelPurchaseLogResponse.class), 
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/cancelLog", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody GeneralResponse cancelPurchaseLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
@@ -51,6 +59,9 @@ public class PurchaseLogController extends WexController {
 		return (GeneralResponse)response;
 	}
 	
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetPurchaseLogHistoryResponse.class), 
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/historyLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse getHistoryLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
@@ -62,7 +73,7 @@ public class PurchaseLogController extends WexController {
 	}
 	
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=QueryPurchaseLogsResponse.class), 
-			@ApiResponse(code=400, message="WEX Response Reason", response=ErrorResponse.class),
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/queryLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Object> queryPurchaseLog(@RequestParam String bankNo, 
@@ -98,5 +109,6 @@ public class PurchaseLogController extends WexController {
 		
 		return response;
 	}
+
 
 }
