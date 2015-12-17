@@ -86,7 +86,7 @@ public class WexPurchaseLogService extends WexService {
 			}
 		} catch(java.rmi.RemoteException e) {
 			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+			throw new WexException("Server has RMI exception. It could be caused by Server side and network.");
 		}
 		
 		return response;
@@ -138,7 +138,7 @@ public class WexPurchaseLogService extends WexService {
 			
 		} catch(java.rmi.RemoteException e) {
 			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+			throw new WexException("Server has RMI exception. It could be caused by Server side and network.");
 		}
 		
 		return response;
@@ -190,7 +190,7 @@ public class WexPurchaseLogService extends WexService {
 			
 		} catch(java.rmi.RemoteException e) {
 			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+			throw new WexException("Server has RMI exception. It could be caused by Server side and network.");
 		}
 		
 		return response;
@@ -248,7 +248,7 @@ public class WexPurchaseLogService extends WexService {
 			
 		} catch(java.rmi.RemoteException e) {
 			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception.\nIt could be caused by Server side and network.");
+			throw new WexException("Server has RMI exception.\nIt could be caused by Server side and network.");
 		}
 		
 		return response;
@@ -323,7 +323,7 @@ public class WexPurchaseLogService extends WexService {
 			
 		} catch(java.rmi.RemoteException e) {
 			logger.error("RmoteException Error Message : " + e.getMessage());
-			throw new WexException("WEX has RMI exception. It could be caused by Server side and network.");
+			throw new WexException("Server has RMI exception. It could be caused by Server side and network.");
 		}
 		
 		return response;
