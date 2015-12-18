@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.GeneralResponse;
@@ -26,11 +27,19 @@ public class BackupCardController extends WexController {
 	@Autowired
 	@Qualifier("wexBackupCardService")
 	private WexBackupCardService wexBackupCardService;
+
+	@Override
+	protected WexEntity getEntytyType() {
+		return WexEntity.BACKUP_CARD;
+	}
 	
 	@RequestMapping(value="/get", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody GeneralResponse getCard(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
 												@RequestParam String orderId) throws WexAppException {
+		assertNumber("bankNo", bankNo);
+		assertNumber("compNo", compNo);
+		
 		CallResponse response = wexBackupCardService.getBackupCards(bankNo, compNo, orderId);		
 		
 		logger.debug(response.getMessage());
@@ -43,6 +52,9 @@ public class BackupCardController extends WexController {
 	public @ResponseBody GeneralResponse orderCard(@RequestParam String bankNo,
 												@RequestParam String compNo,
 												@RequestParam(value="cardLimit", required=false) String cardLimit) throws WexAppException {
+		assertNumber("bankNo", bankNo);
+		assertNumber("compNo", compNo);
+		
 		CallResponse response = wexBackupCardService.orderBackupCards(bankNo, compNo, cardLimit);
 
 		logger.debug(response.getMessage());

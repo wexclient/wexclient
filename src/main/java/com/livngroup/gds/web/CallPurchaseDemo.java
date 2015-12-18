@@ -18,6 +18,7 @@ import com.livngroup.gds.exception.WexAppException;
 @RestController
 @RequestMapping("/demo")
 public class CallPurchaseDemo extends WexController {
+
 	@Autowired
 	@Qualifier("wexUser")
 	protected WexUser wexUser;
@@ -26,6 +27,11 @@ public class CallPurchaseDemo extends WexController {
 	@Qualifier("purchaseLogServiceStub")
 	protected PurchaseLogServiceStub purchaseLogServiceStub;
 
+	@Override
+	protected WexEntity getEntytyType() {
+		return WexEntity.PURCHASE_LOG;
+	}
+	
 	@RequestMapping("/call")
 	public String call() throws WexAppException {
 		String historyLog = "";

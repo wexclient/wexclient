@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.GeneralResponse;
@@ -19,6 +20,11 @@ import io.swagger.annotations.Api;
 @Api(value="/payment")
 public class PaymentInfoController extends WexController {
 
+	@Override
+	protected WexEntity getEntytyType() {
+		return WexEntity.PAYMENT_SCHEDULE;
+	}
+
 	@Autowired
 	private WexPaymentService paymentService;
 	
@@ -26,6 +32,8 @@ public class PaymentInfoController extends WexController {
 	public @ResponseBody GeneralResponse getSchedule(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
 												@RequestParam String uniqueId) throws WexAppException {
+		assertNumber("bankNo", bankNo);
+		assertNumber("compNo", compNo);
 		
 		CallResponse response = paymentService.getPaymentSchedule(bankNo, compNo, uniqueId);		
 		
@@ -37,6 +45,8 @@ public class PaymentInfoController extends WexController {
 	public @ResponseBody GeneralResponse getInformationUrl(@RequestParam String bankNo, 
 												@RequestParam String compNo, 
 												@RequestParam String uniqueId) throws WexAppException {
+		assertNumber("bankNo", bankNo);
+		assertNumber("compNo", compNo);
 		
 		CallResponse response = paymentService.getPaymentInformationUrl(bankNo, compNo, uniqueId);		
 		

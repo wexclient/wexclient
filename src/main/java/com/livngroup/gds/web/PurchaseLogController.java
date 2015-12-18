@@ -32,6 +32,11 @@ public class PurchaseLogController extends WexController {
 	
 	@Autowired
 	WexPurchaseLogService wexService;
+
+	@Override
+	protected WexEntity getEntytyType() {
+		return WexEntity.PURCHASE_LOG;
+	}
 	
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=CreatePurchaseLogResponse.class), 
 			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
@@ -40,6 +45,9 @@ public class PurchaseLogController extends WexController {
 	public @ResponseBody GeneralResponse createPurchaseLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
 														@RequestParam String amount) throws WexAppException {
+		assertNumber("bankNo", bankNo);
+		assertNumber("compNo", compNo);
+		
 		CallResponse response = wexService.createPurchaseLog(bankNo, compNo, amount);
 
 		logger.debug(response.getMessage());
@@ -53,6 +61,9 @@ public class PurchaseLogController extends WexController {
 	public @ResponseBody GeneralResponse cancelPurchaseLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
 														@RequestParam String uniqueId) throws WexAppException {
+		assertNumber("bankNo", bankNo);
+		assertNumber("compNo", compNo);
+
 		CallResponse response = wexService.cancelPurchaseLog(bankNo, compNo, uniqueId);
 
 		logger.debug(response.getMessage());
@@ -66,6 +77,9 @@ public class PurchaseLogController extends WexController {
 	public @ResponseBody GeneralResponse getHistoryLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
 														@RequestParam String uniqueId) throws WexAppException {
+		assertNumber("bankNo", bankNo);
+		assertNumber("compNo", compNo);
+
 		CallResponse response = wexService.getPurchaseLogHistory(bankNo, compNo, uniqueId);
 
 		logger.debug(response.getMessage());
@@ -109,6 +123,5 @@ public class PurchaseLogController extends WexController {
 		
 		return response;
 	}
-
 
 }

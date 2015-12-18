@@ -41,10 +41,11 @@ public class BackupCardControllerTest {
 	
 	private MockMvc mockMvc;
 	
-	private final String BANK_NO = "bankNo";
-	private final String COMP_NO = "compNo";
+	private final String BANK_NO = "100";
+	private final String COMP_NO = "200";
 	private final String ORDER_ID = "orderId";
 	private final String ERROR_CODE = "errorCode";
+	private final String INCORRECT_NUMBER = "@@@@";
 	private final WexEntity WEX_ENTITY = WexEntity.BACKUP_CARD;
 	private final String ERROR_MESSAGE = "errorMessage"; 
 	private final String ERROR_LINK = "errorLink";
@@ -86,6 +87,17 @@ public class BackupCardControllerTest {
 		 
 		verify(backupCardServiceMock, times(1)).getBackupCards(BANK_NO, COMP_NO, ORDER_ID);
 		verifyNoMoreInteractions(backupCardServiceMock);
+	}
+	
+	@Test
+	public void testGetBackupCardsVaidation() throws Exception {
+
+		mockMvc.perform(get(String.format("/backupcard/get?bankNo=%s&compNo=%s&orderId=%s", BANK_NO, INCORRECT_NUMBER, ORDER_ID)))
+		.andExpect(status().isNotAcceptable())
+		.andExpect(content().json("{'ok': false}", false));
+		 
+		verify(backupCardServiceMock, times(0)).getBackupCards(BANK_NO, INCORRECT_NUMBER, ORDER_ID);
+
 	}
 	
 	@Test
