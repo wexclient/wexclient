@@ -1,10 +1,11 @@
 package com.livngroup.gds.web;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.exception.WexException;
@@ -15,24 +16,10 @@ public abstract class WexController {
 	
 	final protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@ExceptionHandler(WexRuntimeException.class)
-	public ErrorResponse handleRuntimeException(HttpServletResponse httpResponse, Exception exception) {
-		return handleException(httpResponse, exception);
-	}
-
-	@ExceptionHandler(WexAppException.class)
-	public ErrorResponse handleCheckedException(HttpServletResponse httpResponse, Exception exception) {
-		return handleException(httpResponse, exception);
-	}
-
-	private ErrorResponse handleException(HttpServletResponse httpResponse, Exception exception) {
+	@ExceptionHandler({WexRuntimeException.class,WexAppException.class})
+	public @ResponseBody ResponseEntity<ErrorResponse> handleRuntimeException(WexException exception) {
 		logger.error("Exception cought: " + exception.getMessage(), exception);
-		httpResponse.setStatus(((WexException) exception).getErrorResponse().getStatus());
-		if (exception instanceof WexException) {
-		    return ((WexException) exception).getErrorResponse();
-		} else {
-			return ErrorResponse.DEAULT;
-		}
+	    return new ResponseEntity<ErrorResponse>(exception.getErrorResponse(), HttpStatus.valueOf(exception.getErrorResponse().getStatus()));
 	}
 
 }

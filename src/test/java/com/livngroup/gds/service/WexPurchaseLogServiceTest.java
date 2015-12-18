@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -62,7 +63,7 @@ public class WexPurchaseLogServiceTest {
 		verifyNoMoreInteractions(purchaseLogServiceStubMock);
     	
 		assertTrue(callResponce.getOk());
-		assertEquals(callResponce.getStatus(), HttpStatus.OK);
+		assertEquals(HttpStatus.OK, callResponce.getStatus());
 		
 	}
 
@@ -77,7 +78,7 @@ public class WexPurchaseLogServiceTest {
 		verifyNoMoreInteractions(purchaseLogServiceStubMock);
     	
 		assertFalse(callResponce.getOk());
-		assertEquals(callResponce.getStatus(), HttpStatus.BAD_REQUEST);
+		assertEquals(HttpStatus.BAD_REQUEST, callResponce.getStatus());
 		
 	}
 
@@ -92,7 +93,23 @@ public class WexPurchaseLogServiceTest {
 		verifyNoMoreInteractions(purchaseLogServiceStubMock);
     	
 		assertFalse(callResponce.getOk());
-		assertEquals(callResponce.getStatus(), HttpStatus.SERVICE_UNAVAILABLE);
+		assertEquals(HttpStatus.SERVICE_UNAVAILABLE, callResponce.getStatus());
+		
+	}
+
+	@Ignore // AOP does not work with Mockito
+	@Test
+	public void testQueryPurchaseLogsServiceInvalidCredentials() throws Exception {
+		
+    	when(purchaseLogServiceStubMock.queryPurchaseLogs(any())).thenReturn(createResponseObject(PurchaseLogResponseCodeEnum.InvalidUserCredentials));
+		
+		CallResponse callResponce = wexPurchaseLogService.queryPurchaseLogs(BANK_NO, COMP_NO, LOG_STATUS);
+		
+    	verify(purchaseLogServiceStubMock, times(1)).queryPurchaseLogs(any());
+		verifyNoMoreInteractions(purchaseLogServiceStubMock);
+    	
+		assertFalse(callResponce.getOk());
+		assertEquals(HttpStatus.UNAUTHORIZED, callResponce.getStatus());
 		
 	}
 

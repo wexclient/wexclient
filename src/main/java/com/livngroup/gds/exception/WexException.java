@@ -10,5 +10,7 @@ public interface WexException {
 	public String MESSAGE_INVALID_CREDENTIALS = "Invalid credentials";
 	
  	public ErrorResponse getErrorResponse();
+ 	
+ 	public String getMessage();
 	
 }

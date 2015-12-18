@@ -8,12 +8,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardResponseCode;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsInternationalResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetDisputedTransactionsResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentScheduleResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponseE;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.OrderBackupCardsResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponseE;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexException;
 import com.livngroup.gds.exception.WexRuntimeException;
@@ -23,9 +26,6 @@ import com.livngroup.gds.response.ErrorResponse;
 @Component
 public class WexPurchaseLogServiceSecurityMonitor {
 
-	private static final String RESPONCE_CODE_INVALID_CREDENTIALS = "InvalidCredentials";
-	private static final String RESPONCE_CODE_INVALID_USER_CREDENTIALS = "InvalidUserCredentials";
-	
 	final protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@AfterReturning(
@@ -33,41 +33,52 @@ public class WexPurchaseLogServiceSecurityMonitor {
 			returning="result")
 	public void invalidLogonCredentialsCheck(JoinPoint joinPoint, Object result) throws WexRuntimeException {
 			
-		String wexResponceCode = "";
 		WexEntity wexEntity = WexEntity.GENERAL; 
+		boolean isInvalidCredentials = false;
 		Object errorResult = null;
 		
 		if (result instanceof GetBackupCardsResponse) {
 			GetBackupCardsResponse wexResponse = (GetBackupCardsResponse) result;
-			wexResponceCode = wexResponse.getGetBackupCardsResult().getResponseCode().getValue();
+			isInvalidCredentials = equalCodes(BackupCardResponseCode.InvalidCredentials, wexResponse.getGetBackupCardsResult().getResponseCode());
 			wexEntity = WexEntity.BACKUP_CARD;
+			errorResult = wexResponse.getGetBackupCardsResult();
 		} else if (result instanceof OrderBackupCardsResponse) {
 			OrderBackupCardsResponse wexResponse = (OrderBackupCardsResponse) result;
-			wexResponceCode = wexResponse.getOrderBackupCardsResult().getResponseCode().getValue();
+			isInvalidCredentials = equalCodes(BackupCardResponseCode.InvalidCredentials, wexResponse.getOrderBackupCardsResult().getResponseCode());
 			wexEntity = WexEntity.BACKUP_CARD;
+			errorResult = wexResponse.getOrderBackupCardsResult();
 		} else if (result instanceof GetPaymentScheduleResponse) {
 			GetPaymentScheduleResponse wexResponse = (GetPaymentScheduleResponse) result;
-			wexResponceCode = wexResponse.getResponseCode().getValue();
+			isInvalidCredentials = equalCodes(PurchaseLogResponseCodeEnum.InvalidUserCredentials, wexResponse.getResponseCode());
 			wexEntity = WexEntity.PAYMENT_SCHEDULE;
+			errorResult = wexResponse.getPaymentSchedule();
 		} else if (result instanceof GetBackupCardsInternationalResponse) {
 			GetBackupCardsInternationalResponse wexResponse = (GetBackupCardsInternationalResponse) result;
-			wexResponceCode = wexResponse.getGetBackupCardsInternationalResult().getResponseCode().getValue();
+			isInvalidCredentials = equalCodes(BackupCardResponseCode.InvalidCredentials, wexResponse.getGetBackupCardsInternationalResult().getResponseCode());
 			wexEntity = WexEntity.BACKUP_CARD_INTERNATIONAL;
+			errorResult = wexResponse.getGetBackupCardsInternationalResult();
 		} else if (result instanceof GetDisputedTransactionsResponse) {
 			GetDisputedTransactionsResponse wexResponse = (GetDisputedTransactionsResponse) result;
-			wexResponceCode = wexResponse.getGetDisputedTransactionsResult().getResponseCode().getValue();
+			isInvalidCredentials = equalCodes(PurchaseLogResponseCodeEnum.InvalidUserCredentials, wexResponse.getGetDisputedTransactionsResult().getResponseCode());
 			wexEntity = WexEntity.DISPUTED_TRANSACTION;
+			errorResult = wexResponse.getGetDisputedTransactionsResult();
 		} else if (result instanceof GetPurchaseLogHistoryResponseE) {
 			GetPurchaseLogHistoryResponseE wexResponse = (GetPurchaseLogHistoryResponseE) result;
-			wexResponceCode = wexResponse.getGetPurchaseLogHistoryResult().getResponseCode().getValue();
+			isInvalidCredentials = equalCodes(PurchaseLogResponseCodeEnum.InvalidUserCredentials, wexResponse.getGetPurchaseLogHistoryResult().getResponseCode());
 			wexEntity = WexEntity.PURCHASE_LOG;
+			errorResult = wexResponse.getGetPurchaseLogHistoryResult();
+		} else if (result instanceof QueryPurchaseLogsResponseE) {
+			QueryPurchaseLogsResponseE wexResponse = (QueryPurchaseLogsResponseE) result;
+			isInvalidCredentials = equalCodes(PurchaseLogResponseCodeEnum.InvalidUserCredentials, wexResponse.getQueryPurchaseLogsResult().getResponseCode());
+			wexEntity = WexEntity.PURCHASE_LOG;
+			errorResult = wexResponse.getQueryPurchaseLogsResult();
 		} else {
-			wexResponceCode = "";
+			isInvalidCredentials = false;
 			wexEntity = WexEntity.GENERAL; 
+			errorResult = null;
 		} 
 		
-		if (RESPONCE_CODE_INVALID_CREDENTIALS.equals(wexResponceCode) 
-				|| RESPONCE_CODE_INVALID_USER_CREDENTIALS.equals(wexResponceCode)) {
+		if (isInvalidCredentials) {
 			throw new WexRuntimeException(new ErrorResponse(
 							HttpStatus.UNAUTHORIZED, 
 							ErrorResponse.INVALID_CREDENTIALS_ERROR_CODE, 
@@ -79,4 +90,8 @@ public class WexPurchaseLogServiceSecurityMonitor {
 		}
 	}
 
+	private <T> boolean equalCodes(T left, T right) {
+		return left.equals(right);
+	}
+	
 }

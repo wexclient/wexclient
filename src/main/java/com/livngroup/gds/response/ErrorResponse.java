@@ -1,5 +1,6 @@
 package com.livngroup.gds.response;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
 
 import com.livngroup.gds.domain.WexEntity;
@@ -66,7 +67,7 @@ public class ErrorResponse implements IWexResponse<Object> {
 		return ok;
 	}
 	public int getStatus() {
-		return status == null ? DEFAULT_HTTP_STATUS.value() : status.value();
+		return ObjectUtils.defaultIfNull(status, DEFAULT_HTTP_STATUS).value();
 	}
 	public String getCode() {
 		return code;
