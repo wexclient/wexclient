@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -14,6 +15,7 @@ import com.livngroup.gds.exception.WexRuntimeException;
 import com.livngroup.gds.response.ErrorResponse;
 import com.livngroup.gds.util.Validator;
 
+//@Secured("ROLE_USER")
 public abstract class WexController {
 	
 	final protected Logger logger = LoggerFactory.getLogger(this.getClass());

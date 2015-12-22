@@ -2,6 +2,7 @@ package com.livngroup.gds.web;
 
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
+//import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.livngroup.gds.LivnDemoApplication;
 
 @Controller 
+//@Secured("ROLE_ADMIN")
 public class ShutdownController {
 
 	@RequestMapping(value = "/admin/shutdown", method = RequestMethod.GET)

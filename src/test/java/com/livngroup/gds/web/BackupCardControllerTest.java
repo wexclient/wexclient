@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -50,7 +51,9 @@ public class BackupCardControllerTest {
 	private final String ERROR_MESSAGE = "errorMessage"; 
 	private final String ERROR_LINK = "errorLink";
 	private final String ERROR_DEV_MESSAGE = "developerMessage";	
-	
+
+    private MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON;
+
 	@Before
 	public void setup() throws Exception {
 		MockitoAnnotations.initMocks(this);
@@ -67,7 +70,9 @@ public class BackupCardControllerTest {
 		
 		mockMvc.perform(get(String.format("/backupcard/get?bankNo=%s&compNo=%s&orderId=%s", BANK_NO, COMP_NO, ORDER_ID)))
 		.andExpect(status().isOk())
-		.andExpect(content().json("{'ok': true, 'message': 'Success'}", false));
+		.andExpect(content().contentType(CONTENT_TYPE))
+		.andExpect(content().json("{'ok': true}", false))
+		.andExpect(content().json("{'message': 'Success'}", false));
 		 
 		verify(backupCardServiceMock, times(1)).getBackupCards(BANK_NO, COMP_NO, ORDER_ID);
 		verifyNoMoreInteractions(backupCardServiceMock);
