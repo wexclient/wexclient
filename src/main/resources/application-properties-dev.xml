@@ -17,18 +17,20 @@
 	
 	<entry key="payment-queue-cron-expression">0 0 * * * *</entry><!-- every hour -->
 
-	<entry key="spring.datasource.driver-class-name">org.h2.Driver</entry>
-	<entry key="spring.datasource.url">jdbc:h2:file:C:/Temp/H2DATA;DB_CLOSE_ON_EXIT=FALSE</entry>
+	<entry key="spring.datasource.driver-class-name">org.hsqldb.jdbc.JDBCDriver</entry>
+	<entry key="spring.datasource.url">jdbc:hsqldb:file:C:/Temp/HSQLDATA;DB_CLOSE_ON_EXIT=FALSE</entry>
 	<entry key="spring.datasource.username">sa</entry>
 	<entry key="spring.datasource.password">sa</entry> 
 	
-	<entry key="spring.jpa.database-platform">org.hibernate.dialect.H2Dialect</entry>
-	<entry key="spring.jpa.properties.hibernate.dialect">org.hibernate.dialect.H2Dialect</entry>
+	<entry key="spring.jpa.database">HSQL</entry>
+	<entry key="spring.jpa.database-platform">HSQL</entry>
+	<entry key="spring.jpa.properties.hibernate.dialect">org.hibernate.dialect.HSQLDialect</entry>
 	<entry key="spring.jpa.hibernate.ddl-auto">create</entry>
-	<entry key="spring.jpa.database">H2</entry>
 	<entry key="spring.jpa.show-sql">true</entry>
-
-	<entry key="spring.h2.console.enabled">false</entry>
-	<entry key="spring.h2.console.path">/h2-console</entry>
+	
+	<entry key="spring.datasource.data">classpath:import-data.dml</entry>
+	<entry key="spring.datasource.initialize">true</entry>
+	
+	<entry key="spring.resources.cache-period">1</entry>
 
 </properties>

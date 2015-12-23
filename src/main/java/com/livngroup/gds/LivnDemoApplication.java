@@ -1,5 +1,6 @@
 package com.livngroup.gds;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,8 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 LivnAccount account = accountRepository.findByUsername(username);
                 if (account != null) {
-                	return new User(account.getUsername(), account.getPassword(), true, true, true, true, AuthorityUtils.createAuthorityList("USER", "ADMIN"));
+                	return new User(account.getUsername(), account.getPassword(), true, true, true, true, 
+                			AuthorityUtils.createAuthorityList(StringUtils.split(account.getRole(),",")));
                 } else {
                 	throw new UsernameNotFoundException("could not find the user '" + username + "'");
                 }

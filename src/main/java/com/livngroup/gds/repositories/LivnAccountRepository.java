@@ -1,19 +1,11 @@
 package com.livngroup.gds.repositories;
 
-import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.livngroup.gds.domain.LivnAccount;
 
-@Service("livnAccountRepository")
-public class LivnAccountRepository /*extends JpaRepository<LivnAccount, String>*/ {
+public interface LivnAccountRepository extends JpaRepository<LivnAccount, String> {
 	 
-	public LivnAccount findByUsername(String username) {
-		
-		LivnAccount livnAccount = new LivnAccount();
-		
-		livnAccount.setUsername(username);
-		livnAccount.setPassword("password");
-		
-		return livnAccount;
-	}
+	public LivnAccount findByUsername(String username);
+
 }

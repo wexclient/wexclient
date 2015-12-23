@@ -1,0 +1,1 @@
+insert into LIVN_ACCOUNT (LIVN_ACCOUNT_ID,USER_NAME,PASSWORD,ROLE) values (UUID(),'user','password','USER,ADMIN');
