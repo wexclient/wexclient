@@ -49,7 +49,7 @@ public class ErrorResponse implements IWexResponse<Object> {
 			URL_DEFAULT, 
 			WexException.MESSAGE_DEFAULT,
 			null
-			);
+	);
 	
 	public ErrorResponse(HttpStatus status, String code, WexEntity wexEntity, String message, String link, String developerMessage, Object result) {
 		super();

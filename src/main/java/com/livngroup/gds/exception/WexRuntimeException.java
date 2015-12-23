@@ -1,6 +1,5 @@
 package com.livngroup.gds.exception;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.livngroup.gds.response.ErrorResponse;
@@ -12,13 +11,13 @@ public class WexRuntimeException extends RuntimeException implements WexExceptio
 	private ErrorResponse errorResponse;
 
 	public WexRuntimeException(Throwable cause, ErrorResponse errorResponse) {
-		super(ObjectUtils.defaultIfNull(errorResponse, ErrorResponse.DEAULT).getMessage(), cause);
-		this.errorResponse = ObjectUtils.defaultIfNull(errorResponse, ErrorResponse.DEAULT);
+		super(WexException.defaultIfNull(errorResponse).getMessage(), cause);
+		this.errorResponse = WexException.defaultIfNull(errorResponse);
 	}
 
 	public WexRuntimeException(ErrorResponse errorResponse) {
-		super(ObjectUtils.defaultIfNull(errorResponse, ErrorResponse.DEAULT).getMessage());
-		this.errorResponse = ObjectUtils.defaultIfNull(errorResponse, ErrorResponse.DEAULT);
+		super(WexException.defaultIfNull(errorResponse).getMessage());
+		this.errorResponse = WexException.defaultIfNull(errorResponse);
 	}
 
 	@Override
