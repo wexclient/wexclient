@@ -6,6 +6,7 @@
 	<entry key="encompass.org-group-login-id">LIVINGRP</entry>
 	<entry key="encompass.username">webservices</entry>
 	<entry key="encompass.password">livin123</entry>
+	<entry key="encompass.client-id">0041244</entry>
 	<entry key="encompass.purchase-log-service-target-endpoint">https://demoservices.encompass-suite.com/services/PurchaseLogService.asmx</entry>
 	
 	<entry key="server.ssl.enabled">false</entry>
@@ -27,6 +28,14 @@
 	<entry key="spring.jpa.properties.hibernate.dialect">org.hibernate.dialect.HSQLDialect</entry>
 	<entry key="spring.jpa.hibernate.ddl-auto">create</entry>
 	<entry key="spring.jpa.show-sql">true</entry>
+	
+	<entry key="management.context-path">/manage</entry>
+	<entry key="management.port">9001</entry>
+	<entry key="management.security.enabled">true</entry>
+	<entry key="management.security.role">SUPERUSER</entry>
+	<entry key="endpoints.enabled">true</entry>
+	<entry key="endpoints.sensitive">true</entry>
+	<entry key="metrics.wex.performance">true</entry>
 	
 	<entry key="spring.datasource.data">classpath:import-data.dml</entry>
 	<entry key="spring.datasource.initialize">true</entry>
