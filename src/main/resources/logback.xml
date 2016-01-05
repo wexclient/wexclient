@@ -41,12 +41,16 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
         </encoder>
     </appender>
 
-    <logger name="org.springframework" level="info"/>
-    <logger name="org.hibernate" level="info"/>
+    <logger name="org.springframework" level="error"/>
+    <logger name="org.hibernate" level="error"/>
     <logger name="com.aocsolutions.encompasswebservices" level="error"/>
+    <logger name="org.apache.axis2" level="error"/>
+    <logger name="org.apache.axiom" level="error"/>
+	<logger name="org.mockito" level="error"/>
+	<logger name="com.mangofactory.swagger" level="error"/>
+	<logger name="springfox.documentation" level="error"/>
     <logger name="com.livngroup.gds.service" level="debug"/>
     <logger name="com.livngroup.gds.controller" level="debug"/>
-	<logger name="org.mockito" level="all"/>
 
     <if condition='property("spring.profiles.active").equals("dev") || property("spring.profiles.active").equals("")'>
         <then>

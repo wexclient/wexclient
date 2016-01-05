@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
@@ -96,7 +97,12 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests().anyRequest().fullyAuthenticated()
+    http.authorizeRequests()
+    	.antMatchers(HttpMethod.GET, "/manage/**").hasRole("SUPERADMIN")
+    	.antMatchers(HttpMethod.POST, "/manage/**").hasRole("SUPERADMIN")
+    	.antMatchers(HttpMethod.POST, "/admin/**").hasRole("SUPERADMIN")
+    	.antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
+    	.anyRequest().hasRole("USER")
         .and().httpBasic()
         .and().csrf().disable();
     }

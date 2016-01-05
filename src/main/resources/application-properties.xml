@@ -8,5 +8,12 @@
 		real configuration is in the com.livngroup.gds.config.ProdConfiguration ...
 	-->
 	<entry key="spring.profiles.active">dev</entry>
+	<entry key="spring.output.ansi.enabled">detect</entry>
+	
+	<entry key="info.build.artifactId">@project.artifactId@</entry>
+	<entry key="info.build.version">@project.version@</entry>
+	<entry key="info.app.name">@project.name@</entry>
+	<entry key="info.app.description">@project.description@</entry>
+	<entry key="info.os">${os.name}</entry>
 	
 </properties>

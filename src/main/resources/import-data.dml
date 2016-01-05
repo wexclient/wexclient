@@ -1,2 +1,4 @@
 -- BCrypt strong hashing function used for password (password value is "password")
-insert into LIVN_ACCOUNT (LIVN_ACCOUNT_ID,USER_NAME,PASSWORD,ROLE) values (UUID(),'user','$2a$04$ZdZWKKIzpUuQVAkX5PiEtua0Kfn9M506TYIEK8Crghd1CfIRrW7eS','USER,ADMIN');
+insert into LIVN_ACCOUNT (LIVN_ACCOUNT_ID,USER_NAME,PASSWORD,ROLE) values (UUID(),'user','$2a$04$ZdZWKKIzpUuQVAkX5PiEtua0Kfn9M506TYIEK8Crghd1CfIRrW7eS','ROLE_USER');
+insert into LIVN_ACCOUNT (LIVN_ACCOUNT_ID,USER_NAME,PASSWORD,ROLE) values (UUID(),'admin','$2a$04$ZdZWKKIzpUuQVAkX5PiEtua0Kfn9M506TYIEK8Crghd1CfIRrW7eS','ROLE_ADMIN');
+insert into LIVN_ACCOUNT (LIVN_ACCOUNT_ID,USER_NAME,PASSWORD,ROLE) values (UUID(),'superadmin','$2a$04$ZdZWKKIzpUuQVAkX5PiEtua0Kfn9M506TYIEK8Crghd1CfIRrW7eS','ROLE_SUPERADMIN');

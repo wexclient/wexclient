@@ -32,9 +32,12 @@
 	<entry key="management.context-path">/manage</entry>
 	<entry key="management.port">9001</entry>
 	<entry key="management.security.enabled">true</entry>
-	<entry key="management.security.role">SUPERUSER</entry>
+	<entry key="security.user.name">admin</entry>
+    <entry key="security.user.password">secret</entry>
 	<entry key="endpoints.enabled">true</entry>
 	<entry key="endpoints.sensitive">true</entry>
+	<entry key="endpoints.shutdown.enabled">true</entry>
+	<entry key="endpoints.shutdown.sensitive">true</entry>
 	<entry key="metrics.wex.performance">true</entry>
 	
 	<entry key="spring.datasource.data">classpath:import-data.dml</entry>
