@@ -1,27 +1,27 @@
 
-${AnsiColor.RED}              .-+syyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyo           ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}          ` `-//yyyyyys/:::/oyyyyyy+/:::/yyyyyyyys+/--....-/+syyy+::::::oyyyyyyyyyyy+::::::oyyo          ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}       `.:+s:    `syyyyys     /yyyyyy-    `yyyyys/.            `./sy/`    `:yyyyyyyyo.     .oyyyy+`      ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}     ./syyyy:    `syyyyys     /yyyyyy-    `yyyy:`      ``.``      `:ss.     .oyyyyy:`     :syyyyyy+`     ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}   `/yyyyyyy:    `syyyyys     /yyyyyy-    `yys.     -+syyyyy/       .sy/`     :syo.     .oyyyyyyyyy+     ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}   /yyyyyyyy:    `syyyyys     /yyyyyy-    `ys.    .oyyyyyys-        `:yys-     `-     `/yyyyyyyyyyyy/    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}   syyyyyyyy:    `syyyyys     /yyyyyy-    `y/    `syyyyyy+`     `-/oyyyyyy+`         -syyyyyyyyyyyyyy/   ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}   syyyyyyyy:    `syyyyys     /yyyyyy-    `y-    :yyyyys-   `:/syyyyyyyyyyys-      `/yyyyyyyyyyyyyyyyy-  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}   /yyyyyyyy:    `syyyyys     /yyyyyy-    `y-    -yyyy/`.:+syyyyyyyyyyyyyyy+`       .syyyyyyyyyyyyyyyys  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}   `+yyyyyyy:    `syyyyys     /yyyyyy-    `y+     oyy+osyyyyyyyys+/::+yyys-          `/yyyyyyyyyyyyyyys  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}     +yyyyyy+     +yyyyy/     -yyyyys.    -yy:  `/sosyyyyyyyyys/`    -yy/`    `:o.     .oyyyyyyyyyyyyy:  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}     `+yyyyyy-     -/+/- .     ./++:`    `oyyy/`--` `-/+osoo/-`     :yo.     .oyyy/`    `:syyyyyyyyyy:   ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}      `oyyyyyy-        `/y+`            .oyyyyyo-`                -os:`    `/yyyyyys-     `+yyyyyys/`    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}       `oyyyyyyo:`    -syyys/.       `-+yyyyyyyyys/-`         `./syo.     -syyyyyyyyy+`     :ss+:.       ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}        `oyyyyyyyyso++yyyyyyyys+///+oyyyyyyyyyyyyyyyys++///++syyyys//////+yyyyyyyyyyyys///-` `           ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}         `syyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyo/-`               ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}                 .-+syyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyo           ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}             ` `-//yyyyyys/:::/oyyyyyy+/:::/yyyyyyyys+/--....-/+syyy+::::::oyyyyyyyyyyy+::::::oyyo          ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}          `.:+s:    `syyyyys     /yyyyyy-    `yyyyys/.            `./sy/`    `:yyyyyyyyo.     .oyyyy+`      ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}        ./syyyy:    `syyyyys     /yyyyyy-    `yyyy:`      ``.``      `:ss.     .oyyyyy:`     :syyyyyy+`     ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}      `/yyyyyyy:    `syyyyys     /yyyyyy-    `yys.     -+syyyyy/       .sy/`     :syo.     .oyyyyyyyyy+     ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}      /yyyyyyyy:    `syyyyys     /yyyyyy-    `ys.    .oyyyyyys-        `:yys-     `-     `/yyyyyyyyyyyy/    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}      syyyyyyyy:    `syyyyys     /yyyyyy-    `y/    `syyyyyy+`     `-/oyyyyyy+`         -syyyyyyyyyyyyyy/   ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}      syyyyyyyy:    `syyyyys     /yyyyyy-    `y-    :yyyyys-   `:/syyyyyyyyyyys-      `/yyyyyyyyyyyyyyyyy-  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}      /yyyyyyyy:    `syyyyys     /yyyyyy-    `y-    -yyyy/`.:+syyyyyyyyyyyyyyy+`       .syyyyyyyyyyyyyyyys  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}      `+yyyyyyy:    `syyyyys     /yyyyyy-    `y+     oyy+osyyyyyyyys+/::+yyys-          `/yyyyyyyyyyyyyyys  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}        +yyyyyy+     +yyyyy/     -yyyyys.    -yy:  `/sosyyyyyyyyys/`    -yy/`    `:o.     .oyyyyyyyyyyyyy:  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}        `+yyyyyy-     -/+/- .     ./++:`    `oyyy/`--` `-/+osoo/-`     :yo.     .oyyy/`    `:syyyyyyyyyy:   ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}         `oyyyyyy-        `/y+`            .oyyyyyo-`                -os:`    `/yyyyyys-     `+yyyyyys/`    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}          `oyyyyyyo:`    -syyys/.       `-+yyyyyyyyys/-`         `./syo.     -syyyyyyyyy+`     :ss+:.       ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}           `oyyyyyyyyso++yyyyyyyys+///+oyyyyyyyyyyyyyyyys++///++syyyys//////+yyyyyyyyyyyys///-` `           ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}            `syyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyo/-`               ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
 
-${AnsiColor.RED}  oooooo   oooooo     oooo oooooooooooo ooooooo  ooooo        .oooooo.   oooo   o8o                            .    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}   `888.    `888.     .8'  `888'     `8  `8888    d8'        d8P'  `Y8b  `888   `"'                          .o8    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}    `888.   .8888.   .8'    888            Y888..8P         888           888  oooo   .ooooo.  ooo. .oo.   .o888oo  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}     `888  .8'`888. .8'     888oooo8        `8888'          888           888  `888  d88' `88b `888P"Y88b    888    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}      `888.8'  `888.8'      888    "       .8PY888.         888           888   888  888ooo888  888   888    888    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}       `888'    `888'       888       o   d8'  `888b        `88b    ooo   888   888  888    .o  888   888    888 .  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
-${AnsiColor.RED}        `8'      `8'       o888ooooood8 o888o  o88888o       `Y8bood8P'  o888o o888o `Y8bod8P' o888o o888o   "888"  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}  oooooo   oooooo     oooo oooooooooooo ooooooo  ooooo        .oooooo.   oooo   o8o                            .    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}   `888.    `888.     .8'  `888'     `8  `8888    d8'        d8P'  `Y8b  `888   `"'                          .o8    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}    `888.   .8888.   .8'    888            Y888..8P         888           888  oooo   .ooooo.  ooo. .oo.   .o888oo  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}     `888  .8'`888. .8'     888oooo8        `8888'          888           888  `888  d88' `88b `888P"Y88b    888    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}      `888.8'  `888.8'      888    "       .8PY888.         888           888   888  888ooo888  888   888    888    ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}       `888'    `888'       888       o   d8'  `888b        `88b    ooo   888   888  888    .o  888   888    888 .  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
+${AnsiColor.BRIGHT_RED}        `8'      `8'       o888ooooood8 o888o  o88888o       `Y8bood8P'  o888o o888o `Y8bod8P' o888o o888o   "888"  ${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}
 
-${application.title} (${application.formatted-version}) :: Powered by ${AnsiColor.GREEN}Spring Boot${AnsiColor.DEFAULT} ${spring-boot.formatted-version}
+${application.title} (${application.formatted-version}) :: Powered by ${AnsiColor.GREEN}Spring Boot${AnsiColor.DEFAULT}${spring-boot.formatted-version}
