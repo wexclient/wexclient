@@ -10,36 +10,56 @@
 	<entry key="encompass.purchase-log-service-target-endpoint">https://demoservices.encompass-suite.com/services/PurchaseLogService.asmx</entry>
 	
 	<entry key="server.ssl.enabled">false</entry>
-	<entry key="server.port">8080</entry>
-	<!--entry key="server.port">8443</entry-->
+	<!--entry key="server.port">8080</entry-->
+	<entry key="server.port">8443</entry>
 	<entry key="server.ssl.key-store">classpath:wex.client.keystore</entry>
 	<entry key="server.ssl.key-store-password">password</entry>
 	<entry key="server.ssl.key-password">password</entry>
 	
-	<entry key="payment-queue-cron-expression">0 0 * * * *</entry><!-- every hour -->
+	<entry key="payment-queue.cron-expression">0 0 * * * *</entry><!-- every hour -->
+	<entry key="payment-queue.send-email">true</entry>
+	<entry key="payment-queue.email-to">wexclientlivn@gmail.com</entry>
+
+	<entry key="on-app-event.send-email">true</entry>
+	<entry key="on-app-event.email-to">wexclientlivn@gmail.com</entry>
 
 	<entry key="spring.datasource.driver-class-name">org.hsqldb.jdbc.JDBCDriver</entry>
 	<entry key="spring.datasource.url">jdbc:hsqldb:file:C:/Temp/HSQLDATA;DB_CLOSE_ON_EXIT=FALSE</entry>
 	<entry key="spring.datasource.username">sa</entry>
 	<entry key="spring.datasource.password">sa</entry> 
+	<entry key="spring.datasource.data">classpath:import-data.dml</entry>
+	<entry key="spring.datasource.initialize">true</entry>
 	
 	<entry key="spring.jpa.database">HSQL</entry>
 	<entry key="spring.jpa.database-platform">HSQL</entry>
 	<entry key="spring.jpa.properties.hibernate.dialect">org.hibernate.dialect.HSQLDialect</entry>
 	<entry key="spring.jpa.hibernate.ddl-auto">validate</entry>
-	<entry key="spring.jpa.show-sql">true</entry>
-	
-	<entry key="management.context-path">/manage</entry>
+	<entry key="spring.jpa.show-sql">false</entry>
+		
+	<entry key="spring.jmx.enabled">true</entry>
+	<entry key="spring.application.admin.enabled">false</entry>
+	<entry key="spring.application.admin.jmx-name">org.springframework.boot:type=Admin,name=WexClientAdminBean</entry>
+		
+	<entry key="management.context-path">/management</entry>
 	<entry key="management.port">9001</entry>
 	<entry key="management.security.enabled">true</entry>
-	<entry key="management.security.role">SUPERUSER</entry>
+    <entry key="management.security.role">SUPERADMIN</entry>
+	
 	<entry key="endpoints.enabled">true</entry>
-	<entry key="endpoints.sensitive">true</entry>
-	<entry key="metrics.wex.performance">false</entry>
+	<entry key="endpoints.sensitive">false</entry>
+	<entry key="endpoints.shutdown.enabled">true</entry>
+	<entry key="metrics.wex.performance">true</entry>
+	<entry key="endpoints.health.sensitive">false</entry>
+	<entry key="management.health.db.enabled">true</entry>
+	<entry key="management.health.defaults.enabled">true</entry>
+    <entry key="management.health.diskspace.enabled">true</entry>
 	
-	<entry key="spring.datasource.data">classpath:import-data.dml</entry>
-	<entry key="spring.datasource.initialize">false</entry>
-	
-	<entry key="spring.resources.cache-period">1</entry>
+	<entry key="mail.host">smtp.gmail.com</entry>
+	<entry key="mail.port">587</entry>
+	<entry key="mail.username">wexclientlivn@gmail.com</entry>
+	<entry key="mail.password">wexclientlivn01</entry>
+	<entry key="mail.debug">false</entry>
+	<entry key="mail.from.address">noreply@gmail.com</entry>
+	<entry key="mail.replyTo.address">noreply@gmail.com</entry>
 
 </properties>
