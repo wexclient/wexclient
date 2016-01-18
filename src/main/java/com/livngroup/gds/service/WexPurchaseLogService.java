@@ -65,7 +65,7 @@ public class WexPurchaseLogService extends WexService {
 				result = resEncap.getCreatePurchaseLogResult();
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
-				if(resultCode.equals(PurchaseLogResponseCodeEnum.Success)) {
+				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
 					response.setOk(true);
 					response.setMessage("Successful call response");
 					response.setStatus(HttpStatus.OK);
@@ -115,7 +115,7 @@ public class WexPurchaseLogService extends WexService {
 				result = resEncap.getGetPurchaseLogHistoryResult();
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
-				if(resultCode.equals(PurchaseLogResponseCodeEnum.Success)) {
+				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
 					response.setOk(true);
 					response.setMessage("Successful call response");
 					response.setStatus(HttpStatus.OK);
@@ -166,7 +166,7 @@ public class WexPurchaseLogService extends WexService {
 				result = resEncap.getCancelPurchaseLogResult();
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
-				if(resultCode.equals(PurchaseLogResponseCodeEnum.Success)) {
+				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
 					response.setOk(true);
 					response.setMessage("Successful call response");
 					response.setStatus(HttpStatus.OK);
@@ -213,6 +213,7 @@ public class WexPurchaseLogService extends WexService {
 			reqData.setCompanyNumber(compNo);
 			logger.debug("BankNo : {} ", bankNo);
 			logger.debug("CompanyNo : {} ", compNo);
+			logger.debug("Status : {} ", status);
 			reqData.setStatus(status);
 			
 			reqObj.setRequest(reqData);
@@ -227,7 +228,9 @@ public class WexPurchaseLogService extends WexService {
 					response.setOk(true);
 					response.setMessage("Successful call response");
 					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response.setResult(result.getPurchaseLogUniqueIds().getString());
+
+					logger.debug("result : {} ", result);
 				} else {
 					response.setOk(false);
 					response.setMessage("WEX : [code] - " 
@@ -296,7 +299,7 @@ public class WexPurchaseLogService extends WexService {
 				result = resEncap.getUpdatePurchaseLogResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
-				if(resultCode.equals(PurchaseLogResponseCodeEnum.Success)) {
+				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
 					response.setOk(true);
 					response.setMessage("Successful call response");
 					response.setStatus(HttpStatus.OK);

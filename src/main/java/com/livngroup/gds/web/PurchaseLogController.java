@@ -38,6 +38,9 @@ public class PurchaseLogController extends WexController {
 		return WexEntity.PURCHASE_LOG;
 	}
 	
+	/*
+	 * CreatePurchaseLog
+	 */
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=CreatePurchaseLogResponse.class), 
 			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
@@ -54,6 +57,9 @@ public class PurchaseLogController extends WexController {
 		return (GeneralResponse) response;
 	}
 	
+	/*
+	 * CancelPurchaseLog
+	 */
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=CancelPurchaseLogResponse.class), 
 			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
@@ -70,6 +76,9 @@ public class PurchaseLogController extends WexController {
 		return (GeneralResponse)response;
 	}
 	
+	/*
+	 * GetPurchaseLogHistory
+	 */
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetPurchaseLogHistoryResponse.class), 
 			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
@@ -86,16 +95,19 @@ public class PurchaseLogController extends WexController {
 		return (GeneralResponse)response;
 	}
 	
+	/*
+	 * QueryPurchaseLogs
+	 */
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=QueryPurchaseLogsResponse.class), 
 			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/queryLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Object> queryPurchaseLog(@RequestParam String bankNo, 
 															@RequestParam String compNo, 
-															@RequestParam String uniqueId) throws WexAppException {
+															@RequestParam String status) throws WexAppException {
 		ResponseEntity<Object> response;
 		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
-			CallResponse result = wexService.queryPurchaseLogs(bankNo, compNo, uniqueId);
+			CallResponse result = wexService.queryPurchaseLogs(bankNo, compNo, status);
 			if(result.getOk()) {
 				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 			} else {
