@@ -5,9 +5,9 @@
 	<entry key="encompass.ipaddress">10.10.10.1</entry>
 	<entry key="encompass.org-group-login-id">LIVINGRP</entry>
 	<entry key="encompass.username">webservices</entry>
-	<entry key="encompass.password">livin123</entry>
+	<entry key="encompass.password">livn123</entry>
 	<entry key="encompass.client-id">0041244</entry>
-	<entry key="encompass.purchase-log-service-target-endpoint">https://demoservices.encompass-suite.com/services/PurchaseLogService.asmx</entry>
+	<entry key="encompass.purchase-log-service-target-endpoint">https://demoservices.wrightexpresscorpcard.com/services/purchaselogservice.asmx</entry>
 	
 	<entry key="server.ssl.enabled">false</entry>
 	<entry key="server.port">8080</entry>

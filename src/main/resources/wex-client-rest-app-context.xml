@@ -26,7 +26,7 @@
 	</beans:bean>
 
 	<beans:bean id="purchaseLogServiceStub" name="purchaseLogServiceStub" class="com.aocsolutions.encompasswebservices.PurchaseLogServiceStub" scope="singleton">
-	    <beans:constructor-arg name="targetEndpoint"  value="${encompass.purchase-log-service-target-endpoint}" />
+	    <beans:constructor-arg name="targetEndpoint" value="${encompass.purchase-log-service-target-endpoint}" />
 	</beans:bean>
 
 	<beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
