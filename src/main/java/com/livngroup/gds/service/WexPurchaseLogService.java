@@ -23,18 +23,31 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseL
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponseE;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PLogResponseCode;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PaymentScheduleItem;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PaymentTypeEnum;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLog;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseWithImagePdf;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogs;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponseE;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrievePurchaseLog;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrievePurchaseLogRequest;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrievePurchaseLogResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrievePurchaseLogResponseE;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitPurchaseLog;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitPurchaseLogAndGetImagePdf;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitPurchaseLogAndGetImagePdfResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitPurchaseLogResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurchaseLog;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurchaseLogRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurchaseLogResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurchaseLogResponseE;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.User;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UserToken;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.VendorInfo;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;
@@ -251,7 +264,162 @@ public class WexPurchaseLogService extends WexService {
 		
 		return response;
 	}
+	
+	/*
+	 * RetrievePurchaseLog
+	 */
+	public CallResponse retrievePurchaseLog(String bankNo, String compNo, String uniqueId)  throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			RetrievePurchaseLogResponse result;
+			RetrievePurchaseLogResponseE resEncap;
+			
+			RetrievePurchaseLog reqObj = new RetrievePurchaseLog();
+			reqObj.setUser((User)wexUser);
+			
+			RetrievePurchaseLogRequest reqData = new RetrievePurchaseLogRequest();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setPurchaseLogUniqueID(uniqueId);
+			
+			reqObj.setRequest(reqData);
+			
+			resEncap = purchaseLogServiceStub.retrievePurchaseLog(reqObj);
+			if(resEncap != null && resEncap.getRetrievePurchaseLogResult() != null) {
+				result = resEncap.getRetrievePurchaseLogResult();
 
+				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
+				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+			
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+	
+	/*
+	 * SubmitPurchaseLog
+	 */
+	public CallResponse submitPurchaseLog(String bankNo, String compNo, BigDecimal invAmount)  throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			SubmitPurchaseLogResponse subResp;
+			PurchaseLogResponse result;
+			
+			SubmitPurchaseLog reqObj = new SubmitPurchaseLog();
+			reqObj.setUser((UserToken)wexUserToken);
+			
+			PurchaseLog purchaseLog = new PurchaseLog();
+			purchaseLog.setBankNumber(bankNo);
+			purchaseLog.setCompanyNumber(compNo);
+			purchaseLog.setInvoiceAmount(invAmount);
+			purchaseLog.setBillingCurrency("AUD");
+			
+			reqObj.setPurchaseLog(purchaseLog);
+			
+			subResp = purchaseLogServiceStub.submitPurchaseLog(reqObj);
+			result = subResp.getSubmitPurchaseLogResult();
+			if(result != null && result.getValidationResults() != null) {
+
+				PLogResponseCode resultCode = result.getResponseCode();
+				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+			
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+
+	/*
+	 * SubmitPurchaseLogAndGetImagePdf
+	 */
+	public CallResponse submitPurchaseLogAndGetImagePdf(String bankNo, String compNo, BigDecimal invAmount)  throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			SubmitPurchaseLogAndGetImagePdfResponse subResp;
+			PurchaseLogResponseWithImagePdf result;
+			
+			SubmitPurchaseLogAndGetImagePdf reqObj = new SubmitPurchaseLogAndGetImagePdf();
+			reqObj.setUser((UserToken)wexUserToken);
+			
+			PurchaseLog purchaseLog = new PurchaseLog();
+			purchaseLog.setBankNumber(bankNo);
+			purchaseLog.setCompanyNumber(compNo);
+			purchaseLog.setInvoiceAmount(invAmount);
+			purchaseLog.setBillingCurrency("AUD");
+			
+			reqObj.setPurchaseLog(purchaseLog);
+			
+			subResp = purchaseLogServiceStub.submitPurchaseLogAndGetImagePdf(reqObj);
+			result = subResp.getSubmitPurchaseLogAndGetImagePdfResult();
+			if(result != null && result.getValidationResults() != null) {
+
+				PLogResponseCode resultCode = result.getResponseCode();
+				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+			
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+	
 	/*
 	 * UpdatesPurchaseLog
 	 */
