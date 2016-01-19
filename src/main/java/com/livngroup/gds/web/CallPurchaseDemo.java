@@ -2,7 +2,11 @@ package com.livngroup.gds.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub;
@@ -10,6 +14,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseL
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponseE;
+import com.livngroup.gds.domain.WexAccount;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.domain.WexUser;
 import com.livngroup.gds.exception.ExceptionFactory;
@@ -30,6 +35,18 @@ public class CallPurchaseDemo extends WexController {
 	@Override
 	protected WexEntity getEntytyType() {
 		return WexEntity.PURCHASE_LOG;
+	}
+	
+	@RequestMapping(value="/test", method=RequestMethod.POST)
+	public ResponseEntity<WexAccount> testCall(@RequestBody WexAccount account) {
+		
+		if(account != null) {
+			System.out.println("Bank Number : " + account.getBankNo());
+			System.out.println("Company Number : " + account.getComNo());
+			account.setComNo("9999999999");
+		}
+		
+		return new ResponseEntity<WexAccount>(account, HttpStatus.OK);
 	}
 	
 	@RequestMapping("/call")
