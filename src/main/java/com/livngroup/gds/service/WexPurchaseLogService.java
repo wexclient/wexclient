@@ -249,7 +249,7 @@ public class WexPurchaseLogService extends WexService {
 					response.setOk(true);
 					response.setMessage("Successful call response");
 					response.setStatus(HttpStatus.OK);
-					response.setResult(result.getPurchaseLogUniqueIds().getString());
+					response.setResult(result);
 
 					logger.debug("result : {} ", result);
 				} else {

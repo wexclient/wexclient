@@ -8,7 +8,7 @@ import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
 
 @Service("wexResponseService")
-public class WexResponseService {
+public class WebResponseService {
 
 	ErrorResponse warnRes;
 

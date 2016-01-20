@@ -19,7 +19,7 @@ import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
 import com.livngroup.gds.response.GeneralResponse;
 import com.livngroup.gds.service.WexPurchaseLogService;
-import com.livngroup.gds.service.WexResponseService;
+import com.livngroup.gds.service.WebResponseService;
 import com.livngroup.gds.util.Validator;
 
 import io.swagger.annotations.Api;
@@ -35,7 +35,7 @@ public class PurchaseLogController extends WexController {
 	WexPurchaseLogService wexService;
 
 	@Autowired
-	private WexResponseService responseService;
+	private WebResponseService responseService;
 	
 	@Override
 	protected WexEntity getEntytyType() {

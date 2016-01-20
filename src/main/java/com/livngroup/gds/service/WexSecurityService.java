@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.rmi.RemoteException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardResponseCode;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DeleteAuthorization;
@@ -40,6 +41,7 @@ import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 
+@Service("wexSecurityService")
 public class WexSecurityService extends WexService {
 
 	/*

@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.Calendar;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DisputeTransaction;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DisputeTransactionRequest;
@@ -33,6 +34,7 @@ import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 
+@Service("wexTransactionService")
 public class WexTransactionService extends WexService {
 
 	/*
