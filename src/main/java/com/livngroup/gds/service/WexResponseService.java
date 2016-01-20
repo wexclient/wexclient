@@ -1,11 +1,13 @@
 package com.livngroup.gds.service;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
 
+@Service("wexResponseService")
 public class WexResponseService {
 
 	ErrorResponse warnRes;
