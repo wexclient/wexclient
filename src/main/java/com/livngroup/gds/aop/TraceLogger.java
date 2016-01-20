@@ -18,7 +18,7 @@ public class TraceLogger {
 	final protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@AfterReturning(
-			pointcut="execution(* com.livngroup.gds.service..*(..))",
+			pointcut="execution(* com.livngroup.gds.service..Wex*(..))",
 			returning="result")
 	public void traceWexApiCall(JoinPoint joinPoint, Object result) {
 		if (logger.isInfoEnabled()) {
