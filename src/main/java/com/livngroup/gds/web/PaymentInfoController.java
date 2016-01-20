@@ -12,6 +12,7 @@ import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.GeneralResponse;
 import com.livngroup.gds.service.WexPaymentService;
+import com.livngroup.gds.service.WexResponseService;
 
 import io.swagger.annotations.Api;
 

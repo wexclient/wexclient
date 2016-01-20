@@ -62,6 +62,10 @@ public class ErrorResponse implements IWexResponse<Object> {
 		this.result = result;
 	}
 
+	public ErrorResponse() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public Boolean getOk() {
 		return ok;
@@ -89,7 +93,31 @@ public class ErrorResponse implements IWexResponse<Object> {
 	public Object getResult() {
 		return result;
 	}
-	
+	public void setOk(Boolean ok) {
+		this.ok = ok;
+	}
+	public void setStatus(HttpStatus status) {
+		this.status = status;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public void setWexEntity(WexEntity wexEntity) {
+		this.wexEntity = wexEntity;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
+	public void setDeveloperMessage(String developerMessage) {
+		this.developerMessage = developerMessage;
+	}
+	public void setResult(Object result) {
+		this.result = result;
+	}
+
 	@Override
 	public String toString() {
 		return "ErrorData [ok=" + ok + ", status=" + status + ", code=" + code + ", wexEntity=" + wexEntity + ", message=" + message + "]";

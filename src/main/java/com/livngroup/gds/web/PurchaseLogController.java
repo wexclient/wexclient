@@ -19,6 +19,7 @@ import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
 import com.livngroup.gds.response.GeneralResponse;
 import com.livngroup.gds.service.WexPurchaseLogService;
+import com.livngroup.gds.service.WexResponseService;
 import com.livngroup.gds.util.Validator;
 
 import io.swagger.annotations.Api;
@@ -33,6 +34,9 @@ public class PurchaseLogController extends WexController {
 	@Autowired
 	WexPurchaseLogService wexService;
 
+	@Autowired
+	private WexResponseService responseService;
+	
 	@Override
 	protected WexEntity getEntytyType() {
 		return WexEntity.PURCHASE_LOG;
@@ -45,8 +49,8 @@ public class PurchaseLogController extends WexController {
 			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/createLog", produces="application/json", method=RequestMethod.POST)
-	public @ResponseBody GeneralResponse createPurchaseLog(@RequestParam String bankNo, 
-														@RequestParam String compNo, 
+	public @ResponseBody GeneralResponse createPurchaseLog(@RequestParam(value="bankNo", required=false) String bankNo, 
+														@RequestParam(value="compNo", required=false) String compNo, 
 														@RequestParam String amount) throws WexAppException {
 		assertNumber("bankNo", bankNo);
 		assertNumber("compNo", compNo);
@@ -83,16 +87,25 @@ public class PurchaseLogController extends WexController {
 			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/historyLog", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody GeneralResponse getHistoryLog(@RequestParam String bankNo, 
+	public @ResponseBody ResponseEntity<Object> getHistoryLog(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
 														@RequestParam String uniqueId) throws WexAppException {
-		assertNumber("bankNo", bankNo);
-		assertNumber("compNo", compNo);
+		ResponseEntity<Object> response;		
+		
+		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
+			CallResponse result = wexService.getPurchaseLogHistory(bankNo, compNo, uniqueId);
+			if(result.getOk()) {
+				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
+			} else {
+				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.PURCHASE_LOG);
+				response = new ResponseEntity<Object>(warnRes, result.getStatus());
+			}
+		} else {
+			ErrorResponse errRes = responseService.getErrorResponseDefault("One of input values should be a number.\nPlease check again the value of input parameter(s).");
+			response = new ResponseEntity<Object>(errRes, HttpStatus.NOT_ACCEPTABLE);
+		}
 
-		CallResponse response = wexService.getPurchaseLogHistory(bankNo, compNo, uniqueId);
-
-		logger.debug(response.getMessage());
-		return (GeneralResponse)response;
+		return response;
 	}
 	
 	/*

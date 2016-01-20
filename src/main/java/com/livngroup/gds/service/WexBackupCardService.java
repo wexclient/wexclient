@@ -9,18 +9,38 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.ArrayOfBackupCardOrderBlock;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardInternationalResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardOrderBlock;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardOrderRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardOrderResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardRequest;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardResponseCode;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLog;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLogRequest;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLogResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLogResponseE;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCards;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsInternational;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsInternationalResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsWithoutWaiting;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsWithoutWaitingInternational;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsWithoutWaitingInternationalResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsWithoutWaitingResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPresetBackupCards;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPresetBackupCardsResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPresetBackupCardsWithImagePdf;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPresetBackupCardsWithImagePdfResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.OrderBackupCards;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.OrderBackupCardsResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.User;
 import com.livngroup.gds.domain.BackupCard;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;
@@ -38,13 +58,18 @@ public class WexBackupCardService extends WexService {
 	@Autowired
 	private BackupCardRepository backupCardRepository;
 	
+	/*
+	 * GetBackupCards
+	 */
 	@Transactional()
 	public CallResponse getBackupCards(String bankNo, String compNo, String orderId) throws WexAppException {
-		CallResponse result = new CallResponse();
+		CallResponse response = new CallResponse();
 		
 		try {
-			GetBackupCards reqObj = new GetBackupCards();
+			GetBackupCardsResponse resEncap;
+			BackupCardResponse result;
 			
+			GetBackupCards reqObj = new GetBackupCards();
 			BackupCardRequest reqData = new BackupCardRequest();
 			
 			reqData.setBankNumber(bankNo);
@@ -54,11 +79,28 @@ public class WexBackupCardService extends WexService {
 			reqObj.setUser(wexUserToken);
 			reqObj.setRequest(reqData);
 			
-			GetBackupCardsResponse response = purchaseLogServiceStub.getBackupCards(reqObj);
-			if (response != null) {
-				result.setResult(response);
-				result.setOk(true);
-				result.setMessage(CallResponse.SUCCESS);
+			resEncap = purchaseLogServiceStub.getBackupCards(reqObj);
+			if(resEncap != null && resEncap.getGetBackupCardsResult() != null) {
+				result = resEncap.getGetBackupCardsResult();
+
+				BackupCardResponseCode resultCode = result.getResponseCode();
+				if(BackupCardResponseCode.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
 			}
 			
 		} catch(RemoteException exc) {
@@ -83,20 +125,269 @@ public class WexBackupCardService extends WexService {
         logger.debug("Card list:");
         cardList.forEach(n -> logger.debug(n.getUuid() + ":" + n.getCardNumber()));
 		
-		return result;
+		return response;
 	}
 
-	public CallResponse orderBackupCards(String bankNo, String compNo, String cardLimit) throws WexAppException {
-		CallResponse result = new CallResponse();
+	/* 
+	 * GetBackupCardsInternational 
+	 */
+	public CallResponse getBackupCardsInternational(String bankNo, String compNo, String orderId) throws WexAppException {
+		CallResponse response = new CallResponse();
 		
 		try {
-			OrderBackupCardsResponse response;
-			OrderBackupCards reqObj = new OrderBackupCards();
+			GetBackupCardsInternationalResponse resEncap;
+			BackupCardInternationalResponse result;
 			
-			BackupCardOrderRequest reqData = new BackupCardOrderRequest();
-			
+			BackupCardRequest reqData = new BackupCardRequest();
 			reqData.setBankNumber(bankNo);
 			reqData.setCompanyNumber(compNo);
+			reqData.setOrderID(orderId);
+
+			GetBackupCardsInternational reqObj = new GetBackupCardsInternational();
+			reqObj.setUser(wexUserToken);
+			reqObj.setRequest(reqData);
+			
+			resEncap = purchaseLogServiceStub.getBackupCardsInternational(reqObj);
+			if(resEncap != null && resEncap.getGetBackupCardsInternationalResult() != null) {
+				result = resEncap.getGetBackupCardsInternationalResult();
+
+				BackupCardResponseCode resultCode = result.getResponseCode();
+				if(BackupCardResponseCode.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+
+	/* 
+	 * GetBackupCardsWithoutWating 
+	 */
+	public CallResponse getBackupCardsWithoutWating(String bankNo, String compNo, String orderId) throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			GetBackupCardsWithoutWaitingResponse resEncap;
+			BackupCardResponse result;
+			
+			BackupCardOrderRequest reqData = new BackupCardOrderRequest();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setOrderID(orderId);
+
+			GetBackupCardsWithoutWaiting reqObj = new GetBackupCardsWithoutWaiting();
+			reqObj.setUser(wexUser);
+			reqObj.setRequest(reqData);
+			
+			resEncap = purchaseLogServiceStub.getBackupCardsWithoutWaiting(reqObj);
+			if(resEncap != null && resEncap.getGetBackupCardsWithoutWaitingResult() != null) {
+				result = resEncap.getGetBackupCardsWithoutWaitingResult();
+
+				BackupCardResponseCode resultCode = result.getResponseCode();
+				if(BackupCardResponseCode.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+
+	/* 
+	 * GetBackupCardsWithoutWaitingInternational 
+	 */
+	public CallResponse getBackupCardsWithoutWaitingInternational(
+							String bankNo, String compNo, String orderId) throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			GetBackupCardsWithoutWaitingInternationalResponse resEncap;
+			BackupCardInternationalResponse result;
+			
+			BackupCardOrderRequest reqData = new BackupCardOrderRequest();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setOrderID(orderId);
+
+			GetBackupCardsWithoutWaitingInternational reqObj = new GetBackupCardsWithoutWaitingInternational();
+			reqObj.setUser(wexUser);
+			reqObj.setRequest(reqData);
+			
+			resEncap = purchaseLogServiceStub.getBackupCardsWithoutWaitingInternational(reqObj);
+			if(resEncap != null && resEncap.getGetBackupCardsWithoutWaitingInternationalResult() != null) {
+				result = resEncap.getGetBackupCardsWithoutWaitingInternationalResult();
+
+				BackupCardResponseCode resultCode = result.getResponseCode();
+				if(BackupCardResponseCode.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+
+	/* 
+	 * GetPresetBackupCards 
+	 */
+	public CallResponse getPresetBackupCards(String bankNo, String compNo, String orderId) throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			GetPresetBackupCardsResponse resEncap;
+			BackupCardResponse result;
+			
+			BackupCardOrderRequest reqData = new BackupCardOrderRequest();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setOrderID(orderId);
+
+			GetPresetBackupCards reqObj = new GetPresetBackupCards();
+			reqObj.setUser(wexUserToken);
+			reqObj.setRequest(reqData);
+			
+			resEncap = purchaseLogServiceStub.getPresetBackupCards(reqObj);
+			if(resEncap != null && resEncap.getGetPresetBackupCardsResult() != null) {
+				result = resEncap.getGetPresetBackupCardsResult();
+
+				BackupCardResponseCode resultCode = result.getResponseCode();
+				if(BackupCardResponseCode.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+
+	/* 
+	 * GetPresetBackupCardsWithImagePdf
+	 */
+	public CallResponse getPresetBackupCardsWithImagePdf(String bankNo, String compNo, String orderId) throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			GetPresetBackupCardsWithImagePdfResponse resEncap;
+			BackupCardResponse result;
+			
+			BackupCardOrderRequest reqData = new BackupCardOrderRequest();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setOrderID(orderId);
+
+			GetPresetBackupCardsWithImagePdf reqObj = new GetPresetBackupCardsWithImagePdf();
+			reqObj.setUser(wexUserToken);
+			reqObj.setRequest(reqData);
+			
+			resEncap = purchaseLogServiceStub.getPresetBackupCardsWithImagePdf(reqObj);
+			if(resEncap != null && resEncap.getGetPresetBackupCardsWithImagePdfResult() != null) {
+				result = resEncap.getGetPresetBackupCardsWithImagePdfResult();
+
+				BackupCardResponseCode resultCode = result.getResponseCode();
+				if(BackupCardResponseCode.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+
+	/*
+	 * OrderBackupCards
+	 */
+	public CallResponse orderBackupCards(String bankNo, String compNo, String orderId) throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			OrderBackupCardsResponse resEncap;
+			BackupCardOrderResponse result;
+			
+			BackupCardOrderRequest reqData = new BackupCardOrderRequest();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setOrderID(orderId);
 
 			ArrayOfBackupCardOrderBlock orderArray = new ArrayOfBackupCardOrderBlock();
 			BackupCardOrderBlock aOrder = new BackupCardOrderBlock();
@@ -111,24 +402,38 @@ public class WexBackupCardService extends WexService {
 
 			reqData.setOrderBlocks(orderArray);
 
+			OrderBackupCards reqObj = new OrderBackupCards();
 			reqObj.setUser(wexUserToken);
 			reqObj.setRequest(reqData);
 			
-			response = purchaseLogServiceStub.orderBackupCards(reqObj);
-			if(response != null) {
-				result.setResult(response);
-				result.setOk(true);
-				result.setMessage(CallResponse.SUCCESS);
-				BackupCardOrderResponse aResult = response.getOrderBackupCardsResult();
-				
-				gdsDbService.insertBackupCard(aResult);
+			resEncap = purchaseLogServiceStub.orderBackupCards(reqObj);
+			if(resEncap != null && resEncap.getOrderBackupCardsResult() != null) {
+				result = resEncap.getOrderBackupCardsResult();
+
+				BackupCardResponseCode resultCode = result.getResponseCode();
+				if(BackupCardResponseCode.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
 			}
-			
 		} catch(RemoteException exc) {
-			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
 		}
 		
-		return result;
+		return response;
 	}
 
 }

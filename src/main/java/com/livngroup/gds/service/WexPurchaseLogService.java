@@ -38,10 +38,16 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrievePurc
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrievePurchaseLogRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrievePurchaseLogResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrievePurchaseLogResponseE;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitBackupPurchaseLog;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitBackupPurchaseLogResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitBackupPurchaseLogWithFaxInfo;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitBackupPurchaseLogWithFaxInfoResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitPurchaseLog;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitPurchaseLogAndGetImagePdf;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitPurchaseLogAndGetImagePdfResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitPurchaseLogResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitPurchaseLogWithFaxInfo;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitPurchaseLogWithFaxInfoResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurchaseLog;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurchaseLogRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurchaseLogResponse;
@@ -57,7 +63,9 @@ import com.livngroup.gds.response.CallResponse;
 @Service
 public class WexPurchaseLogService extends WexService {
 		
-	/** CreatePurchaseLog */
+	/* 
+	 * CreatePurchaseLog 
+	 */
 	public CallResponse createPurchaseLog(String bankNo, String compNo, String amount) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
@@ -317,6 +325,111 @@ public class WexPurchaseLogService extends WexService {
 	}
 	
 	/*
+	 * SubmitBackupPurchaseLog
+	 */
+	public CallResponse submitBackupPurchaseLog(String bankNo, String compNo, BigDecimal invAmount)  throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			SubmitBackupPurchaseLogResponse subResp;
+			PurchaseLogResponse result;
+			
+			SubmitBackupPurchaseLog reqObj = new SubmitBackupPurchaseLog();
+			reqObj.setUser((UserToken)wexUserToken);
+			
+			PurchaseLog reqData = new PurchaseLog();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setInvoiceAmount(invAmount);
+			reqData.setBillingCurrency("AUD");
+			
+			reqObj.setPurchaseLog(reqData);
+			
+			subResp = purchaseLogServiceStub.submitBackupPurchaseLog(reqObj);
+			result = subResp.getSubmitBackupPurchaseLogResult();
+			if(result != null && result.getValidationResults() != null) {
+
+				PLogResponseCode resultCode = result.getResponseCode();
+				if(PLogResponseCode.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+			
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+
+	/*
+	 * SubmitBackupPurchaseLogWithFaxInfo
+	 */
+	public CallResponse submitBackupPurchaseLogWithFaxInfo(String bankNo, String compNo, 
+												BigDecimal invAmount, String currency)  throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			SubmitBackupPurchaseLogWithFaxInfoResponse subResp;
+			PurchaseLogResponse result;
+			
+			SubmitBackupPurchaseLogWithFaxInfo reqObj = new SubmitBackupPurchaseLogWithFaxInfo();
+			reqObj.setUser((UserToken)wexUserToken);
+			
+			PurchaseLog reqData = new PurchaseLog();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setInvoiceAmount(invAmount);
+			reqData.setBillingCurrency(currency);
+			
+			reqObj.setPurchaseLog(reqData);
+			
+			subResp = purchaseLogServiceStub.submitBackupPurchaseLogWithFaxInfo(reqObj);
+			result = subResp.getSubmitBackupPurchaseLogWithFaxInfoResult();
+			if(result != null && result.getValidationResults() != null) {
+
+				PLogResponseCode resultCode = result.getResponseCode();
+				if(PLogResponseCode.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+			
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+
+	/*
 	 * SubmitPurchaseLog
 	 */
 	public CallResponse submitPurchaseLog(String bankNo, String compNo, BigDecimal invAmount)  throws WexAppException {
@@ -329,20 +442,20 @@ public class WexPurchaseLogService extends WexService {
 			SubmitPurchaseLog reqObj = new SubmitPurchaseLog();
 			reqObj.setUser((UserToken)wexUserToken);
 			
-			PurchaseLog purchaseLog = new PurchaseLog();
-			purchaseLog.setBankNumber(bankNo);
-			purchaseLog.setCompanyNumber(compNo);
-			purchaseLog.setInvoiceAmount(invAmount);
-			purchaseLog.setBillingCurrency("AUD");
+			PurchaseLog reqData = new PurchaseLog();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setInvoiceAmount(invAmount);
+			reqData.setBillingCurrency("AUD");
 			
-			reqObj.setPurchaseLog(purchaseLog);
+			reqObj.setPurchaseLog(reqData);
 			
 			subResp = purchaseLogServiceStub.submitPurchaseLog(reqObj);
 			result = subResp.getSubmitPurchaseLogResult();
 			if(result != null && result.getValidationResults() != null) {
 
 				PLogResponseCode resultCode = result.getResponseCode();
-				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
+				if(PLogResponseCode.Success.equals(resultCode)) {
 					response.setOk(true);
 					response.setMessage("Successful call response");
 					response.setStatus(HttpStatus.OK);
@@ -381,20 +494,73 @@ public class WexPurchaseLogService extends WexService {
 			SubmitPurchaseLogAndGetImagePdf reqObj = new SubmitPurchaseLogAndGetImagePdf();
 			reqObj.setUser((UserToken)wexUserToken);
 			
-			PurchaseLog purchaseLog = new PurchaseLog();
-			purchaseLog.setBankNumber(bankNo);
-			purchaseLog.setCompanyNumber(compNo);
-			purchaseLog.setInvoiceAmount(invAmount);
-			purchaseLog.setBillingCurrency("AUD");
+			PurchaseLog reqData = new PurchaseLog();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setInvoiceAmount(invAmount);
+			reqData.setBillingCurrency("AUD");
 			
-			reqObj.setPurchaseLog(purchaseLog);
+			reqObj.setPurchaseLog(reqData);
 			
 			subResp = purchaseLogServiceStub.submitPurchaseLogAndGetImagePdf(reqObj);
 			result = subResp.getSubmitPurchaseLogAndGetImagePdfResult();
 			if(result != null && result.getValidationResults() != null) {
 
 				PLogResponseCode resultCode = result.getResponseCode();
-				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
+				if(PLogResponseCode.Success.equals(resultCode)) {
+					response.setOk(true);
+					response.setMessage("Successful call response");
+					response.setStatus(HttpStatus.OK);
+					response.setResult(result);
+				} else {
+					response.setOk(false);
+					response.setMessage("WEX : [code] - " 
+							+ resultCode.getValue() 
+							+ " [description] - " 
+							+ result.getDescription());
+					response.setStatus(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setOk(false);
+				response.setMessage("WEX server not responde : no response");
+				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+			
+		} catch(RemoteException exc) {
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+		}
+		
+		return response;
+	}
+	
+	/*
+	 * SubmitPurchaseLogWithFaxInfo
+	 */
+	public CallResponse submitPurchaseLogWithFaxInfo(String bankNo, String compNo, 
+												BigDecimal invAmount, String currency)  throws WexAppException {
+		CallResponse response = new CallResponse();
+		
+		try {
+			SubmitPurchaseLogWithFaxInfoResponse subResp;
+			PurchaseLogResponse result;
+			
+			SubmitPurchaseLogWithFaxInfo reqObj = new SubmitPurchaseLogWithFaxInfo();
+			reqObj.setUser((UserToken)wexUserToken);
+			
+			PurchaseLog reqData = new PurchaseLog();
+			reqData.setBankNumber(bankNo);
+			reqData.setCompanyNumber(compNo);
+			reqData.setInvoiceAmount(invAmount);
+			reqData.setBillingCurrency(currency);
+			
+			reqObj.setPurchaseLog(reqData);
+			
+			subResp = purchaseLogServiceStub.submitPurchaseLogWithFaxInfo(reqObj);
+			result = subResp.getSubmitPurchaseLogWithFaxInfoResult();
+			if(result != null && result.getValidationResults() != null) {
+
+				PLogResponseCode resultCode = result.getResponseCode();
+				if(PLogResponseCode.Success.equals(resultCode)) {
 					response.setOk(true);
 					response.setMessage("Successful call response");
 					response.setStatus(HttpStatus.OK);
