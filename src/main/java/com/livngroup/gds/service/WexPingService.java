@@ -5,11 +5,17 @@ import org.springframework.stereotype.Service;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistory;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponseE;
+import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexException;
 
 @Service("wexPingService")
 public class WexPingService extends WexService {
 	
+	@Override
+	protected WexEntity getWexEntity() {
+		return WexEntity.PAYMENT_SCHEDULE;
+	}
+
 	public void ping() throws Exception {
 		try {
 			GetPurchaseLogHistory reqObj = new GetPurchaseLogHistory();
