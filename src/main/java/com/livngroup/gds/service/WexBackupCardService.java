@@ -57,6 +57,11 @@ public class WexBackupCardService extends WexService {
 
 	@Autowired
 	private BackupCardRepository backupCardRepository;
+
+	@Override
+	protected WexEntity getWexEntity() {
+		return WexEntity.BACKUP_CARD;
+	}
 	
 	@Autowired
 	private CallResponseService callResponseService;
