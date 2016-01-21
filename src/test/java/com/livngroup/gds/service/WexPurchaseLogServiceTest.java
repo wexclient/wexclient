@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.ArrayOfString;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponseE;
@@ -115,7 +116,9 @@ public class WexPurchaseLogServiceTest {
 
 	private QueryPurchaseLogsResponseE createResponseObject(PurchaseLogResponseCodeEnum resultCode) {
 		QueryPurchaseLogsResponseE response = new QueryPurchaseLogsResponseE();
-		response.setQueryPurchaseLogsResult(new QueryPurchaseLogsResponse());
+		QueryPurchaseLogsResponse purchaseLogsResponseResponse = new QueryPurchaseLogsResponse();
+		purchaseLogsResponseResponse.setPurchaseLogUniqueIds(new ArrayOfString());
+		response.setQueryPurchaseLogsResult(purchaseLogsResponseResponse);
 		response.getQueryPurchaseLogsResult().setResponseCode(resultCode);
 		return response;
 	}

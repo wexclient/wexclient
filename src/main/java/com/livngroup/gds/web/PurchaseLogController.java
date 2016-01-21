@@ -3,6 +3,8 @@ package com.livngroup.gds.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +15,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CancelPurcha
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLogResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponse;
+import com.livngroup.gds.domain.LivnPurchaseLog;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
@@ -42,42 +45,38 @@ public class PurchaseLogController extends WexController {
 		return WexEntity.PURCHASE_LOG;
 	}
 	
-	/*
-	 * CreatePurchaseLog
-	 */
+	/* CreatePurchaseLog */
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=CreatePurchaseLogResponse.class), 
 			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/createLog", produces="application/json", method=RequestMethod.POST)
-	public @ResponseBody GeneralResponse createPurchaseLog(@RequestParam(value="bankNo", required=false) String bankNo, 
-														@RequestParam(value="compNo", required=false) String compNo, 
-														@RequestParam String amount) throws WexAppException {
-		assertNumber("bankNo", bankNo);
-		assertNumber("compNo", compNo);
+	public @ResponseBody GeneralResponse createPurchaseLog(@RequestBody LivnPurchaseLog purchaseLog) throws WexAppException {
 		
-		CallResponse response = wexService.createPurchaseLog(bankNo, compNo, amount);
+		assertNotNull("purchaseLog", purchaseLog);
+		assertNotEmpty("purchaseLog.invoiceNumber", purchaseLog.getInvoiceNumber());
+		assertNotEmpty("purchaseLog.leadPassengerName", purchaseLog.getLeadPassengerName());
+		assertNotEmpty("purchaseLog.reservationId", purchaseLog.getReservationId());
+		assertPositiveNumber("purchaseLog.amount", purchaseLog.getAmount());
+		
+		CallResponse response = wexService.createPurchaseLog(purchaseLog);
 
 		logger.debug(response.getMessage());
 		return (GeneralResponse) response;
 	}
 	
-	/*
-	 * CancelPurchaseLog
-	 */
+	/* CancelPurchaseLog */
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=CancelPurchaseLogResponse.class), 
 			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/cancelLog", produces="application/json", method=RequestMethod.POST)
-	public @ResponseBody GeneralResponse cancelPurchaseLog(@RequestParam String bankNo, 
-														@RequestParam String compNo, 
-														@RequestParam String uniqueId) throws WexAppException {
-		assertNumber("bankNo", bankNo);
-		assertNumber("compNo", compNo);
+	@RequestMapping(value="/cancelLog/{uniqueId}", produces="application/json", method=RequestMethod.POST)
+	public @ResponseBody GeneralResponse cancelPurchaseLog(@PathVariable("uniqueId") String uniqueId) throws WexAppException {
+		
+		assertNotEmpty("uniqueId", uniqueId);
 
-		CallResponse response = wexService.cancelPurchaseLog(bankNo, compNo, uniqueId);
+		CallResponse response = wexService.cancelPurchaseLog(uniqueId);
 
 		logger.debug(response.getMessage());
-		return (GeneralResponse)response;
+		return (GeneralResponse) response;
 	}
 	
 	/*
@@ -87,24 +86,19 @@ public class PurchaseLogController extends WexController {
 			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/historyLog", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<Object> getHistoryLog(@RequestParam String bankNo, 
-														@RequestParam String compNo, 
-														@RequestParam String uniqueId) throws WexAppException {
-		ResponseEntity<Object> response;		
-		
-		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
-			CallResponse result = wexService.getPurchaseLogHistory(bankNo, compNo, uniqueId);
-			if(result.getOk()) {
-				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
-			} else {
-				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.PURCHASE_LOG);
-				response = new ResponseEntity<Object>(warnRes, result.getStatus());
-			}
-		} else {
-			ErrorResponse errRes = responseService.getErrorResponseDefault("One of input values should be a number.\nPlease check again the value of input parameter(s).");
-			response = new ResponseEntity<Object>(errRes, HttpStatus.NOT_ACCEPTABLE);
-		}
+	public @ResponseBody ResponseEntity<Object> getHistoryLog(@RequestParam String uniqueId) throws WexAppException {
 
+		assertNotEmpty("uniqueId", uniqueId);
+
+		ResponseEntity<Object> response;
+		CallResponse result = wexService.getPurchaseLogHistory(uniqueId);
+		if(result.getOk()) {
+			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
+		} else {
+			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.PURCHASE_LOG);
+			response = new ResponseEntity<Object>(warnRes, result.getStatus());
+		}
+		
 		return response;
 	}
 	

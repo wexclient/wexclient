@@ -27,4 +27,21 @@ public class CallResponse extends GeneralResponse {
 		this.status = status;
 	}
 
+	public static CallResponse forSuccess(Object result) {
+		CallResponse response = new CallResponse();
+		response.setOk(true);
+		response.setMessage("Success");
+		response.setStatus(HttpStatus.OK);
+		response.setResult(result);
+		return response;	
+	}
+	
+	public static CallResponse forError(String errorCode, String errorDescription) {
+		CallResponse response = new CallResponse();
+		response.setOk(false);
+		response.setMessage(String.format("WEX : [code] - %s [description] - %s", errorCode, errorDescription));
+		response.setStatus(HttpStatus.BAD_REQUEST);
+		return response;	
+	}
+	
 }

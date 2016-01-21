@@ -338,7 +338,7 @@ public class WexSecurityService extends WexService {
 			}
 			
 		} catch(RemoteException exc) {
-			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.GENERAL);
 		}
 		
 		return response;

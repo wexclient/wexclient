@@ -10,10 +10,10 @@ import com.livngroup.gds.exception.WexException;
 
 @Service("wexPingService")
 public class WexPingService extends WexService {
-	
+
 	@Override
 	protected WexEntity getWexEntity() {
-		return WexEntity.PAYMENT_SCHEDULE;
+		return WexEntity.GENERAL;
 	}
 
 	public void ping() throws Exception {

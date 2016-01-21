@@ -1,5 +1,6 @@
 package com.livngroup.gds.web;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,15 +21,41 @@ public abstract class WexController {
 
 	protected void assertNumber(String paramName, String paramValue) throws WexRuntimeException {
 		if (!Validator.isNumber(paramValue)) {
-			throw new WexRuntimeException(new ErrorResponse(
-					HttpStatus.NOT_ACCEPTABLE, 
-					HttpStatus.NOT_ACCEPTABLE.toString() + "-" + paramName,
-					getEntytyType(),
-					"Parameter: " + paramName + "=[" + paramValue + "] of input values should be a number.\nPlease check again the value of input parameter(s).", 
-					ErrorResponse.URL_DEFAULT, 
-					null, 
-					null));
+			throw exceptionForAssertion(paramName, paramValue, 
+					"Parameter: " + paramName + "=[" + paramValue + "] of input values should be a number.\nPlease check again the value of input parameter(s).");
 		}
+	}
+
+	protected void assertPositiveNumber(String paramName, Number paramValue) throws WexRuntimeException {
+		if (paramValue.doubleValue() <= 0d) {
+			throw exceptionForAssertion(paramName, paramValue, 
+					"Parameter: " + paramName + "=[" + paramValue + "] of input values should be a positive number.");
+		}
+	}
+
+	protected void assertNotNull(String paramName, Object paramValue) throws WexRuntimeException {
+		if (paramValue == null) {
+			throw exceptionForAssertion(paramName, "NULL", 
+					"Parameter: " + paramName + " must not be null.");
+		}
+	}
+
+	protected void assertNotEmpty(String paramName, String paramValue) throws WexRuntimeException {
+		if (StringUtils.isBlank(paramValue)) {
+			throw exceptionForAssertion(paramName, paramValue, 
+					"Parameter: " + paramName + "=[" + paramValue + "] must not be empty.");
+		}
+	}
+
+	private WexRuntimeException exceptionForAssertion(String paramName, Object paramValue, String message) {
+		return new WexRuntimeException(new ErrorResponse(
+				HttpStatus.NOT_ACCEPTABLE, 
+				HttpStatus.NOT_ACCEPTABLE.toString() + "-" + paramName,
+				getEntytyType(),
+				message, 
+				ErrorResponse.URL_DEFAULT, 
+				null, 
+				null));
 	}
 
 	protected abstract WexEntity getEntytyType();

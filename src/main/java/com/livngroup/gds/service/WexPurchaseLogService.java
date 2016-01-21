@@ -28,6 +28,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PLogResponse
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PaymentScheduleItem;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PaymentTypeEnum;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLog;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogDeliveryMethod;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseWithImagePdf;
@@ -56,6 +57,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UpdatePurcha
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.User;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UserToken;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.VendorInfo;
+import com.livngroup.gds.domain.LivnPurchaseLog;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
@@ -75,46 +77,46 @@ public class WexPurchaseLogService extends WexService {
 	/* 
 	 * CreatePurchaseLog 
 	 */
-	public CallResponse createPurchaseLog(String bankNo, String compNo, String amount) throws WexAppException {
-		CallResponse response;
-		
+	public CallResponse createPurchaseLog(LivnPurchaseLog purchaseLog) throws WexAppException {
 		try {
-			CreatePurchaseLogResponse result;
-			CreatePurchaseLogResponseE resEncap;
+			CreatePurchaseLogRequest requestParam = new CreatePurchaseLogRequest();
+			requestParam.setBankNumber(BANK_NUMBER);
+			requestParam.setCompanyNumber(COMPANY_ID);
+			requestParam.setAmount(purchaseLog.getAmount());
+			
+			requestParam.setDeliveryMethod(PurchaseLogDeliveryMethod.None);
+			requestParam.setUserDefinedFields(asArray(
+					asUserDefinedField(LivnPurchaseLog.UDF_RESERVATION_ID,purchaseLog.getReservationId()),
+					asUserDefinedField(LivnPurchaseLog.UDF_LEAD_PASSENGER_NAME,purchaseLog.getLeadPassengerName()),
+					asUserDefinedField(LivnPurchaseLog.UDF_INVOICE_NUMBER,purchaseLog.getInvoiceNumber())
+			));
 			
 			CreatePurchaseLog reqObj = new CreatePurchaseLog();
-			reqObj.setUser((User)wexUser);
-			
-			CreatePurchaseLogRequest reqData = new CreatePurchaseLogRequest();
-			reqData.setBankNumber(bankNo);
-			reqData.setCompanyNumber(compNo);
-			reqData.setAmount(new BigDecimal(amount));
-			
-			resEncap = purchaseLogServiceStub.createPurchaseLog(reqObj);
-			if(resEncap != null && resEncap.getCreatePurchaseLogResult() != null) {
-				result = resEncap.getCreatePurchaseLogResult();
+			reqObj.setUser(wexUser);
+			reqObj.setRequest(requestParam);
+
+			CreatePurchaseLogResponseE resEncap = purchaseLogServiceStub.createPurchaseLog(reqObj);
+			if ((resEncap != null) && (resEncap.getCreatePurchaseLogResult() != null)) {
+				CreatePurchaseLogResponse result = resEncap.getCreatePurchaseLogResult();
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
-				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
-				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
-				}
+				CallResponse response = PurchaseLogResponseCodeEnum.Success.equals(resultCode) ?
+					CallResponse.forSuccess(result) : CallResponse.forError(resultCode.getValue(), result.getDescription());
+				return response;
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				throw ExceptionFactory.createServiceUnavailableForEntityException(null, WexEntity.PURCHASE_LOG);
 			}
+
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
 		}
-		
-		return response;
 	}
-	
+
 	/*
 	 * GetPurchaseLogHistory
 	 */
-	public CallResponse getPurchaseLogHistory(String bankNo, String compNo, String uniqueId) throws WexAppException {
-		CallResponse response;
+	public CallResponse getPurchaseLogHistory(String uniqueId) throws WexAppException {
+		CallResponse response = new CallResponse();
 		
 		try {
 			GetPurchaseLogHistoryResponse result;
@@ -124,8 +126,8 @@ public class WexPurchaseLogService extends WexService {
 			reqObj.setUser((User)wexUser);
 			
 			GetPurchaseLogHistoryRequest reqData = new GetPurchaseLogHistoryRequest();
-			reqData.setBankNumber(bankNo);
-			reqData.setCompanyNumber(compNo);
+			reqData.setBankNumber(BANK_NUMBER);
+			reqData.setCompanyNumber(COMPANY_ID);
 			reqData.setPurchaseLogUniqueID(uniqueId);
 			
 			reqObj.setRequest(reqData);
@@ -151,45 +153,35 @@ public class WexPurchaseLogService extends WexService {
 		return response;
 	}
 
-	/*
-	 * CancelPurchaseLog
-	 */
-	public CallResponse cancelPurchaseLog(String bankNo, String compNo, String uniqueId) throws WexAppException {
-		CallResponse response = new CallResponse();
+	/* CancelPurchaseLog */
+	public CallResponse cancelPurchaseLog(String uniqueId) throws WexAppException {
 		
 		try {
-			CancelPurchaseLogResponse result;
-			CancelPurchaseLogResponseE resEncap;
-			
-			CancelPurchaseLog reqObj = new CancelPurchaseLog();
-			reqObj.setUser((User)wexUser);
-			
+						
 			CancelPurchaseLogRequest reqData = new CancelPurchaseLogRequest();
-			reqData.setBankNumber(bankNo);
-			reqData.setCompanyNumber(compNo);
+			reqData.setBankNumber(BANK_NUMBER);
+			reqData.setCompanyNumber(COMPANY_ID);
 			reqData.setPurchaseLogUniqueID(uniqueId);
 			
+			CancelPurchaseLog reqObj = new CancelPurchaseLog();
+			reqObj.setUser(wexUser);
 			reqObj.setRequest(reqData);
 			
-			resEncap = purchaseLogServiceStub.cancelPurchaseLog(reqObj);
-			if(resEncap != null && resEncap.getCancelPurchaseLogResult() != null) {
-				result = resEncap.getCancelPurchaseLogResult();
+			CancelPurchaseLogResponseE resEncap = purchaseLogServiceStub.cancelPurchaseLog(reqObj);
+			if (resEncap != null && resEncap.getCancelPurchaseLogResult() != null) {
+				CancelPurchaseLogResponse result = resEncap.getCancelPurchaseLogResult();
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
-				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
-				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
-				}
+				CallResponse response = (PurchaseLogResponseCodeEnum.Success.equals(resultCode)) ? 
+						CallResponse.forSuccess(result) : CallResponse.forError(resultCode.getValue(), result.getDescription());
+				return response;
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				throw ExceptionFactory.createServiceUnavailableForEntityException(null, WexEntity.PURCHASE_LOG);
 			}
 			
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
 		}
-		
-		return response;
 	}
 	
 	/*

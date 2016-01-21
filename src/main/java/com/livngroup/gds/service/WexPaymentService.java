@@ -31,9 +31,6 @@ public class WexPaymentService extends WexService {
 	@Autowired
 	private CallResponseService callResponseService;
 
-	/*
-	 * GetPaymentInformationUrl
-	 */
 	public CallResponse getPaymentInformationUrl(String bankNo, String compNo, String uniqueId) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
@@ -108,5 +105,4 @@ public class WexPaymentService extends WexService {
 		
 		return response;
 	}
-	
 }

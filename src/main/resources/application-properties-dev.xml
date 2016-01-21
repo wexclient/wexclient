@@ -6,6 +6,7 @@
 	<entry key="encompass.org-group-login-id">LIVINGRP</entry>
 	<entry key="encompass.username">webservices</entry>
 	<entry key="encompass.password">livn123</entry>
+	<entry key="encompass.bank-number">8727</entry>
 	<entry key="encompass.client-id">0041244</entry>
 	<entry key="encompass.purchase-log-service-target-endpoint">https://demoservices.wrightexpresscorpcard.com/services/purchaselogservice.asmx</entry>
 	
