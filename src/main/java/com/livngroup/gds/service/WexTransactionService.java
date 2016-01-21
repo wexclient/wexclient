@@ -3,7 +3,7 @@ package com.livngroup.gds.service;
 import java.rmi.RemoteException;
 import java.util.Calendar;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DisputeTransaction;
@@ -37,6 +37,9 @@ import com.livngroup.gds.response.CallResponse;
 @Service("wexTransactionService")
 public class WexTransactionService extends WexService {
 
+	@Autowired
+	private CallResponseService callResponseService;
+
 	/*
 	 * GetTransactions
 	 */
@@ -47,37 +50,27 @@ public class WexTransactionService extends WexService {
 			GetTransactionsResponse resEncap;
 			TransactionsResponse result;
 			
-			GetRecentAccountActivityRequest req = new GetRecentAccountActivityRequest();
-			req.setBankNumber(bankNo);
-			req.setCompanyNumber(compNo);
-			req.setPurchaseLogUniqueID(uniqueId);
+			GetRecentAccountActivityRequest reqObj = new GetRecentAccountActivityRequest();
+			reqObj.setBankNumber(bankNo);
+			reqObj.setCompanyNumber(compNo);
+			reqObj.setPurchaseLogUniqueID(uniqueId);
 
-			GetTransactions getTransactions = new GetTransactions();
-			getTransactions.setUser(wexUser);
-			getTransactions.setRequest(req);
+			GetTransactions reqData = new GetTransactions();
+			reqData.setUser(wexUser);
+			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.getTransactions(getTransactions);
+			resEncap = purchaseLogServiceStub.getTransactions(reqData);
 			if(resEncap != null && resEncap.getGetTransactionsResult() != null) {
 				result = resEncap.getGetTransactionsResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-												+ resultCode.getValue() 
-												+ " [description] - " 
-												+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
@@ -96,37 +89,27 @@ public class WexTransactionService extends WexService {
 			GetTransactionsInternationalResponseE resEncap;
 			GetTransactionsInternationalResponse result;
 			
-			GetRecentAccountActivityRequest req = new GetRecentAccountActivityRequest();
-			req.setBankNumber(bankNo);
-			req.setCompanyNumber(compNo);
-			req.setPurchaseLogUniqueID(uniqueId);
+			GetRecentAccountActivityRequest reqObj = new GetRecentAccountActivityRequest();
+			reqObj.setBankNumber(bankNo);
+			reqObj.setCompanyNumber(compNo);
+			reqObj.setPurchaseLogUniqueID(uniqueId);
 
-			GetTransactionsInternational getTransactions = new GetTransactionsInternational();
-			getTransactions.setUser(wexUser);
-			getTransactions.setRequest(req);
+			GetTransactionsInternational reqData = new GetTransactionsInternational();
+			reqData.setUser(wexUser);
+			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.getTransactionsInternational(getTransactions);
+			resEncap = purchaseLogServiceStub.getTransactionsInternational(reqData);
 			if(resEncap != null && resEncap.getGetTransactionsInternationalResult() != null) {
 				result = resEncap.getGetTransactionsInternationalResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-												+ resultCode.getValue() 
-												+ " [description] - " 
-												+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
@@ -145,37 +128,27 @@ public class WexTransactionService extends WexService {
 			GetRecentAccountActivityResponseE resEncap;
 			GetRecentAccountActivityResponse result;
 			
-			GetRecentAccountActivityRequest req = new GetRecentAccountActivityRequest();
-			req.setBankNumber(bankNo);
-			req.setCompanyNumber(compNo);
-			req.setPurchaseLogUniqueID(uniqueId);
+			GetRecentAccountActivityRequest reqObj = new GetRecentAccountActivityRequest();
+			reqObj.setBankNumber(bankNo);
+			reqObj.setCompanyNumber(compNo);
+			reqObj.setPurchaseLogUniqueID(uniqueId);
 
-			GetRecentAccountActivity getActivity = new GetRecentAccountActivity();
-			getActivity.setUser(wexUser);
-			getActivity.setRequest(req);
+			GetRecentAccountActivity reqData = new GetRecentAccountActivity();
+			reqData.setUser(wexUser);
+			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.getRecentAccountActivity(getActivity);
+			resEncap = purchaseLogServiceStub.getRecentAccountActivity(reqData);
 			if(resEncap != null && resEncap.getGetRecentAccountActivityResult() != null) {
 				result = resEncap.getGetRecentAccountActivityResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-												+ resultCode.getValue() 
-												+ " [description] - " 
-												+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
@@ -194,37 +167,27 @@ public class WexTransactionService extends WexService {
 			GetRecentAccountActivityInternationalResponseE resEncap;
 			GetRecentAccountActivityInternationalResponse result;
 
-			GetRecentAccountActivityRequest req = new GetRecentAccountActivityRequest();
-			req.setBankNumber(bankNo);
-			req.setCompanyNumber(compNo);
-			req.setPurchaseLogUniqueID(uniqueId);
+			GetRecentAccountActivityRequest reqObj = new GetRecentAccountActivityRequest();
+			reqObj.setBankNumber(bankNo);
+			reqObj.setCompanyNumber(compNo);
+			reqObj.setPurchaseLogUniqueID(uniqueId);
 
-			GetRecentAccountActivityInternational getActivity = new GetRecentAccountActivityInternational();
-			getActivity.setUser(wexUser);
-			getActivity.setRequest(req);
+			GetRecentAccountActivityInternational reqData = new GetRecentAccountActivityInternational();
+			reqData.setUser(wexUser);
+			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.getRecentAccountActivityInternational(getActivity);
+			resEncap = purchaseLogServiceStub.getRecentAccountActivityInternational(reqData);
 			if(resEncap != null && resEncap.getGetRecentAccountActivityInternationalResult() != null) {
 				result = resEncap.getGetRecentAccountActivityInternationalResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-												+ resultCode.getValue() 
-												+ " [description] - " 
-												+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
@@ -243,37 +206,27 @@ public class WexTransactionService extends WexService {
 			DisputeTransactionResponseE resEncap;
 			DisputeTransactionResponse result;
 			
-			DisputeTransactionRequest req = new DisputeTransactionRequest();
-			req.setBankNumber(bankNo);
-			req.setCompanyNumber(compNo);
-			req.setPurchaseLogUniqueId(uniqueId);
+			DisputeTransactionRequest reqObj = new DisputeTransactionRequest();
+			reqObj.setBankNumber(bankNo);
+			reqObj.setCompanyNumber(compNo);
+			reqObj.setPurchaseLogUniqueId(uniqueId);
 
-			DisputeTransaction getTransactions = new DisputeTransaction();
-			getTransactions.setUser(wexUser);
-			getTransactions.setRequest(req);
+			DisputeTransaction reqData = new DisputeTransaction();
+			reqData.setUser(wexUser);
+			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.disputeTransaction(getTransactions);
+			resEncap = purchaseLogServiceStub.disputeTransaction(reqData);
 			if(resEncap != null && resEncap.getDisputeTransactionResult() != null) {
 				result = resEncap.getDisputeTransactionResult();
 				
 				DisputeTransactionResponseCodeEnum resultCode = result.getResponseCode();
 				if(DisputeTransactionResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-												+ resultCode.getValue() 
-												+ " [description] - " 
-												+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.DISPUTED_TRANSACTION);
@@ -285,45 +238,35 @@ public class WexTransactionService extends WexService {
 	/*
 	 * GetDisputeTransactions
 	 */
-	public CallResponse getDisputedTransactions(String accNo, String bankNo, String compNo, Calendar cDate) throws WexAppException {
+	public CallResponse getDisputedTransactions(String bankNo, String compNo, String uniqueId, Calendar cDate) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
 			GetDisputedTransactionsResponse resEncap;
 			DisputedTransactionsResponse result;
 			
-			DisputedAccountActivityRequest req = new DisputedAccountActivityRequest();
-			req.setAccountNumber(accNo);
-			req.setBankNumber(bankNo);
-			req.setCompanyNumber(compNo);
-			req.setCreatedDate(cDate);
+			DisputedAccountActivityRequest reqObj = new DisputedAccountActivityRequest();
+			reqObj.setAccountNumber("12345678");
+			reqObj.setBankNumber(bankNo);
+			reqObj.setCompanyNumber(compNo);
+			reqObj.setCreatedDate(cDate);
 
-			GetDisputedTransactions getTransactions = new GetDisputedTransactions();
-			getTransactions.setUser(wexUser);
-			getTransactions.setRequest(req);
+			GetDisputedTransactions reqData = new GetDisputedTransactions();
+			reqData.setUser(wexUser);
+			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.getDisputedTransactions(getTransactions);
+			resEncap = purchaseLogServiceStub.getDisputedTransactions(reqData);
 			if(resEncap != null && resEncap.getGetDisputedTransactionsResult() != null) {
 				result = resEncap.getGetDisputedTransactionsResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-												+ resultCode.getValue() 
-												+ " [description] - " 
-												+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.DISPUTED_TRANSACTION);

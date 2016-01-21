@@ -64,7 +64,7 @@ public class ApiDocConfiguration {
 	
 	@SuppressWarnings("unchecked")
 	private Predicate<String> paths() {
-		return or(regex("/backupcard.*"), regex("/purchase.*"), regex("/payment.*"));
+		return or(regex("/backupcard.*"), regex("/purchase.*"), regex("/payment.*"), regex("/transact.*"), regex("/secure.*"));
 	}
 
 	private List<ResponseMessage> responseMessages() {

@@ -7,15 +7,11 @@ import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
 
-@Service("wexResponseService")
+@Service("webResponseService")
 public class WebResponseService {
-
-	ErrorResponse warnRes;
-
+	
 	public ErrorResponse getErrorResponse(CallResponse result) {
-		if(warnRes == null) {
-			warnRes = new ErrorResponse();
-		}
+		ErrorResponse warnRes = new ErrorResponse();
 		
 		warnRes.setStatus(result.getStatus());
 		warnRes.setCode(result.getStatus().toString());
@@ -29,9 +25,7 @@ public class WebResponseService {
 	}
 	
 	public ErrorResponse getErrorResponse(CallResponse result, WexEntity entity) {
-		if(warnRes == null) {
-			warnRes = new ErrorResponse();
-		}
+		ErrorResponse warnRes = new ErrorResponse();
 		
 		warnRes.setStatus(result.getStatus());
 		warnRes.setCode(result.getStatus().toString());
@@ -45,9 +39,7 @@ public class WebResponseService {
 	}
 
 	public ErrorResponse getErrorResponse(CallResponse result, WexEntity entity, String customMessage) {
-		if(warnRes == null) {
-			warnRes = new ErrorResponse();
-		}
+		ErrorResponse warnRes = new ErrorResponse();
 		
 		warnRes.setStatus(result.getStatus());
 		warnRes.setCode(result.getStatus().toString());
@@ -61,9 +53,7 @@ public class WebResponseService {
 	}
 	
 	public ErrorResponse getErrorResponseDefault(String message) {
-		if(warnRes == null) {
-			warnRes = new ErrorResponse();
-		}
+		ErrorResponse warnRes = new ErrorResponse();
 		
 		warnRes.setStatus(HttpStatus.NOT_ACCEPTABLE);
 		warnRes.setCode(HttpStatus.NOT_ACCEPTABLE.toString());

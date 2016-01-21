@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -62,12 +63,15 @@ import com.livngroup.gds.response.CallResponse;
 
 @Service
 public class WexPurchaseLogService extends WexService {
-		
+	
+	@Autowired
+	private CallResponseService callResponseService;
+	
 	/* 
 	 * CreatePurchaseLog 
 	 */
 	public CallResponse createPurchaseLog(String bankNo, String compNo, String amount) throws WexAppException {
-		CallResponse response = new CallResponse();
+		CallResponse response;
 		
 		try {
 			CreatePurchaseLogResponse result;
@@ -87,22 +91,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
@@ -115,7 +109,7 @@ public class WexPurchaseLogService extends WexService {
 	 * GetPurchaseLogHistory
 	 */
 	public CallResponse getPurchaseLogHistory(String bankNo, String compNo, String uniqueId) throws WexAppException {
-		CallResponse response = new CallResponse();
+		CallResponse response;
 		
 		try {
 			GetPurchaseLogHistoryResponse result;
@@ -137,22 +131,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -188,22 +172,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -246,24 +220,12 @@ public class WexPurchaseLogService extends WexService {
 					
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
-
-					logger.debug("result : {} ", result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-												+ resultCode.getValue() 
-												+ " [description] - " 
-												+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -299,22 +261,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -351,22 +303,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -404,22 +346,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -456,22 +388,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -508,22 +430,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -561,22 +473,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -634,22 +536,12 @@ public class WexPurchaseLogService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-												+ resultCode.getValue() 
-												+ " [description] - " 
-												+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {

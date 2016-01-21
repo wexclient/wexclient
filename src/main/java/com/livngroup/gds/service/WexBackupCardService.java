@@ -58,6 +58,9 @@ public class WexBackupCardService extends WexService {
 	@Autowired
 	private BackupCardRepository backupCardRepository;
 	
+	@Autowired
+	private CallResponseService callResponseService;
+
 	/*
 	 * GetBackupCards
 	 */
@@ -85,22 +88,12 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -153,25 +146,15 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
-			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
 		}
 		
 		return response;
@@ -202,25 +185,15 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
-			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
 		}
 		
 		return response;
@@ -252,25 +225,15 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
-			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
 		}
 		
 		return response;
@@ -301,25 +264,15 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
-			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
 		}
 		
 		return response;
@@ -350,22 +303,12 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
@@ -412,25 +355,15 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-							+ resultCode.getValue() 
-							+ " [description] - " 
-							+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
-			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
+			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
 		}
 		
 		return response;

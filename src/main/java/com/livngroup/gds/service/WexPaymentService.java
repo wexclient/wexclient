@@ -2,6 +2,7 @@ package com.livngroup.gds.service;
 
 import java.rmi.RemoteException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ import com.livngroup.gds.response.CallResponse;
 
 @Service
 public class WexPaymentService extends WexService {
+
+	@Autowired
+	private CallResponseService callResponseService;
 
 	/*
 	 * GetPaymentInformationUrl
@@ -47,22 +51,12 @@ public class WexPaymentService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-												+ resultCode.getValue() 
-												+ " [description] - " 
-												+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
@@ -96,22 +90,12 @@ public class WexPaymentService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response.setOk(true);
-					response.setMessage("Successful call response");
-					response.setStatus(HttpStatus.OK);
-					response.setResult(result);
+					response = callResponseService.getCallSuccessResponse(result);
 				} else {
-					response.setOk(false);
-					response.setMessage("WEX : [code] - " 
-												+ resultCode.getValue() 
-												+ " [description] - " 
-												+ result.getDescription());
-					response.setStatus(HttpStatus.BAD_REQUEST);
+					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response.setOk(false);
-				response.setMessage("WEX server not responde : no response");
-				response.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
+				response = callResponseService.getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
