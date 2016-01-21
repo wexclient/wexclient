@@ -45,6 +45,11 @@ import com.livngroup.gds.response.CallResponse;
 @Service("wexSecurityService")
 public class WexSecurityService extends WexService {
 
+	@Override
+	protected WexEntity getWexEntity() {
+		return WexEntity.GENERAL;
+	}
+
 	@Autowired
 	private CallResponseService callResponseService;
 
