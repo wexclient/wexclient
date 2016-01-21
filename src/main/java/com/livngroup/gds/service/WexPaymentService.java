@@ -23,6 +23,11 @@ import com.livngroup.gds.response.CallResponse;
 @Service
 public class WexPaymentService extends WexService {
 
+	@Override
+	protected WexEntity getWexEntity() {
+		return WexEntity.PAYMENT_SCHEDULE;
+	}
+
 	@Autowired
 	private CallResponseService callResponseService;
 
