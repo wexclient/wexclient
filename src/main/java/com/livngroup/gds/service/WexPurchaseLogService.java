@@ -67,6 +67,11 @@ public class WexPurchaseLogService extends WexService {
 	@Autowired
 	private CallResponseService callResponseService;
 	
+	@Override
+	protected WexEntity getWexEntity() {
+		return WexEntity.PURCHASE_LOG;
+	}
+
 	/* 
 	 * CreatePurchaseLog 
 	 */
