@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.livngroup.gds.domain.LivnPaymentReq;
+import com.livngroup.gds.domain.LivnBaseReq;
 import com.livngroup.gds.domain.LivnTransactionReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
@@ -37,17 +37,19 @@ public class PaymentInfoController extends WexController {
 		return WexEntity.PAYMENT_SCHEDULE;
 	}
 
-	@RequestMapping(value="/getSchedule", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<Object> getSchedule(
-			@RequestBody LivnPaymentReq paymentReq) throws WexAppException {
+	@RequestMapping(value="/getSchedule", produces="application/json", method=RequestMethod.POST)
+	public @ResponseBody ResponseEntity<Object> getSchedule(@RequestParam String bankNo, 
+														@RequestParam String compNo, 
+														@RequestParam String uniqueId) throws WexAppException {
 		ResponseEntity<Object> response;		
 		
-		assertNotNull("paymentReq", paymentReq);
-		assertNotNull("transactionReq.bankNumber", paymentReq.getBankNumber());
-		assertNotNull("transactionReq.companyNumber", paymentReq.getCompanyNumber());
-		assertNotNull("transactionReq.purchaseLogUniqueID", paymentReq.getPurchaseLogUniqueID());
+		assertNotNull("bankNo", bankNo);
+		assertNotNull("compNo", compNo);
+		assertNotNull("uniqueId", uniqueId);
 
-		CallResponse result = paymentService.getPaymentSchedule(paymentReq);		
+		LivnBaseReq baseReq = new LivnBaseReq(bankNo, compNo, uniqueId);
+
+		CallResponse result = paymentService.getPaymentSchedule(baseReq);		
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
@@ -59,16 +61,18 @@ public class PaymentInfoController extends WexController {
 	}
 
 	@RequestMapping(value="/getInfoUrl", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<Object> getInformationUrl(
-			@RequestBody LivnPaymentReq paymentReq) throws WexAppException {
+	public @ResponseBody ResponseEntity<Object> getInformationUrl(@RequestParam String bankNo, 
+																@RequestParam String compNo, 
+																@RequestParam String uniqueId) throws WexAppException {
 		ResponseEntity<Object> response;		
 		
-		assertNotNull("paymentReq", paymentReq);
-		assertNotNull("transactionReq.bankNumber", paymentReq.getBankNumber());
-		assertNotNull("transactionReq.companyNumber", paymentReq.getCompanyNumber());
-		assertNotNull("transactionReq.purchaseLogUniqueID", paymentReq.getPurchaseLogUniqueID());
+		assertNotNull("bankNo", bankNo);
+		assertNotNull("compNo", compNo);
+		assertNotNull("uniqueId", uniqueId);
 
-		CallResponse result = paymentService.getPaymentInformationUrl(paymentReq);		
+		LivnBaseReq baseReq = new LivnBaseReq(bankNo, compNo, uniqueId);
+		
+		CallResponse result = paymentService.getPaymentInformationUrl(baseReq);		
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {

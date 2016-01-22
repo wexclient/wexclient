@@ -84,13 +84,15 @@ public class WexPurchaseLogService extends WexService {
 			requestParam.setCompanyNumber(COMPANY_ID);
 			requestParam.setAmount(purchaseLog.getAmount());
 			
-			requestParam.setDeliveryMethod(PurchaseLogDeliveryMethod.None);
 			requestParam.setUserDefinedFields(asArray(
 					asUserDefinedField(LivnPurchaseLog.UDF_RESERVATION_ID,purchaseLog.getReservationId()),
 					asUserDefinedField(LivnPurchaseLog.UDF_LEAD_PASSENGER_NAME,purchaseLog.getLeadPassengerName()),
 					asUserDefinedField(LivnPurchaseLog.UDF_INVOICE_NUMBER,purchaseLog.getInvoiceNumber())
 			));
-			
+
+			requestParam.setDeliveryMethod(PurchaseLogDeliveryMethod.Email);
+			requestParam.setDeliveryAddress("michael.park@livngroup.com");
+
 			CreatePurchaseLog reqObj = new CreatePurchaseLog();
 			reqObj.setUser(wexUser);
 			reqObj.setRequest(requestParam);

@@ -1,9 +1,16 @@
 package com.livngroup.gds.domain;
 
-public class LivnPaymentReq {
+public class LivnBaseReq {
 	String	bankNumber;
 	String	companyNumber;
 	String	purchaseLogUniqueID;
+	
+	public LivnBaseReq(String bankNumber, String companyNumber, String purchaseLogUniqueID) {
+		this.bankNumber = bankNumber;
+		this.companyNumber = companyNumber;
+		this.purchaseLogUniqueID = purchaseLogUniqueID;
+	}
+	
 	public String getBankNumber() {
 		return bankNumber;
 	}

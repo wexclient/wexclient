@@ -10,7 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DeleteAuthorizationResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.InstantApprovalResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.InternalBackupInventoryInfoResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.ResendNotificationResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrieveSecureCodeAuthPinResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.TransactionsResponse;
+import com.livngroup.gds.domain.LivnBaseReq;
 import com.livngroup.gds.domain.LivnInstantApprovalReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
@@ -44,7 +50,7 @@ public class GeneralController extends WexController {
 	/*
 	 * DeleteAuthorization
 	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=TransactionsResponse.class), 
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=DeleteAuthorizationResponse.class), 
 	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/auth/delete", produces="application/json", method=RequestMethod.POST)
@@ -72,7 +78,7 @@ public class GeneralController extends WexController {
 	/*
 	 * DeleteInstantApproval
 	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=TransactionsResponse.class), 
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=InstantApprovalResponse.class), 
 	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/approval/delete", produces="application/json", method=RequestMethod.POST)
@@ -99,7 +105,7 @@ public class GeneralController extends WexController {
 	/*
 	 * InstantApproval
 	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=TransactionsResponse.class), 
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=InstantApprovalResponse.class), 
 	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/approval/check", produces="application/json", method=RequestMethod.POST)
@@ -125,7 +131,7 @@ public class GeneralController extends WexController {
 	/*
 	 * GetBackupInventoryInfo
 	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=TransactionsResponse.class), 
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=InternalBackupInventoryInfoResponse.class), 
 	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/inventory-info/get", produces="application/json", method=RequestMethod.POST)
@@ -147,6 +153,84 @@ public class GeneralController extends WexController {
 			ErrorResponse errRes = responseService.getErrorResponseDefault("One of input values should be a number.\nPlease check again the value of input parameter(s).");
 			response = new ResponseEntity<Object>(errRes, HttpStatus.NOT_ACCEPTABLE);
 		}
+
+		return response;
+	}
+
+	/*
+	 * GetBackupInventoryInfo
+	 */
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=ResendNotificationResponse.class), 
+	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/notification/resend", produces="application/json", method=RequestMethod.POST)
+	public @ResponseBody ResponseEntity<Object> resendNotification(@RequestBody LivnBaseReq resendReq) throws WexAppException {
+		ResponseEntity<Object> response;
+		
+		assertNotNull("resendReq", resendReq);
+		assertNotNull("resendReq.bankNumber", resendReq.getBankNumber());
+		assertNotNull("resendReq.companyNumber", resendReq.getCompanyNumber());
+		assertNotNull("resendReq.purchaseLogUniqueID", resendReq.getPurchaseLogUniqueID());
+
+		CallResponse result = generalService.resendNotification(resendReq);
+			if(result.getOk()) {
+				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
+			} else {
+				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.GENERAL);
+				response = new ResponseEntity<Object>(warnRes, result.getStatus());
+			}
+
+		return response;
+	}
+
+	/*
+	 * RetrieveSecureCodeAuthPin
+	 */
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=RetrieveSecureCodeAuthPinResponse.class), 
+	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/secure-code/retrieve", produces="application/json", method=RequestMethod.POST)
+	public @ResponseBody ResponseEntity<Object> retrieveSecureCodeAuthPin(@RequestBody LivnBaseReq retrieveReq) throws WexAppException {
+		ResponseEntity<Object> response;
+		
+		assertNotNull("retrieveReq", retrieveReq);
+		assertNotNull("retrieveReq.bankNumber", retrieveReq.getBankNumber());
+		assertNotNull("retrieveReq.companyNumber", retrieveReq.getCompanyNumber());
+		assertNotNull("retrieveReq.purchaseLogUniqueID", retrieveReq.getPurchaseLogUniqueID());
+
+		CallResponse result = generalService.retrieveSecureCodeAuthPin(retrieveReq);
+			if(result.getOk()) {
+				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
+			} else {
+				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.GENERAL);
+				response = new ResponseEntity<Object>(warnRes, result.getStatus());
+			}
+
+		return response;
+	}
+
+	/*
+	 * RetrieveSecureCodeAuthPin
+	 */
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=RetrieveSecureCodeAuthPinResponse.class), 
+	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/checklog/submit", produces="application/json", method=RequestMethod.POST)
+	public @ResponseBody ResponseEntity<Object> submitCheckLog(@RequestBody LivnBaseReq retrieveReq) throws WexAppException {
+		ResponseEntity<Object> response;
+		
+		assertNotNull("retrieveReq", retrieveReq);
+		assertNotNull("retrieveReq.bankNumber", retrieveReq.getBankNumber());
+		assertNotNull("retrieveReq.companyNumber", retrieveReq.getCompanyNumber());
+		assertNotNull("retrieveReq.purchaseLogUniqueID", retrieveReq.getPurchaseLogUniqueID());
+
+		CallResponse result = generalService.retrieveSecureCodeAuthPin(retrieveReq);
+			if(result.getOk()) {
+				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
+			} else {
+				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.GENERAL);
+				response = new ResponseEntity<Object>(warnRes, result.getStatus());
+			}
 
 		return response;
 	}

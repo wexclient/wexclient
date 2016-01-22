@@ -15,7 +15,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentSc
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentScheduleResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentScheduleResponseE;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
-import com.livngroup.gds.domain.LivnPaymentReq;
+import com.livngroup.gds.domain.LivnBaseReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
@@ -32,7 +32,7 @@ public class WexPaymentService extends WexService {
 	@Autowired
 	private CallResponseService callResponseService;
 
-	public CallResponse getPaymentInformationUrl(LivnPaymentReq paymentReq) throws WexAppException {
+	public CallResponse getPaymentInformationUrl(LivnBaseReq paymentReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
@@ -68,7 +68,7 @@ public class WexPaymentService extends WexService {
 	/*
 	 * GetPaymentSchedule
 	 */
-	public CallResponse getPaymentSchedule(LivnPaymentReq paymentReq) throws WexAppException {
+	public CallResponse getPaymentSchedule(LivnBaseReq paymentReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {

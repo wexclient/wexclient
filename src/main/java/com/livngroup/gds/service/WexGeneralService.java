@@ -37,7 +37,10 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrieveSecu
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitCheckLog;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitCheckLogResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UserToken;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.VendorInfo;
+import com.livngroup.gds.domain.LivnBaseReq;
 import com.livngroup.gds.domain.LivnInstantApprovalReq;
+import com.livngroup.gds.domain.LivnPurchaseLog;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
@@ -215,16 +218,16 @@ public class WexGeneralService extends WexService {
 	/*
 	 * ResendNotification
 	 */
-	public CallResponse resendNotification(String bankNo, String compNo, String uniqueId) throws WexAppException {
+	public CallResponse resendNotification(LivnBaseReq resendReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
 			ResendNotificationRequest reqObj = new ResendNotificationRequest();
 			ResendNotification reqData = new ResendNotification();
 			
-			reqObj.setBankNumber(bankNo);
-			reqObj.setCompanyNumber(compNo);
-			reqObj.setPurchaseLogUniqueID(uniqueId);
+			reqObj.setBankNumber(resendReq.getBankNumber());
+			reqObj.setCompanyNumber(resendReq.getCompanyNumber());
+			reqObj.setPurchaseLogUniqueID(resendReq.getPurchaseLogUniqueID());
 
 			reqData.setRequest(reqObj);
 			
@@ -252,16 +255,16 @@ public class WexGeneralService extends WexService {
 	/*
 	 * RetrieveSecureCodeAuthPin
 	 */
-	public CallResponse retrieveSecureCodeAuthPin(String bankNo, String compNo, String uniqueId) throws WexAppException {
+	public CallResponse retrieveSecureCodeAuthPin(LivnBaseReq retrieveReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
 			RetrieveSecureCodeAuthPinRequest reqObj = new RetrieveSecureCodeAuthPinRequest();
 			RetrieveSecureCodeAuthPin reqData = new RetrieveSecureCodeAuthPin();
 			
-			reqObj.setBankNumber(bankNo);
-			reqObj.setCompanyNumber(compNo);
-			reqObj.setPurchaseLogUniqueID(uniqueId);
+			reqObj.setBankNumber(retrieveReq.getBankNumber());
+			reqObj.setCompanyNumber(retrieveReq.getCompanyNumber());
+			reqObj.setPurchaseLogUniqueID(retrieveReq.getPurchaseLogUniqueID());
 
 			reqData.setRequest(reqObj);
 			
@@ -289,23 +292,24 @@ public class WexGeneralService extends WexService {
 	/*
 	 * SubmitCheckLog
 	 */
-	public CallResponse submitCheckLog(String bankNo, String compNo, BigDecimal invAmount) throws WexAppException {
+	public CallResponse submitCheckLog(LivnBaseReq checklogReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
-			SubmitCheckLog reqObj = new SubmitCheckLog();
-			reqObj.setUser((UserToken)wexUserToken);
-//			reqObj.setVendorInfo(param);
+			SubmitCheckLog reqData = new SubmitCheckLog();
+			reqData.setUser((UserToken)wexUserToken);
 			
-			PurchaseLog reqData = new PurchaseLog();
-			reqData.setBankNumber(bankNo);
-			reqData.setCompanyNumber(compNo);
-			reqData.setInvoiceAmount(invAmount);
-			reqData.setBillingCurrency("AUD");
+			PurchaseLog reqObj = new PurchaseLog();
+			reqObj.setBankNumber(checklogReq.getBankNumber());
+			reqObj.setCompanyNumber(checklogReq.getCompanyNumber());
+			reqObj.setBillingCurrency("AUD");
+			reqData.setPurchaseLog(reqObj);
 			
-			reqObj.setPurchaseLog(reqData);
+			VendorInfo vendorInfo = new VendorInfo();
+			vendorInfo.setName("");
+			reqData.setVendorInfo(vendorInfo);
 			
-			SubmitCheckLogResponse subResp = purchaseLogServiceStub.submitCheckLog(reqObj);
+			SubmitCheckLogResponse subResp = purchaseLogServiceStub.submitCheckLog(reqData);
 			if(subResp != null && subResp.getSubmitCheckLogResult() != null) {
 				PurchaseLogResponse result = subResp.getSubmitCheckLogResult();
 

@@ -57,7 +57,7 @@ public class TransactionController extends WexController {
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetTransactionsResponse.class), 
 	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/get", produces="application/json", method=RequestMethod.GET)
+	@RequestMapping(value="/get", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<Object> getTransactions(
 							@RequestBody LivnTransactionReq transactReq) throws WexAppException {
 		ResponseEntity<Object> response;		
@@ -84,7 +84,7 @@ public class TransactionController extends WexController {
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetTransactionsInternationalResponse.class), 
 	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/international/get", produces="application/json", method=RequestMethod.GET)
+	@RequestMapping(value="/international/get", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<Object> getTransactionsInternational(
 							@RequestBody LivnTransactionReq transactReq) throws WexAppException {
 		ResponseEntity<Object> response;		
@@ -169,7 +169,7 @@ public class TransactionController extends WexController {
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetRecentAccountActivityResponse.class), 
 	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/recent/get", produces="application/json", method=RequestMethod.GET)
+	@RequestMapping(value="/recent/get", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<Object> getRecentActivity(
 							@RequestBody LivnTransactionReq transactReq) throws WexAppException {
 		ResponseEntity<Object> response;		
@@ -196,7 +196,7 @@ public class TransactionController extends WexController {
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetRecentAccountActivityInternationalResponse.class), 
 	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
 	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/recent/international/get", produces="application/json", method=RequestMethod.GET)
+	@RequestMapping(value="/recent/international/get", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<Object> getRecentActivityInternational(
 								@RequestBody LivnTransactionReq transactReq) throws WexAppException {
 		ResponseEntity<Object> response;		
