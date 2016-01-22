@@ -5,15 +5,22 @@ import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DisputeTransactionResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DisputedTransactionsResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetRecentAccountActivityInternationalResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetRecentAccountActivityResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetTransactionsInternationalResponse;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetTransactionsResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.TransactionsResponse;
+import com.livngroup.gds.domain.LivnTransactionReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
@@ -47,26 +54,25 @@ public class TransactionController extends WexController {
 	/*
 	 * GetTransactions
 	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=TransactionsResponse.class), 
-			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
-			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetTransactionsResponse.class), 
+	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/get", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<Object> getTransactions(@RequestParam String bankNo, 
-														@RequestParam String compNo, 
-														@RequestParam String uniqueId) throws WexAppException {
+	public @ResponseBody ResponseEntity<Object> getTransactions(
+							@RequestBody LivnTransactionReq transactReq) throws WexAppException {
 		ResponseEntity<Object> response;		
 		
-		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
-			CallResponse result = transactionService.getTransactions(bankNo, compNo, uniqueId);
-			if(result.getOk()) {
-				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
-			} else {
-				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
-				response = new ResponseEntity<Object>(warnRes, result.getStatus());
-			}
+		assertNotNull("transactReq", transactReq);
+		assertNotNull("transactionReq.bankNumber", transactReq.getBankNumber());
+		assertNotNull("transactionReq.companyNumber", transactReq.getCompanyNumber());
+		assertNotNull("transactionReq.purchaseLogUniqueID", transactReq.getPurchaseLogUniqueID());
+		
+		CallResponse result = transactionService.getTransactions(transactReq);
+		if(result.getOk()) {
+			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse errRes = responseService.getErrorResponseDefault("One of input values should be a number.\nPlease check again the value of input parameter(s).");
-			response = new ResponseEntity<Object>(errRes, HttpStatus.NOT_ACCEPTABLE);
+			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
 		return response;
@@ -76,25 +82,24 @@ public class TransactionController extends WexController {
 	 * GetTransactionsInternational
 	 */
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetTransactionsInternationalResponse.class), 
-			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
-			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/getInternational", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<Object> getTransactionsInternational(@RequestParam String bankNo, 
-														@RequestParam String compNo, 
-														@RequestParam String uniqueId) throws WexAppException {
+	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/international/get", produces="application/json", method=RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Object> getTransactionsInternational(
+							@RequestBody LivnTransactionReq transactReq) throws WexAppException {
 		ResponseEntity<Object> response;		
 		
-		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
-			CallResponse result = transactionService.getTransactionsInternational(bankNo, compNo, uniqueId);
-			if(result.getOk()) {
-				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
-			} else {
-				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
-				response = new ResponseEntity<Object>(warnRes, result.getStatus());
-			}
+		assertNotNull("transactReq", transactReq);
+		assertNotNull("transactionReq.bankNumber", transactReq.getBankNumber());
+		assertNotNull("transactionReq.companyNumber", transactReq.getCompanyNumber());
+		assertNotNull("transactionReq.purchaseLogUniqueID", transactReq.getPurchaseLogUniqueID());
+
+		CallResponse result = transactionService.getTransactionsInternational(transactReq);
+		if(result.getOk()) {
+			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse errRes = responseService.getErrorResponseDefault("One of input values should be a number.\nPlease check again the value of input parameter(s).");
-			response = new ResponseEntity<Object>(errRes, HttpStatus.NOT_ACCEPTABLE);
+			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
 		return response;
@@ -103,10 +108,10 @@ public class TransactionController extends WexController {
 	/*
 	 * DisputeTransaction
 	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetTransactionsInternationalResponse.class), 
-			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
-			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/dispute", produces="application/json", method=RequestMethod.GET)
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=DisputeTransactionResponse.class), 
+	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/dispute/check", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Object> disputeTransaction(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
 														@RequestParam String uniqueId) throws WexAppException {
@@ -131,10 +136,10 @@ public class TransactionController extends WexController {
 	/*
 	 * GetDisputedTransactions
 	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetTransactionsInternationalResponse.class), 
-			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
-			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/getDisputed", produces="application/json", method=RequestMethod.GET)
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=DisputedTransactionsResponse.class), 
+	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/dispute/get", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Object> getDisputedTransactions(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
 														@RequestParam String uniqueId, 
@@ -159,56 +164,54 @@ public class TransactionController extends WexController {
 	}
 
 	/*
-	 * GetRecentAccountActivityInternational
+	 * GetRecentAccountActivity
 	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetTransactionsInternationalResponse.class), 
-			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
-			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/getRecentActsInt", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<Object> getRecentActivityInternational(@RequestParam String bankNo, 
-														@RequestParam String compNo, 
-														@RequestParam String uniqueId) throws WexAppException {
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetRecentAccountActivityResponse.class), 
+	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/recent/get", produces="application/json", method=RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Object> getRecentActivity(
+							@RequestBody LivnTransactionReq transactReq) throws WexAppException {
 		ResponseEntity<Object> response;		
 		
-		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
-			CallResponse result = transactionService.getRecentAccountActivityInternational(bankNo, compNo, uniqueId);
-			if(result.getOk()) {
-				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
-			} else {
-				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
-				response = new ResponseEntity<Object>(warnRes, result.getStatus());
-			}
+		assertNotNull("transactReq", transactReq);
+		assertNotNull("transactionReq.bankNumber", transactReq.getBankNumber());
+		assertNotNull("transactionReq.companyNumber", transactReq.getCompanyNumber());
+		assertNotNull("transactionReq.purchaseLogUniqueID", transactReq.getPurchaseLogUniqueID());
+
+		CallResponse result = transactionService.getRecentAccountActivity(transactReq);
+		if(result.getOk()) {
+			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse errRes = responseService.getErrorResponseDefault("One of input values should be a number.\nPlease check again the value of input parameter(s).");
-			response = new ResponseEntity<Object>(errRes, HttpStatus.NOT_ACCEPTABLE);
+			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
 		return response;
 	}
 
 	/*
-	 * GetRecentAccountActivity
+	 * GetRecentAccountActivityInternational
 	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetTransactionsInternationalResponse.class), 
-			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
-			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/getRecentActs", produces="application/json", method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<Object> getRecentActivity(@RequestParam String bankNo, 
-														@RequestParam String compNo, 
-														@RequestParam String uniqueId) throws WexAppException {
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetRecentAccountActivityInternationalResponse.class), 
+	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/recent/international/get", produces="application/json", method=RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Object> getRecentActivityInternational(
+								@RequestBody LivnTransactionReq transactReq) throws WexAppException {
 		ResponseEntity<Object> response;		
 		
-		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
-			CallResponse result = transactionService.getRecentAccountActivity(bankNo, compNo, uniqueId);
-			if(result.getOk()) {
-				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
-			} else {
-				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
-				response = new ResponseEntity<Object>(warnRes, result.getStatus());
-			}
+		assertNotNull("transactReq", transactReq);
+		assertNotNull("transactionReq.bankNumber", transactReq.getBankNumber());
+		assertNotNull("transactionReq.companyNumber", transactReq.getCompanyNumber());
+		assertNotNull("transactionReq.purchaseLogUniqueID", transactReq.getPurchaseLogUniqueID());
+
+		CallResponse result = transactionService.getRecentAccountActivityInternational(transactReq);
+		if(result.getOk()) {
+			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse errRes = responseService.getErrorResponseDefault("One of input values should be a number.\nPlease check again the value of input parameter(s).");
-			response = new ResponseEntity<Object>(errRes, HttpStatus.NOT_ACCEPTABLE);
+			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
 		return response;

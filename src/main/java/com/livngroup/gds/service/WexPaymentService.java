@@ -15,6 +15,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentSc
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentScheduleResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPaymentScheduleResponseE;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
+import com.livngroup.gds.domain.LivnPaymentReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
@@ -31,25 +32,22 @@ public class WexPaymentService extends WexService {
 	@Autowired
 	private CallResponseService callResponseService;
 
-	public CallResponse getPaymentInformationUrl(String bankNo, String compNo, String uniqueId) throws WexAppException {
+	public CallResponse getPaymentInformationUrl(LivnPaymentReq paymentReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
 			GetPaymentInformationUrl getPaymentInformationUrl = new GetPaymentInformationUrl();
-			GetPaymentInformationUrlResponseE resEncap;
-			GetPaymentInformationUrlResponse result;
-			
 			getPaymentInformationUrl.setUser(wexUser);
 			
 			GetPaymentInformationUrlRequest req = new GetPaymentInformationUrlRequest();
-			req.setBankNumber(bankNo);
-			req.setCompanyNumber(compNo);
-			req.setPurchaseLogUniqueID(uniqueId);
+			req.setBankNumber(paymentReq.getBankNumber());
+			req.setCompanyNumber(paymentReq.getCompanyNumber());
+			req.setPurchaseLogUniqueID(paymentReq.getPurchaseLogUniqueID());
 			getPaymentInformationUrl.setRequest(req);
 			
-			resEncap = purchaseLogServiceStub.getPaymentInformationUrl(getPaymentInformationUrl);
+			GetPaymentInformationUrlResponseE resEncap = purchaseLogServiceStub.getPaymentInformationUrl(getPaymentInformationUrl);
 			if(resEncap != null && resEncap.getGetPaymentInformationUrlResult() != null) {
-				result = resEncap.getGetPaymentInformationUrlResult();
+				GetPaymentInformationUrlResponse result = resEncap.getGetPaymentInformationUrlResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
@@ -70,7 +68,7 @@ public class WexPaymentService extends WexService {
 	/*
 	 * GetPaymentSchedule
 	 */
-	public CallResponse getPaymentSchedule(String bankNo, String compNo, String uniqueId) throws WexAppException {
+	public CallResponse getPaymentSchedule(LivnPaymentReq paymentReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
@@ -81,9 +79,9 @@ public class WexPaymentService extends WexService {
 			getPaymentSchedule.setUser(wexUser);
 			
 			GetPaymentScheduleRequest req = new GetPaymentScheduleRequest();
-			req.setBankNumber(bankNo);
-			req.setCompanyNumber(compNo);
-			req.setPurchaseLogUniqueID(uniqueId);
+			req.setBankNumber(paymentReq.getBankNumber());
+			req.setCompanyNumber(paymentReq.getCompanyNumber());
+			req.setPurchaseLogUniqueID(paymentReq.getPurchaseLogUniqueID());
 			getPaymentSchedule.setRequest(req);
 			
 			resEncap = purchaseLogServiceStub.getPaymentSchedule(getPaymentSchedule);

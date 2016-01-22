@@ -37,13 +37,14 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.RetrieveSecu
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitCheckLog;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.SubmitCheckLogResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UserToken;
+import com.livngroup.gds.domain.LivnInstantApprovalReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 
 @Service("wexSecurityService")
-public class WexSecurityService extends WexService {
+public class WexGeneralService extends WexService {
 
 	@Override
 	protected WexEntity getWexEntity() {
@@ -61,9 +62,6 @@ public class WexSecurityService extends WexService {
 		CallResponse response = new CallResponse();
 		
 		try {
-			DeleteAuthorizationResponseE subResp;
-			DeleteAuthorizationResponse result;
-			
 			DeleteAuthorizationRequest reqObj = new DeleteAuthorizationRequest();
 			DeleteAuthorization reqData = new DeleteAuthorization();
 			
@@ -76,9 +74,9 @@ public class WexSecurityService extends WexService {
 
 			reqData.setRequest(reqObj);
 			
-			subResp = purchaseLogServiceStub.deleteAuthorization(reqData);
+			DeleteAuthorizationResponseE subResp = purchaseLogServiceStub.deleteAuthorization(reqData);
 			if(subResp != null && subResp.getDeleteAuthorizationResult() != null) {
-				result = subResp.getDeleteAuthorizationResult();
+				DeleteAuthorizationResponse result = subResp.getDeleteAuthorizationResult();
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
@@ -100,27 +98,24 @@ public class WexSecurityService extends WexService {
 	/*
 	 * DeleteInstantApproval
 	 */
-	public CallResponse deleteInstantApproval(String bankNo, String compNo, String accNo,  
-								String authNo, String uniqueId, BigDecimal invAmount) throws WexAppException {
+	public CallResponse deleteInstantApproval(LivnInstantApprovalReq approvalReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
-			DeleteInstantApprovalResponse subResp;
-			InstantApprovalResponse result;
-			
 			InstantApprovalRequest reqObj = new InstantApprovalRequest();
 			DeleteInstantApproval reqData = new DeleteInstantApproval();
 			
-			reqObj.setBankNumber(bankNo);
-			reqObj.setCompanyNumber(compNo);
-			reqObj.setAccountNumber(accNo);
-			reqObj.setPurchaseLogUniqueID(uniqueId);
+			reqObj.setBankNumber(approvalReq.getBankNumber());
+			reqObj.setCompanyNumber(approvalReq.getCompanyNumber());
+			reqObj.setAccountNumber(approvalReq.getAccountNumber());
+			reqObj.setPurchaseLogUniqueID(approvalReq.getPurchaseLogUniqueID());
+			reqObj.setUpperBound(approvalReq.getUppperBound());
 
 			reqData.setRequest(reqObj);
 			
-			subResp = purchaseLogServiceStub.deleteInstantApproval(reqData);
+			DeleteInstantApprovalResponse subResp = purchaseLogServiceStub.deleteInstantApproval(reqData);
 			if(subResp != null && subResp.getDeleteInstantApprovalResult() != null) {
-				result = subResp.getDeleteInstantApprovalResult();
+				InstantApprovalResponse result = subResp.getDeleteInstantApprovalResult();
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
@@ -143,24 +138,23 @@ public class WexSecurityService extends WexService {
 	 * GetInternalBackupInventoryInfo
 	 */
 	public CallResponse getInternalBackupInventoryInfo(String bankNo, String compNo, 
-									String orderId, String lookBackDays) throws WexAppException {
+									String orderId, int lookBackDays) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
-			GetInternalBackupInventoryInfoResponse subResp;
-			InternalBackupInventoryInfoResponse result;
-			
 			InternalBackupInventoryInfoRequest reqObj = new InternalBackupInventoryInfoRequest();
 			GetInternalBackupInventoryInfo reqData = new GetInternalBackupInventoryInfo();
 			
 			reqObj.setBankNumber(bankNo);
 			reqObj.setCompanyNumber(compNo);
+			reqObj.setOrderID(orderId);
+			reqObj.setLookBackDays(lookBackDays);
 
 			reqData.setRequest(reqObj);
 			
-			subResp = purchaseLogServiceStub.getInternalBackupInventoryInfo(reqData);
+			GetInternalBackupInventoryInfoResponse subResp = purchaseLogServiceStub.getInternalBackupInventoryInfo(reqData);
 			if(subResp != null && subResp.getGetInternalBackupInventoryInfoResult() != null) {
-				result = subResp.getGetInternalBackupInventoryInfoResult();
+				InternalBackupInventoryInfoResponse result = subResp.getGetInternalBackupInventoryInfoResult();
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
@@ -182,27 +176,24 @@ public class WexSecurityService extends WexService {
 	/*
 	 * InstantApproval
 	 */
-	public CallResponse instantApproval(String bankNo, String compNo, String accNo,  
-								String authNo, String uniqueId, BigDecimal invAmount) throws WexAppException {
+	public CallResponse instantApproval(LivnInstantApprovalReq approvalReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
-			InstantApprovalResponseE subResp;
-			InstantApprovalResponse result;
-			
 			InstantApprovalRequest reqObj = new InstantApprovalRequest();
 			InstantApproval reqData = new InstantApproval();
 			
-			reqObj.setBankNumber(bankNo);
-			reqObj.setCompanyNumber(compNo);
-			reqObj.setAccountNumber(accNo);
-			reqObj.setPurchaseLogUniqueID(uniqueId);
+			reqObj.setBankNumber(approvalReq.getBankNumber());
+			reqObj.setCompanyNumber(approvalReq.getCompanyNumber());
+			reqObj.setAccountNumber(approvalReq.getAccountNumber());
+			reqObj.setPurchaseLogUniqueID(approvalReq.getPurchaseLogUniqueID());
+			reqObj.setUpperBound(approvalReq.getUppperBound());
 
 			reqData.setRequest(reqObj);
 			
-			subResp = purchaseLogServiceStub.instantApproval(reqData);
+			InstantApprovalResponseE subResp = purchaseLogServiceStub.instantApproval(reqData);
 			if(subResp != null && subResp.getInstantApprovalResult() != null) {
-				result = subResp.getInstantApprovalResult();
+				InstantApprovalResponse result = subResp.getInstantApprovalResult();
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
@@ -228,9 +219,6 @@ public class WexSecurityService extends WexService {
 		CallResponse response = new CallResponse();
 		
 		try {
-			ResendNotificationResponseE subResp;
-			ResendNotificationResponse result;
-			
 			ResendNotificationRequest reqObj = new ResendNotificationRequest();
 			ResendNotification reqData = new ResendNotification();
 			
@@ -240,9 +228,9 @@ public class WexSecurityService extends WexService {
 
 			reqData.setRequest(reqObj);
 			
-			subResp = purchaseLogServiceStub.resendNotification(reqData);
+			ResendNotificationResponseE subResp = purchaseLogServiceStub.resendNotification(reqData);
 			if(subResp != null && subResp.getResendNotificationResult() != null) {
-				result = subResp.getResendNotificationResult();
+				ResendNotificationResponse result = subResp.getResendNotificationResult();
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
@@ -268,9 +256,6 @@ public class WexSecurityService extends WexService {
 		CallResponse response = new CallResponse();
 		
 		try {
-			RetrieveSecureCodeAuthPinResponseE subResp;
-			RetrieveSecureCodeAuthPinResponse result;
-			
 			RetrieveSecureCodeAuthPinRequest reqObj = new RetrieveSecureCodeAuthPinRequest();
 			RetrieveSecureCodeAuthPin reqData = new RetrieveSecureCodeAuthPin();
 			
@@ -280,9 +265,9 @@ public class WexSecurityService extends WexService {
 
 			reqData.setRequest(reqObj);
 			
-			subResp = purchaseLogServiceStub.retrieveSecureCodeAuthPin(reqData);
+			RetrieveSecureCodeAuthPinResponseE subResp = purchaseLogServiceStub.retrieveSecureCodeAuthPin(reqData);
 			if(subResp != null && subResp.getRetrieveSecureCodeAuthPinResult() != null) {
-				result = subResp.getRetrieveSecureCodeAuthPinResult();
+				RetrieveSecureCodeAuthPinResponse result = subResp.getRetrieveSecureCodeAuthPinResult();
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
@@ -308,9 +293,6 @@ public class WexSecurityService extends WexService {
 		CallResponse response = new CallResponse();
 		
 		try {
-			SubmitCheckLogResponse subResp;
-			PurchaseLogResponse result;
-			
 			SubmitCheckLog reqObj = new SubmitCheckLog();
 			reqObj.setUser((UserToken)wexUserToken);
 //			reqObj.setVendorInfo(param);
@@ -323,9 +305,9 @@ public class WexSecurityService extends WexService {
 			
 			reqObj.setPurchaseLog(reqData);
 			
-			subResp = purchaseLogServiceStub.submitCheckLog(reqObj);
-			result = subResp.getSubmitCheckLogResult();
-			if(result != null && result.getValidationResults() != null) {
+			SubmitCheckLogResponse subResp = purchaseLogServiceStub.submitCheckLog(reqObj);
+			if(subResp != null && subResp.getSubmitCheckLogResult() != null) {
+				PurchaseLogResponse result = subResp.getSubmitCheckLogResult();
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {

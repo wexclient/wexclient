@@ -54,7 +54,7 @@ public class BackupCardController extends WexController {
 
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=CallResponse.class), 
 	@ApiResponse(code=402, message="Input amount is not number", response=CallResponse.class)})
-	@RequestMapping(value="/getNoWaiting", produces="application/json", method=RequestMethod.POST)
+	@RequestMapping(value="/nowaiting/get", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<Object> getCardWithoutWaiting(@RequestParam String bankNo,
 											@RequestParam String compNo,
 											@RequestParam(value="cardLimit", required=false) String cardLimit) throws WexAppException {
@@ -73,7 +73,7 @@ public class BackupCardController extends WexController {
 
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=CallResponse.class), 
 	@ApiResponse(code=402, message="Input amount is not number", response=CallResponse.class)})
-	@RequestMapping(value="/getPresetImage", produces="application/json", method=RequestMethod.GET)
+	@RequestMapping(value="/preset/image/get", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Object> getCardWithPdf(@RequestParam String bankNo,
 											@RequestParam String compNo,
 											@RequestParam(value="cardLimit", required=false) String cardLimit) throws WexAppException {
@@ -91,7 +91,7 @@ public class BackupCardController extends WexController {
 	}
 
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=CallResponse.class), 
-					@ApiResponse(code=402, message="Input amount is not number", response=CallResponse.class)})
+	@ApiResponse(code=402, message="Input amount is not number", response=CallResponse.class)})
 	@RequestMapping(value="/order", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody GeneralResponse orderCard(@RequestParam String bankNo,
 												@RequestParam String compNo,

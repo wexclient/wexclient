@@ -22,7 +22,7 @@ public class GdsDateUtil {
 		
 		LocalDate formatDate = LocalDate.parse(strDate, dayFormatter);
 		
-		Date convertToDate = Date.from(formatDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+		Date convertToDate = Date.from(formatDate.atStartOfDay().atZone(sydneyTimeZone).toInstant());
 			
 		cDate.setTime(convertToDate);
 		

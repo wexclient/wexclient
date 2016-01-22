@@ -29,6 +29,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetTransacti
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetTransactionsResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.TransactionsResponse;
+import com.livngroup.gds.domain.LivnTransactionReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
@@ -48,25 +49,22 @@ public class WexTransactionService extends WexService {
 	/*
 	 * GetTransactions
 	 */
-	public CallResponse getTransactions(String bankNo, String compNo, String uniqueId) throws WexAppException {
+	public CallResponse getTransactions(LivnTransactionReq transactReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
-			GetTransactionsResponse resEncap;
-			TransactionsResponse result;
-			
 			GetRecentAccountActivityRequest reqObj = new GetRecentAccountActivityRequest();
-			reqObj.setBankNumber(bankNo);
-			reqObj.setCompanyNumber(compNo);
-			reqObj.setPurchaseLogUniqueID(uniqueId);
+			reqObj.setBankNumber(transactReq.getBankNumber());
+			reqObj.setCompanyNumber(transactReq.getCompanyNumber());
+			reqObj.setPurchaseLogUniqueID(transactReq.getPurchaseLogUniqueID());
 
 			GetTransactions reqData = new GetTransactions();
 			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.getTransactions(reqData);
+			GetTransactionsResponse resEncap = purchaseLogServiceStub.getTransactions(reqData);
 			if(resEncap != null && resEncap.getGetTransactionsResult() != null) {
-				result = resEncap.getGetTransactionsResult();
+				TransactionsResponse result = resEncap.getGetTransactionsResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
@@ -87,25 +85,22 @@ public class WexTransactionService extends WexService {
 	/*
 	 * GetTransactionsInternational
 	 */
-	public CallResponse getTransactionsInternational(String bankNo, String compNo, String uniqueId) throws WexAppException {
+	public CallResponse getTransactionsInternational(LivnTransactionReq transactReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
-			GetTransactionsInternationalResponseE resEncap;
-			GetTransactionsInternationalResponse result;
-			
 			GetRecentAccountActivityRequest reqObj = new GetRecentAccountActivityRequest();
-			reqObj.setBankNumber(bankNo);
-			reqObj.setCompanyNumber(compNo);
-			reqObj.setPurchaseLogUniqueID(uniqueId);
+			reqObj.setBankNumber(transactReq.getBankNumber());
+			reqObj.setCompanyNumber(transactReq.getCompanyNumber());
+			reqObj.setPurchaseLogUniqueID(transactReq.getPurchaseLogUniqueID());
 
 			GetTransactionsInternational reqData = new GetTransactionsInternational();
 			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.getTransactionsInternational(reqData);
+			GetTransactionsInternationalResponseE resEncap = purchaseLogServiceStub.getTransactionsInternational(reqData);
 			if(resEncap != null && resEncap.getGetTransactionsInternationalResult() != null) {
-				result = resEncap.getGetTransactionsInternationalResult();
+				GetTransactionsInternationalResponse result = resEncap.getGetTransactionsInternationalResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
@@ -126,25 +121,22 @@ public class WexTransactionService extends WexService {
 	/*
 	 * GetRecentAccountActivity
 	 */
-	public CallResponse getRecentAccountActivity(String bankNo, String compNo, String uniqueId) throws WexAppException {
+	public CallResponse getRecentAccountActivity(LivnTransactionReq transactReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
-			GetRecentAccountActivityResponseE resEncap;
-			GetRecentAccountActivityResponse result;
-			
 			GetRecentAccountActivityRequest reqObj = new GetRecentAccountActivityRequest();
-			reqObj.setBankNumber(bankNo);
-			reqObj.setCompanyNumber(compNo);
-			reqObj.setPurchaseLogUniqueID(uniqueId);
+			reqObj.setBankNumber(transactReq.getBankNumber());
+			reqObj.setCompanyNumber(transactReq.getCompanyNumber());
+			reqObj.setPurchaseLogUniqueID(transactReq.getPurchaseLogUniqueID());
 
 			GetRecentAccountActivity reqData = new GetRecentAccountActivity();
 			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.getRecentAccountActivity(reqData);
+			GetRecentAccountActivityResponseE resEncap = purchaseLogServiceStub.getRecentAccountActivity(reqData);
 			if(resEncap != null && resEncap.getGetRecentAccountActivityResult() != null) {
-				result = resEncap.getGetRecentAccountActivityResult();
+				GetRecentAccountActivityResponse result = resEncap.getGetRecentAccountActivityResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
@@ -165,25 +157,22 @@ public class WexTransactionService extends WexService {
 	/*
 	 * GetRecentAccountActivityInternational
 	 */
-	public CallResponse getRecentAccountActivityInternational(String bankNo, String compNo, String uniqueId) throws WexAppException {
+	public CallResponse getRecentAccountActivityInternational(LivnTransactionReq transactReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
-			GetRecentAccountActivityInternationalResponseE resEncap;
-			GetRecentAccountActivityInternationalResponse result;
-
 			GetRecentAccountActivityRequest reqObj = new GetRecentAccountActivityRequest();
-			reqObj.setBankNumber(bankNo);
-			reqObj.setCompanyNumber(compNo);
-			reqObj.setPurchaseLogUniqueID(uniqueId);
+			reqObj.setBankNumber(transactReq.getBankNumber());
+			reqObj.setCompanyNumber(transactReq.getCompanyNumber());
+			reqObj.setPurchaseLogUniqueID(transactReq.getPurchaseLogUniqueID());
 
 			GetRecentAccountActivityInternational reqData = new GetRecentAccountActivityInternational();
 			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.getRecentAccountActivityInternational(reqData);
+			GetRecentAccountActivityInternationalResponseE resEncap = purchaseLogServiceStub.getRecentAccountActivityInternational(reqData);
 			if(resEncap != null && resEncap.getGetRecentAccountActivityInternationalResult() != null) {
-				result = resEncap.getGetRecentAccountActivityInternationalResult();
+				GetRecentAccountActivityInternationalResponse result = resEncap.getGetRecentAccountActivityInternationalResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
@@ -208,9 +197,6 @@ public class WexTransactionService extends WexService {
 		CallResponse response = new CallResponse();
 		
 		try {
-			DisputeTransactionResponseE resEncap;
-			DisputeTransactionResponse result;
-			
 			DisputeTransactionRequest reqObj = new DisputeTransactionRequest();
 			reqObj.setBankNumber(bankNo);
 			reqObj.setCompanyNumber(compNo);
@@ -220,9 +206,9 @@ public class WexTransactionService extends WexService {
 			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.disputeTransaction(reqData);
+			DisputeTransactionResponseE resEncap = purchaseLogServiceStub.disputeTransaction(reqData);
 			if(resEncap != null && resEncap.getDisputeTransactionResult() != null) {
-				result = resEncap.getDisputeTransactionResult();
+				DisputeTransactionResponse result = resEncap.getDisputeTransactionResult();
 				
 				DisputeTransactionResponseCodeEnum resultCode = result.getResponseCode();
 				if(DisputeTransactionResponseCodeEnum.Success.equals(resultCode)) {
@@ -247,9 +233,6 @@ public class WexTransactionService extends WexService {
 		CallResponse response = new CallResponse();
 		
 		try {
-			GetDisputedTransactionsResponse resEncap;
-			DisputedTransactionsResponse result;
-			
 			DisputedAccountActivityRequest reqObj = new DisputedAccountActivityRequest();
 			reqObj.setAccountNumber("12345678");
 			reqObj.setBankNumber(bankNo);
@@ -260,9 +243,9 @@ public class WexTransactionService extends WexService {
 			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
-			resEncap = purchaseLogServiceStub.getDisputedTransactions(reqData);
+			GetDisputedTransactionsResponse resEncap = purchaseLogServiceStub.getDisputedTransactions(reqData);
 			if(resEncap != null && resEncap.getGetDisputedTransactionsResult() != null) {
-				result = resEncap.getGetDisputedTransactionsResult();
+				DisputedTransactionsResponse result = resEncap.getGetDisputedTransactionsResult();
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
