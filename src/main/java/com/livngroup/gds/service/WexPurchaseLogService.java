@@ -237,7 +237,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * RetrievePurchaseLog
 	 */
-	public CallResponse retrievePurchaseLog(String bankNo, String compNo, String uniqueId)  throws WexAppException {
+	public CallResponse retrievePurchaseLog(String purchaseLogId) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
@@ -248,9 +248,9 @@ public class WexPurchaseLogService extends WexService {
 			reqObj.setUser((User)wexUser);
 			
 			RetrievePurchaseLogRequest reqData = new RetrievePurchaseLogRequest();
-			reqData.setBankNumber(bankNo);
-			reqData.setCompanyNumber(compNo);
-			reqData.setPurchaseLogUniqueID(uniqueId);
+			reqData.setBankNumber(BANK_NUMBER);
+			reqData.setCompanyNumber(COMPANY_ID);
+			reqData.setPurchaseLogUniqueID(purchaseLogId);
 			
 			reqObj.setRequest(reqData);
 			

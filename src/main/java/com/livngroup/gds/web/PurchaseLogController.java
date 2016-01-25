@@ -102,6 +102,26 @@ public class PurchaseLogController extends WexController {
 		return response;
 	}
 	
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=GetPurchaseLogHistoryResponse.class), 
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/retrieveLog/{purchaseLogId}", produces="application/json", method=RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Object> retrieveLog(@PathVariable("purchaseLogId") String purchaseLogId) throws WexAppException {
+
+		assertNotEmpty("purchaseLogId", purchaseLogId);
+
+		ResponseEntity<Object> response;
+		CallResponse result = wexService.retrievePurchaseLog(purchaseLogId);
+		if(result.getOk()) {
+			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
+		} else {
+			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.PURCHASE_LOG);
+			response = new ResponseEntity<Object>(warnRes, result.getStatus());
+		}
+		
+		return response;
+	}
+	
 	/*
 	 * QueryPurchaseLogs
 	 */
