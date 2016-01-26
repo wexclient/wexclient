@@ -579,5 +579,4 @@ public class WexPurchaseLogService extends WexService {
 		
 		return response;
 	}
-
 }
