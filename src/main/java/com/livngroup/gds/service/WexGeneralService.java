@@ -75,6 +75,7 @@ public class WexGeneralService extends WexService {
 			reqObj.setPurchaseLogUniqueID(uniqueId);
 			reqObj.setAmount(invAmount);
 
+			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
 			DeleteAuthorizationResponseE subResp = purchaseLogServiceStub.deleteAuthorization(reqData);
@@ -114,6 +115,7 @@ public class WexGeneralService extends WexService {
 			reqObj.setPurchaseLogUniqueID(approvalReq.getPurchaseLogUniqueID());
 			reqObj.setUpperBound(approvalReq.getUppperBound());
 
+			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
 			DeleteInstantApprovalResponse subResp = purchaseLogServiceStub.deleteInstantApproval(reqData);
@@ -140,6 +142,7 @@ public class WexGeneralService extends WexService {
 	/*
 	 * GetInternalBackupInventoryInfo
 	 */
+	@Deprecated
 	public CallResponse getInternalBackupInventoryInfo(String bankNo, String compNo, 
 									String orderId, int lookBackDays) throws WexAppException {
 		CallResponse response = new CallResponse();
@@ -153,6 +156,7 @@ public class WexGeneralService extends WexService {
 			reqObj.setOrderID(orderId);
 			reqObj.setLookBackDays(lookBackDays);
 
+			reqData.setUser(wexUserToken);
 			reqData.setRequest(reqObj);
 			
 			GetInternalBackupInventoryInfoResponse subResp = purchaseLogServiceStub.getInternalBackupInventoryInfo(reqData);
@@ -192,6 +196,7 @@ public class WexGeneralService extends WexService {
 			reqObj.setPurchaseLogUniqueID(approvalReq.getPurchaseLogUniqueID());
 			reqObj.setUpperBound(approvalReq.getUppperBound());
 
+			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
 			InstantApprovalResponseE subResp = purchaseLogServiceStub.instantApproval(reqData);
@@ -229,6 +234,7 @@ public class WexGeneralService extends WexService {
 			reqObj.setCompanyNumber(resendReq.getCompanyNumber());
 			reqObj.setPurchaseLogUniqueID(resendReq.getPurchaseLogUniqueID());
 
+			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
 			ResendNotificationResponseE subResp = purchaseLogServiceStub.resendNotification(reqData);
@@ -266,6 +272,7 @@ public class WexGeneralService extends WexService {
 			reqObj.setCompanyNumber(retrieveReq.getCompanyNumber());
 			reqObj.setPurchaseLogUniqueID(retrieveReq.getPurchaseLogUniqueID());
 
+			reqData.setUser(wexUser);
 			reqData.setRequest(reqObj);
 			
 			RetrieveSecureCodeAuthPinResponseE subResp = purchaseLogServiceStub.retrieveSecureCodeAuthPin(reqData);
@@ -292,6 +299,7 @@ public class WexGeneralService extends WexService {
 	/*
 	 * SubmitCheckLog
 	 */
+	@Deprecated
 	public CallResponse submitCheckLog(LivnBaseReq checklogReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		

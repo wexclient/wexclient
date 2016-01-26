@@ -16,6 +16,7 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurcha
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPurchaseLogHistoryResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.QueryPurchaseLogsResponse;
 import com.livngroup.gds.domain.LivnPurchaseLog;
+import com.livngroup.gds.domain.LivnPurchaseLogUpdateReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
@@ -141,6 +142,25 @@ public class PurchaseLogController extends WexController {
 		}
 		
 		return response;
+	}
+
+	/* CreatePurchaseLog */
+	@ApiResponses(value={@ApiResponse(code=200, message="", response=CreatePurchaseLogResponse.class), 
+			@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
+			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
+	@RequestMapping(value="/update", produces="application/json", method=RequestMethod.POST)
+	public @ResponseBody GeneralResponse updatePurchaseLog(@RequestBody LivnPurchaseLogUpdateReq updateLog) throws WexAppException {
+		
+		assertNotNull("updateLog", updateLog);
+		assertNotEmpty("updateLog.invoiceNumber", updateLog.getInvoiceNumber());
+		assertNotEmpty("updateLog.leadPassengerName", updateLog.getLeadPassengerName());
+		assertNotEmpty("updateLog.reservationId", updateLog.getReservationId());
+		assertPositiveNumber("updateLog.amount", updateLog.getAmount());
+		
+		CallResponse response = wexService.updatePurchaseLog(updateLog);
+
+		logger.debug(response.getMessage());
+		return (GeneralResponse) response;
 	}
 
 }

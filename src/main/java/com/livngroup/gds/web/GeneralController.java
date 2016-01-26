@@ -129,36 +129,7 @@ public class GeneralController extends WexController {
 	}
 
 	/*
-	 * GetBackupInventoryInfo
-	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=InternalBackupInventoryInfoResponse.class), 
-	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
-	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/inventory-info/get", produces="application/json", method=RequestMethod.POST)
-	public @ResponseBody ResponseEntity<Object> getBackupInventoryInfo(@RequestParam String bankNo, 
-														@RequestParam String compNo, 
-														@RequestParam String orderId,
-														@RequestParam int lookBackDays) throws WexAppException {
-		ResponseEntity<Object> response;
-		
-		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
-			CallResponse result = generalService.getInternalBackupInventoryInfo(bankNo, compNo, orderId, lookBackDays);
-			if(result.getOk()) {
-				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
-			} else {
-				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.GENERAL);
-				response = new ResponseEntity<Object>(warnRes, result.getStatus());
-			}
-		} else {
-			ErrorResponse errRes = responseService.getErrorResponseDefault("One of input values should be a number.\nPlease check again the value of input parameter(s).");
-			response = new ResponseEntity<Object>(errRes, HttpStatus.NOT_ACCEPTABLE);
-		}
-
-		return response;
-	}
-
-	/*
-	 * GetBackupInventoryInfo
+	 * ResendNotification
 	 */
 	@ApiResponses(value={@ApiResponse(code=200, message="", response=ResendNotificationResponse.class), 
 	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
@@ -191,32 +162,6 @@ public class GeneralController extends WexController {
 	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/secure-code/retrieve", produces="application/json", method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<Object> retrieveSecureCodeAuthPin(@RequestBody LivnBaseReq retrieveReq) throws WexAppException {
-		ResponseEntity<Object> response;
-		
-		assertNotNull("retrieveReq", retrieveReq);
-		assertNotNull("retrieveReq.bankNumber", retrieveReq.getBankNumber());
-		assertNotNull("retrieveReq.companyNumber", retrieveReq.getCompanyNumber());
-		assertNotNull("retrieveReq.purchaseLogUniqueID", retrieveReq.getPurchaseLogUniqueID());
-
-		CallResponse result = generalService.retrieveSecureCodeAuthPin(retrieveReq);
-			if(result.getOk()) {
-				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
-			} else {
-				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.GENERAL);
-				response = new ResponseEntity<Object>(warnRes, result.getStatus());
-			}
-
-		return response;
-	}
-
-	/*
-	 * RetrieveSecureCodeAuthPin
-	 */
-	@ApiResponses(value={@ApiResponse(code=200, message="", response=RetrieveSecureCodeAuthPinResponse.class), 
-	@ApiResponse(code=400, message="WEX Error Reason", response=ErrorResponse.class),
-	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
-	@RequestMapping(value="/checklog/submit", produces="application/json", method=RequestMethod.POST)
-	public @ResponseBody ResponseEntity<Object> submitCheckLog(@RequestBody LivnBaseReq retrieveReq) throws WexAppException {
 		ResponseEntity<Object> response;
 		
 		assertNotNull("retrieveReq", retrieveReq);

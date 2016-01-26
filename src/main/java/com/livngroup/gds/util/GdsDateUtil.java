@@ -17,6 +17,7 @@ public class GdsDateUtil {
 	private final static ZoneId sydneyTimeZone = ZoneId.of("Australia/Sydney");
 
 	public static Calendar getCalendarFromString(String strDate) {
+		if(strDate == null || "".equals(strDate)) return null;
 		
 		Calendar cDate = Calendar.getInstance();
 		

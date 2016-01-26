@@ -5,6 +5,8 @@ public class LivnBaseReq {
 	String	companyNumber;
 	String	purchaseLogUniqueID;
 	
+	public LivnBaseReq() {}
+	
 	public LivnBaseReq(String bankNumber, String companyNumber, String purchaseLogUniqueID) {
 		this.bankNumber = bankNumber;
 		this.companyNumber = companyNumber;
