@@ -2,7 +2,6 @@ package com.livngroup.gds.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,12 +9,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.livngroup.gds.domain.LivnBaseReq;
-import com.livngroup.gds.domain.LivnTransactionReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
-import com.livngroup.gds.response.GeneralResponse;
 import com.livngroup.gds.service.WexPaymentService;
 import com.livngroup.gds.service.WebResponseService;
 
@@ -37,7 +34,7 @@ public class PaymentInfoController extends WexController {
 		return WexEntity.PAYMENT_SCHEDULE;
 	}
 
-	@RequestMapping(value="/getSchedule", produces="application/json", method=RequestMethod.POST)
+	@RequestMapping(value="/getSchedule", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Object> getSchedule(@RequestParam String bankNo, 
 														@RequestParam String compNo, 
 														@RequestParam String uniqueId) throws WexAppException {

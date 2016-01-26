@@ -72,19 +72,19 @@ public class WexPaymentService extends WexService {
 		CallResponse response = new CallResponse();
 		
 		try {
-			GetPaymentSchedule getPaymentSchedule = new GetPaymentSchedule();
+			GetPaymentSchedule reqObj = new GetPaymentSchedule();
 			GetPaymentScheduleResponseE resEncap;
 			GetPaymentScheduleResponse result;
 			
-			getPaymentSchedule.setUser(wexUser);
+			reqObj.setUser(wexUser);
 			
-			GetPaymentScheduleRequest req = new GetPaymentScheduleRequest();
-			req.setBankNumber(paymentReq.getBankNumber());
-			req.setCompanyNumber(paymentReq.getCompanyNumber());
-			req.setPurchaseLogUniqueID(paymentReq.getPurchaseLogUniqueID());
-			getPaymentSchedule.setRequest(req);
+			GetPaymentScheduleRequest reqData = new GetPaymentScheduleRequest();
+			reqData.setBankNumber(paymentReq.getBankNumber());
+			reqData.setCompanyNumber(paymentReq.getCompanyNumber());
+			reqData.setPurchaseLogUniqueID(paymentReq.getPurchaseLogUniqueID());
+			reqObj.setRequest(reqData);
 			
-			resEncap = purchaseLogServiceStub.getPaymentSchedule(getPaymentSchedule);
+			resEncap = purchaseLogServiceStub.getPaymentSchedule(reqObj);
 			if(resEncap != null && resEncap.getGetPaymentScheduleResult() != null) {
 				result = resEncap.getGetPaymentScheduleResult();
 				

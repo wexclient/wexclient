@@ -58,10 +58,12 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.User;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.UserToken;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.VendorInfo;
 import com.livngroup.gds.domain.LivnPurchaseLog;
+import com.livngroup.gds.domain.LivnPurchaseLogUpdateReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
+import com.livngroup.gds.util.GdsDateUtil;
 
 @Service
 public class WexPurchaseLogService extends WexService {
@@ -92,6 +94,16 @@ public class WexPurchaseLogService extends WexService {
 
 			requestParam.setDeliveryMethod(PurchaseLogDeliveryMethod.Email);
 			requestParam.setDeliveryAddress("michael.park@livngroup.com");
+
+			PaymentScheduleItem aSchedule = new PaymentScheduleItem();
+			aSchedule.setActiveFromDate(Calendar.getInstance());
+			aSchedule.setActiveToDate(GdsDateUtil.getCalendarFromString("2016-07-25"));
+			aSchedule.setAmount(purchaseLog.getAmount());
+			aSchedule.setCreditLimit(new BigDecimal("1000"));
+
+			ArrayOfPaymentScheduleItem arraySchedule = new ArrayOfPaymentScheduleItem();
+			arraySchedule.addPaymentScheduleItem(aSchedule);
+			requestParam.setPaymentSchedule(arraySchedule);
 
 			CreatePurchaseLog reqObj = new CreatePurchaseLog();
 			reqObj.setUser(wexUser);
@@ -278,6 +290,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * SubmitBackupPurchaseLog
 	 */
+	@Deprecated
 	public CallResponse submitBackupPurchaseLog(String bankNo, String compNo, BigDecimal invAmount)  throws WexAppException {
 		CallResponse response = new CallResponse();
 		
@@ -320,6 +333,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * SubmitBackupPurchaseLogWithFaxInfo
 	 */
+	@Deprecated
 	public CallResponse submitBackupPurchaseLogWithFaxInfo(String bankNo, String compNo, 
 												BigDecimal invAmount, String currency)  throws WexAppException {
 		CallResponse response = new CallResponse();
@@ -363,6 +377,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * SubmitPurchaseLog
 	 */
+	@Deprecated
 	public CallResponse submitPurchaseLog(String bankNo, String compNo, BigDecimal invAmount)  throws WexAppException {
 		CallResponse response = new CallResponse();
 		
@@ -405,6 +420,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * SubmitPurchaseLogAndGetImagePdf
 	 */
+	@Deprecated
 	public CallResponse submitPurchaseLogAndGetImagePdf(String bankNo, String compNo, BigDecimal invAmount)  throws WexAppException {
 		CallResponse response = new CallResponse();
 		
@@ -447,6 +463,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * SubmitPurchaseLogWithFaxInfo
 	 */
+	@Deprecated
 	public CallResponse submitPurchaseLogWithFaxInfo(String bankNo, String compNo, 
 												BigDecimal invAmount, String currency)  throws WexAppException {
 		CallResponse response = new CallResponse();
@@ -490,7 +507,7 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * UpdatesPurchaseLog
 	 */
-	public CallResponse updatePurchaseLog(String bankNo, String compNo, String uniqueId, BigDecimal amount) throws WexAppException {
+	public CallResponse updatePurchaseLog(LivnPurchaseLogUpdateReq purchaseLog) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
@@ -498,35 +515,48 @@ public class WexPurchaseLogService extends WexService {
 			UpdatePurchaseLogResponseE resEncap;
 			
 			UpdatePurchaseLog reqObj = new UpdatePurchaseLog();
-			reqObj.setUser((User)wexUser);
-			
+
 			VendorInfo aVendor = new VendorInfo();
-			aVendor.setID("");
-			aVendor.setName("");
+			aVendor.setID("LVH");
+			aVendor.setName("Livn Holidays");
 			aVendor.setPaymentType(PaymentTypeEnum.Card);
 
 			PaymentScheduleItem aSchedule = new PaymentScheduleItem();
-			Calendar fromCalendar = Calendar.getInstance();
-			Calendar toCalendar = Calendar.getInstance();
-			LocalDate fromDate = LocalDate.of(2015, 12, 31);
-			LocalDate toDate = LocalDate.of(2017, 1, 1);
-			fromCalendar.setTime(Date.from(fromDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-			toCalendar.setTime(Date.from(toDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-			aSchedule.setActiveFromDate(fromCalendar);
-			aSchedule.setActiveToDate(toCalendar);
-			aSchedule.setAmount(new BigDecimal("120"));
-			aSchedule.setCreditLimit(amount);
-			
-			UpdatePurchaseLogRequest reqData = new UpdatePurchaseLogRequest();
-			reqData.setBankNumber(bankNo);
-			reqData.setCompanyNumber(compNo);
-			reqData.setPurchaseLogUniqueID(uniqueId);
-			reqData.setVendor(aVendor);
+			aSchedule.setActiveFromDate(Calendar.getInstance());
+			aSchedule.setActiveToDate(GdsDateUtil.getCalendarFromString(purchaseLog.getActiveToDate()));
+			aSchedule.setAmount(purchaseLog.getAmount());
+			aSchedule.setCreditLimit(purchaseLog.getCreditLimit());
 
 			ArrayOfPaymentScheduleItem arraySchedule = new ArrayOfPaymentScheduleItem();
 			arraySchedule.addPaymentScheduleItem(aSchedule);
-			reqData.setPaymentSchedule(arraySchedule);
+
+			UpdatePurchaseLogRequest reqData = new UpdatePurchaseLogRequest();
+			reqData.setBankNumber(purchaseLog.getBankNumber());
+			reqData.setCompanyNumber(purchaseLog.getCompanyNumber());
+			reqData.setPurchaseLogUniqueID(purchaseLog.getPurchaseLogUniqueID());
+			reqData.setActiveFromDate(Calendar.getInstance());
+			reqData.setActiveToDate(GdsDateUtil.getCalendarFromString(purchaseLog.getActiveToDate()));
+			reqData.setAmount(purchaseLog.getAmount());
+
+			reqData.setUserDefinedFields(asArray(
+					asUserDefinedField(LivnPurchaseLog.UDF_RESERVATION_ID,purchaseLog.getReservationId()),
+					asUserDefinedField(LivnPurchaseLog.UDF_LEAD_PASSENGER_NAME,purchaseLog.getLeadPassengerName()),
+					asUserDefinedField(LivnPurchaseLog.UDF_INVOICE_NUMBER,purchaseLog.getInvoiceNumber())
+			));
+
+			reqData.setDeliveryMethod(PurchaseLogDeliveryMethod.Email);
+			reqData.setDeliveryAddress("michael.park@livngroup.com");
+
+//			reqData.setVendor(aVendor);
+//			reqData.setMccGroupProfileName("");
+//			reqData.setDeliveryAttention("");
+//			reqData.setMinAmount(new BigDecimal("100"));
+//			reqData.setAuthHoldDays(1);
 			
+			reqData.setPaymentSchedule(arraySchedule);
+//			reqData.set_InternalId1(0);
+			
+			reqObj.setUser((User)wexUser);
 			reqObj.setRequest(reqData);
 			
 			resEncap = purchaseLogServiceStub.updatePurchaseLog(reqObj);
@@ -549,5 +579,4 @@ public class WexPurchaseLogService extends WexService {
 		
 		return response;
 	}
-
 }

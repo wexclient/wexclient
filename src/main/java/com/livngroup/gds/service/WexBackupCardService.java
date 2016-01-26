@@ -69,6 +69,7 @@ public class WexBackupCardService extends WexService {
 	/*
 	 * GetBackupCards
 	 */
+	@Deprecated
 	@Transactional()
 	public CallResponse getBackupCards(String bankNo, String compNo, String orderId) throws WexAppException {
 		CallResponse response = new CallResponse();
@@ -129,6 +130,7 @@ public class WexBackupCardService extends WexService {
 	/* 
 	 * GetBackupCardsInternational 
 	 */
+	@Deprecated
 	public CallResponse getBackupCardsInternational(String bankNo, String compNo, String orderId) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
@@ -168,6 +170,7 @@ public class WexBackupCardService extends WexService {
 	/* 
 	 * GetBackupCardsWithoutWating 
 	 */
+	@Deprecated
 	public CallResponse getBackupCardsWithoutWating(String bankNo, String compNo, String orderId) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
@@ -207,6 +210,7 @@ public class WexBackupCardService extends WexService {
 	/* 
 	 * GetBackupCardsWithoutWaitingInternational 
 	 */
+	@Deprecated
 	public CallResponse getBackupCardsWithoutWaitingInternational(
 							String bankNo, String compNo, String orderId) throws WexAppException {
 		CallResponse response = new CallResponse();
@@ -247,6 +251,7 @@ public class WexBackupCardService extends WexService {
 	/* 
 	 * GetPresetBackupCards 
 	 */
+	@Deprecated
 	public CallResponse getPresetBackupCards(String bankNo, String compNo, String orderId) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
@@ -286,6 +291,7 @@ public class WexBackupCardService extends WexService {
 	/* 
 	 * GetPresetBackupCardsWithImagePdf
 	 */
+	@Deprecated
 	public CallResponse getPresetBackupCardsWithImagePdf(String bankNo, String compNo, String orderId) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
@@ -325,6 +331,7 @@ public class WexBackupCardService extends WexService {
 	/*
 	 * OrderBackupCards
 	 */
+	@Deprecated
 	public CallResponse orderBackupCards(String bankNo, String compNo, String orderId) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
