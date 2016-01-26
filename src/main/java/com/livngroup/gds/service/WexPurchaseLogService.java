@@ -75,6 +75,8 @@ public class WexPurchaseLogService extends WexService {
 	protected WexEntity getWexEntity() {
 		return WexEntity.PURCHASE_LOG;
 	}
+	
+	private final static int MAX_RETURN_OF_QUERY = 10;
 
 	/* 
 	 * CreatePurchaseLog 
@@ -220,7 +222,11 @@ public class WexPurchaseLogService extends WexService {
 			logger.debug("BankNo : {} ", bankNo);
 			logger.debug("CompanyNo : {} ", compNo);
 			logger.debug("Status : {} ", status);
-			reqData.setStatus(status);
+//			reqData.setStatus(status);
+//			reqData.setAmount(new BigDecimal("500"));
+//			reqData.setAmount2(new BigDecimal("1000"));
+			reqData.setBillingCurrency("AUD");
+			reqData.setMaxReturned(MAX_RETURN_OF_QUERY);
 			
 			reqObj.setRequest(reqData);
 			
