@@ -6,6 +6,13 @@ public class LivnTransactionReq {
 	String	purchaseLogUniqueID;
 	String	accountNumber;
 	int		maxReturned;
+	
+	public LivnTransactionReq(String bankNumber, String companyNumber, String purchaseLogUniqueID) {
+		this.bankNumber = bankNumber;
+		this.companyNumber = companyNumber;
+		this.purchaseLogUniqueID = purchaseLogUniqueID;
+	}
+	
 	public String getBankNumber() {
 		return bankNumber;
 	}

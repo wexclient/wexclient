@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +65,7 @@ import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.util.GdsDateUtil;
+import com.livngroup.gds.util.Validator;
 
 @Service
 public class WexPurchaseLogService extends WexService {
@@ -76,7 +78,11 @@ public class WexPurchaseLogService extends WexService {
 		return WexEntity.PURCHASE_LOG;
 	}
 	
-	private final static int MAX_RETURN_OF_QUERY = 10;
+	@Value("${payment-queue.email-to}")
+	protected String NOTIFY_EMAIL_ADDRESS;
+
+	@Value("${log-query.max-return}")
+	private int MAX_RETURN_OF_QUERY;
 
 	/* 
 	 * CreatePurchaseLog 
@@ -95,7 +101,7 @@ public class WexPurchaseLogService extends WexService {
 			));
 
 			requestParam.setDeliveryMethod(PurchaseLogDeliveryMethod.Email);
-			requestParam.setDeliveryAddress("michael.park@livngroup.com");
+			requestParam.setDeliveryAddress(NOTIFY_EMAIL_ADDRESS);
 
 			PaymentScheduleItem aSchedule = new PaymentScheduleItem();
 			aSchedule.setActiveFromDate(Calendar.getInstance());
@@ -203,7 +209,9 @@ public class WexPurchaseLogService extends WexService {
 	/*
 	 * QueryPurchaseLog
 	 */
-	public CallResponse queryPurchaseLogs(String bankNo, String compNo, String status) throws WexAppException {
+	public CallResponse queryPurchaseLogs(String bankNo, String compNo, 
+								String status, String fromAmount, String toAmount,
+								String currency, String fromDate, String toDate) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
@@ -217,16 +225,25 @@ public class WexPurchaseLogService extends WexService {
 			reqObj.setUser((User)wexUser);
 			
 			QueryPurchaseLogsRequest reqData = new QueryPurchaseLogsRequest();
+			reqData.setMaxReturned(MAX_RETURN_OF_QUERY);
 			reqData.setBankNumber(bankNo);
 			reqData.setCompanyNumber(compNo);
 			logger.debug("BankNo : {} ", bankNo);
 			logger.debug("CompanyNo : {} ", compNo);
 			logger.debug("Status : {} ", status);
-//			reqData.setStatus(status);
-//			reqData.setAmount(new BigDecimal("500"));
-//			reqData.setAmount2(new BigDecimal("1000"));
-			reqData.setBillingCurrency("AUD");
-			reqData.setMaxReturned(MAX_RETURN_OF_QUERY);
+
+			if(status != null)
+				reqData.setStatus(status);
+			if(fromAmount != null && Validator.isNumber(fromAmount))
+				reqData.setAmount(new BigDecimal(fromAmount));
+			if(toAmount != null && Validator.isNumber(toAmount))
+				reqData.setAmount2(new BigDecimal(toAmount));
+			if(currency != null)
+				reqData.setBillingCurrency(currency);
+			if(fromDate != null)
+				reqData.setCreateDate(GdsDateUtil.getCalendarFromString(fromDate));
+			if(toDate != null)
+				reqData.setCreateDate2(GdsDateUtil.getCalendarFromString(toDate));
 			
 			reqObj.setRequest(reqData);
 			
@@ -522,11 +539,6 @@ public class WexPurchaseLogService extends WexService {
 			
 			UpdatePurchaseLog reqObj = new UpdatePurchaseLog();
 
-			VendorInfo aVendor = new VendorInfo();
-			aVendor.setID("LVH");
-			aVendor.setName("Livn Holidays");
-			aVendor.setPaymentType(PaymentTypeEnum.Card);
-
 			PaymentScheduleItem aSchedule = new PaymentScheduleItem();
 			aSchedule.setActiveFromDate(Calendar.getInstance());
 			aSchedule.setActiveToDate(GdsDateUtil.getCalendarFromString(purchaseLog.getActiveToDate()));
@@ -551,9 +563,14 @@ public class WexPurchaseLogService extends WexService {
 			));
 
 			reqData.setDeliveryMethod(PurchaseLogDeliveryMethod.Email);
-			reqData.setDeliveryAddress("michael.park@livngroup.com");
+			reqData.setDeliveryAddress(NOTIFY_EMAIL_ADDRESS);
 
+//			VendorInfo aVendor = new VendorInfo();
+//			aVendor.setID("LVH");
+//			aVendor.setName("Livn Holidays");
+//			aVendor.setPaymentType(PaymentTypeEnum.Card);
 //			reqData.setVendor(aVendor);
+
 //			reqData.setMccGroupProfileName("");
 //			reqData.setDeliveryAttention("");
 //			reqData.setMinAmount(new BigDecimal("100"));

@@ -37,7 +37,12 @@ public class WexPurchaseLogServiceTest {
 
 	private final String BANK_NO = "bankNo";
 	private final String COMP_NO = "compNo";
-	private final String LOG_STATUS = "logStatus";
+	private final String LOG_STATUS = "Open";
+	private final String AMOUNT = "100";
+	private final String AMOUNT2 = "1000";
+	private final String CURRENCY = "AUD";
+	private final String CREATE_DATE = "2016-01-01";
+	private final String CREATE_DATE2 = "2016-01-21";
 	
 	@Mock(name = "wexUser")
 	protected WexUser wexUser;
@@ -58,7 +63,7 @@ public class WexPurchaseLogServiceTest {
 		
     	when(purchaseLogServiceStubMock.queryPurchaseLogs(any())).thenReturn(createResponseObject(PurchaseLogResponseCodeEnum.Success));
 		
-		CallResponse callResponce = wexPurchaseLogService.queryPurchaseLogs(BANK_NO, COMP_NO, LOG_STATUS);
+		CallResponse callResponce = wexPurchaseLogService.queryPurchaseLogs(BANK_NO, COMP_NO, LOG_STATUS, AMOUNT, AMOUNT2, CURRENCY, CREATE_DATE, CREATE_DATE2);
 		
     	verify(purchaseLogServiceStubMock, times(1)).queryPurchaseLogs(any());
 		verifyNoMoreInteractions(purchaseLogServiceStubMock);
@@ -73,7 +78,7 @@ public class WexPurchaseLogServiceTest {
 		
     	when(purchaseLogServiceStubMock.queryPurchaseLogs(any())).thenReturn(createResponseObject(PurchaseLogResponseCodeEnum.Failed));
 		
-		CallResponse callResponce = wexPurchaseLogService.queryPurchaseLogs(BANK_NO, COMP_NO, LOG_STATUS);
+		CallResponse callResponce = wexPurchaseLogService.queryPurchaseLogs(BANK_NO, COMP_NO, LOG_STATUS, AMOUNT, AMOUNT2, CURRENCY, CREATE_DATE, CREATE_DATE2);
 		
     	verify(purchaseLogServiceStubMock, times(1)).queryPurchaseLogs(any());
 		verifyNoMoreInteractions(purchaseLogServiceStubMock);
@@ -88,7 +93,7 @@ public class WexPurchaseLogServiceTest {
 		
     	when(purchaseLogServiceStubMock.queryPurchaseLogs(any())).thenReturn(null);
 		
-		CallResponse callResponce = wexPurchaseLogService.queryPurchaseLogs(BANK_NO, COMP_NO, LOG_STATUS);
+		CallResponse callResponce = wexPurchaseLogService.queryPurchaseLogs(BANK_NO, COMP_NO, LOG_STATUS, AMOUNT, AMOUNT2, CURRENCY, CREATE_DATE, CREATE_DATE2);
 		
     	verify(purchaseLogServiceStubMock, times(1)).queryPurchaseLogs(any());
 		verifyNoMoreInteractions(purchaseLogServiceStubMock);
@@ -104,7 +109,7 @@ public class WexPurchaseLogServiceTest {
 		
     	when(purchaseLogServiceStubMock.queryPurchaseLogs(any())).thenReturn(createResponseObject(PurchaseLogResponseCodeEnum.InvalidUserCredentials));
 		
-		CallResponse callResponce = wexPurchaseLogService.queryPurchaseLogs(BANK_NO, COMP_NO, LOG_STATUS);
+		CallResponse callResponce = wexPurchaseLogService.queryPurchaseLogs(BANK_NO, COMP_NO, LOG_STATUS, AMOUNT, AMOUNT2, CURRENCY, CREATE_DATE, CREATE_DATE2);
 		
     	verify(purchaseLogServiceStubMock, times(1)).queryPurchaseLogs(any());
 		verifyNoMoreInteractions(purchaseLogServiceStubMock);

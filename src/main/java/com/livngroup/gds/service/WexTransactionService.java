@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DisputeTransaction;
+import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DisputeTransactionReasonEnum;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DisputeTransactionRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DisputeTransactionResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.DisputeTransactionResponseCodeEnum;
@@ -29,11 +30,15 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetTransacti
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetTransactionsResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.TransactionsResponse;
+import com.livngroup.gds.domain.LivnBaseReq;
+import com.livngroup.gds.domain.LivnDisputeTransactionReq;
 import com.livngroup.gds.domain.LivnTransactionReq;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
+import com.livngroup.gds.util.GdsDateUtil;
+import com.livngroup.gds.util.Validator;
 
 @Service("wexTransactionService")
 public class WexTransactionService extends WexService {
@@ -46,6 +51,8 @@ public class WexTransactionService extends WexService {
 	@Autowired
 	private CallResponseService callResponseService;
 
+	private final static int MAX_RETURN_OF_TRASACT = 10;
+
 	/*
 	 * GetTransactions
 	 */
@@ -56,7 +63,8 @@ public class WexTransactionService extends WexService {
 			GetRecentAccountActivityRequest reqObj = new GetRecentAccountActivityRequest();
 			reqObj.setBankNumber(transactReq.getBankNumber());
 			reqObj.setCompanyNumber(transactReq.getCompanyNumber());
-			reqObj.setPurchaseLogUniqueID(transactReq.getPurchaseLogUniqueID());
+//			reqObj.setPurchaseLogUniqueID(transactReq.getPurchaseLogUniqueID());
+			reqObj.setMaxReturned(MAX_RETURN_OF_TRASACT);
 
 			GetTransactions reqData = new GetTransactions();
 			reqData.setUser(wexUser);
@@ -129,6 +137,7 @@ public class WexTransactionService extends WexService {
 			reqObj.setBankNumber(transactReq.getBankNumber());
 			reqObj.setCompanyNumber(transactReq.getCompanyNumber());
 			reqObj.setPurchaseLogUniqueID(transactReq.getPurchaseLogUniqueID());
+			reqObj.setMaxReturned(MAX_RETURN_OF_TRASACT);
 
 			GetRecentAccountActivity reqData = new GetRecentAccountActivity();
 			reqData.setUser(wexUser);
@@ -193,14 +202,16 @@ public class WexTransactionService extends WexService {
 	/*
 	 * DisputeTransaction
 	 */
-	public CallResponse disputeTransaction(String bankNo, String compNo, String uniqueId) throws WexAppException {
+	public CallResponse disputeTransaction(LivnDisputeTransactionReq disputeReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
 			DisputeTransactionRequest reqObj = new DisputeTransactionRequest();
-			reqObj.setBankNumber(bankNo);
-			reqObj.setCompanyNumber(compNo);
-			reqObj.setPurchaseLogUniqueId(uniqueId);
+			reqObj.setBankNumber(disputeReq.getBankNumber());
+			reqObj.setCompanyNumber(disputeReq.getCompanyNumber());
+			reqObj.setPurchaseLogUniqueId(disputeReq.getPurchaseLogUniqueID());
+			reqObj.setDisputeAmount(disputeReq.getDisputeAmount());
+			reqObj.setDisputeReason(DisputeTransactionReasonEnum.IncorrectAmountBilled);
 
 			DisputeTransaction reqData = new DisputeTransaction();
 			reqData.setUser(wexUser);
@@ -229,15 +240,21 @@ public class WexTransactionService extends WexService {
 	/*
 	 * GetDisputeTransactions
 	 */
-	public CallResponse getDisputedTransactions(String bankNo, String compNo, String uniqueId, Calendar cDate) throws WexAppException {
+	public CallResponse getDisputedTransactions(String bankNo, String compNo, String uniqueId, 
+								String openOnly, String fromDate, String toDate) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
 		try {
 			DisputedAccountActivityRequest reqObj = new DisputedAccountActivityRequest();
-			reqObj.setAccountNumber("12345678");
 			reqObj.setBankNumber(bankNo);
 			reqObj.setCompanyNumber(compNo);
-			reqObj.setCreatedDate(cDate);
+
+			if(openOnly != null && Validator.isBoolean(openOnly))
+				reqObj.setOpenDisputesOnly(new Boolean(openOnly));
+			if(fromDate != null)
+				reqObj.setCreatedDate(GdsDateUtil.getCalendarFromString(fromDate));
+			if(toDate != null)
+				reqObj.setCreatedDate(GdsDateUtil.getCalendarFromString(toDate));
 
 			GetDisputedTransactions reqData = new GetDisputedTransactions();
 			reqData.setUser(wexUser);
@@ -262,5 +279,4 @@ public class WexTransactionService extends WexService {
 		
 		return response;
 	}
-
 }

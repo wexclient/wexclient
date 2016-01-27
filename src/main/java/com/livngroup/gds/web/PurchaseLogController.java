@@ -131,11 +131,16 @@ public class PurchaseLogController extends WexController {
 			@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/queryLog", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Object> queryPurchaseLog(@RequestParam String bankNo, 
-															@RequestParam String compNo, 
-															@RequestParam String status) throws WexAppException {
+													@RequestParam String compNo, 
+													@RequestParam(value="status", required=false) String status,
+													@RequestParam(value="fromAmount", required=false) String fromAmount,
+													@RequestParam(value="toAmount", required=false) String toAmount,
+													@RequestParam(value="currency", required=false) String currency,
+													@RequestParam(value="fromDate", required=false) String fromDate,
+													@RequestParam(value="toDate", required=false) String toDate) throws WexAppException {
 		ResponseEntity<Object> response;
 		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
-			CallResponse result = wexService.queryPurchaseLogs(bankNo, compNo, status);
+			CallResponse result = wexService.queryPurchaseLogs(bankNo, compNo, status, fromAmount, toAmount, currency, fromDate, toDate);
 			if(result.getOk()) {
 				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 			} else {

@@ -21,6 +21,8 @@
 	<entry key="payment-queue.send-email">false</entry>
 	<entry key="payment-queue.email-to">wexclientlivn@gmail.com</entry>
 
+	<entry key="log-query.max-return">10</entry>
+
 	<entry key="on-app-event.send-email">false</entry>
 	<entry key="on-app-event.email-to">wexclientlivn@gmail.com</entry>
 

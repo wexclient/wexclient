@@ -5,4 +5,9 @@ public class Validator {
 		try { new Integer(in);} catch(Exception e) {return false;}
 		return true;
 	}
+
+	public static Boolean isBoolean(String in) {
+		try { new Boolean(in);} catch(Exception e) {return false;}
+		return true;
+	}
 }
