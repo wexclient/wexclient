@@ -48,9 +48,6 @@ public class WexTransactionService extends WexService {
 		return WexEntity.TRANSACTION;
 	}
 
-	@Autowired
-	private CallResponseService callResponseService;
-
 	private final static int MAX_RETURN_OF_TRASACT = 10;
 
 	/*
@@ -76,12 +73,12 @@ public class WexTransactionService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
@@ -112,12 +109,12 @@ public class WexTransactionService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
@@ -149,12 +146,12 @@ public class WexTransactionService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
@@ -185,12 +182,12 @@ public class WexTransactionService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
@@ -223,12 +220,12 @@ public class WexTransactionService extends WexService {
 				
 				DisputeTransactionResponseCodeEnum resultCode = result.getResponseCode();
 				if(DisputeTransactionResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.DISPUTED_TRANSACTION);
@@ -266,12 +263,12 @@ public class WexTransactionService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.DISPUTED_TRANSACTION);

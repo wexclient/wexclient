@@ -23,7 +23,6 @@ import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
 import com.livngroup.gds.response.GeneralResponse;
 import com.livngroup.gds.service.WexPurchaseLogService;
-import com.livngroup.gds.service.WebResponseService;
 import com.livngroup.gds.util.Validator;
 
 import io.swagger.annotations.Api;
@@ -38,9 +37,6 @@ public class PurchaseLogController extends WexController {
 	@Autowired
 	WexPurchaseLogService wexService;
 
-	@Autowired
-	private WebResponseService responseService;
-	
 	@Override
 	protected WexEntity getEntytyType() {
 		return WexEntity.PURCHASE_LOG;
@@ -96,7 +92,7 @@ public class PurchaseLogController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.PURCHASE_LOG);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.PURCHASE_LOG);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 		
@@ -116,7 +112,7 @@ public class PurchaseLogController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.PURCHASE_LOG);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.PURCHASE_LOG);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 		
@@ -138,7 +134,12 @@ public class PurchaseLogController extends WexController {
 													@RequestParam(value="currency", required=false) String currency,
 													@RequestParam(value="fromDate", required=false) String fromDate,
 													@RequestParam(value="toDate", required=false) String toDate) throws WexAppException {
+
 		ResponseEntity<Object> response;
+
+		if(fromDate != null) assertDateFormat("fromDate", fromDate);
+		if(toDate != null) assertDateFormat("toDate", toDate);
+		
 		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
 			CallResponse result = wexService.queryPurchaseLogs(bankNo, compNo, status, fromAmount, toAmount, currency, fromDate, toDate);
 			if(result.getOk()) {

@@ -62,9 +62,6 @@ public class WexBackupCardService extends WexService {
 	protected WexEntity getWexEntity() {
 		return WexEntity.BACKUP_CARD;
 	}
-	
-	@Autowired
-	private CallResponseService callResponseService;
 
 	/*
 	 * GetBackupCards
@@ -94,12 +91,12 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -153,12 +150,12 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
@@ -193,12 +190,12 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
@@ -234,12 +231,12 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
@@ -274,12 +271,12 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);
@@ -314,12 +311,12 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PURCHASE_LOG);
@@ -367,12 +364,12 @@ public class WexBackupCardService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.BACKUP_CARD);

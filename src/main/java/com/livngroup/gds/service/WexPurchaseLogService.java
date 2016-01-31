@@ -70,9 +70,6 @@ import com.livngroup.gds.util.Validator;
 @Service
 public class WexPurchaseLogService extends WexService {
 	
-	@Autowired
-	private CallResponseService callResponseService;
-	
 	@Override
 	protected WexEntity getWexEntity() {
 		return WexEntity.PURCHASE_LOG;
@@ -160,12 +157,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -254,12 +251,12 @@ public class WexPurchaseLogService extends WexService {
 					
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -295,12 +292,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -338,12 +335,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -382,12 +379,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -425,12 +422,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -468,12 +465,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -512,12 +509,12 @@ public class WexPurchaseLogService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -588,12 +585,12 @@ public class WexPurchaseLogService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {

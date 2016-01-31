@@ -12,7 +12,9 @@ import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.exception.WexException;
 import com.livngroup.gds.exception.WexRuntimeException;
+import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
+import com.livngroup.gds.util.GdsDateUtil;
 import com.livngroup.gds.util.Validator;
 
 public abstract class WexController {
@@ -30,6 +32,13 @@ public abstract class WexController {
 		if (paramValue.doubleValue() <= 0d) {
 			throw exceptionForAssertion(paramName, paramValue, 
 					"Parameter: " + paramName + "=[" + paramValue + "] of input values should be a positive number.");
+		}
+	}
+
+	protected void assertDateFormat(String paramName, String paramValue) throws WexRuntimeException {
+		if (!GdsDateUtil.isDateFormat(paramValue)) {
+			throw exceptionForAssertion(paramName, paramValue, 
+					"Parameter: " + paramName + "=[" + paramValue + "] of input values should be a format of date(YYYY-MM-DD).\nPlease check again the value of input parameter(s).");
 		}
 	}
 
@@ -65,5 +74,17 @@ public abstract class WexController {
 		logger.error("Exception cought: " + exception.getMessage(), exception);
 	    return new ResponseEntity<ErrorResponse>(exception.getErrorResponse(), HttpStatus.valueOf(exception.getErrorResponse().getStatus()));
 	}
+
+	protected ErrorResponse getErrorResponse(CallResponse result, WexEntity entity) {
+		return new ErrorResponse(
+						result.getStatus(),
+						result.getStatus().toString(),
+						entity,
+						result.getMessage(),
+						ErrorResponse.URL_DEFAULT,
+						null,
+						result.getResult());
+	}
+
 
 }

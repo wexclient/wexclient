@@ -14,7 +14,6 @@ import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
 import com.livngroup.gds.service.WexPaymentService;
-import com.livngroup.gds.service.WebResponseService;
 
 import io.swagger.annotations.Api;
 
@@ -26,9 +25,6 @@ public class PaymentInfoController extends WexController {
 	@Autowired
 	private WexPaymentService paymentService;
 	
-	@Autowired
-	private WebResponseService responseService;
-
 	@Override
 	protected WexEntity getEntytyType() {
 		return WexEntity.PAYMENT_SCHEDULE;
@@ -50,7 +46,7 @@ public class PaymentInfoController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.TRANSACTION);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 		
@@ -73,7 +69,7 @@ public class PaymentInfoController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.TRANSACTION);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 		

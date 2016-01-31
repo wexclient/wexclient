@@ -29,9 +29,6 @@ public class WexPaymentService extends WexService {
 		return WexEntity.PAYMENT_SCHEDULE;
 	}
 
-	@Autowired
-	private CallResponseService callResponseService;
-
 	public CallResponse getPaymentInformationUrl(LivnBaseReq paymentReq) throws WexAppException {
 		CallResponse response = new CallResponse();
 		
@@ -51,12 +48,12 @@ public class WexPaymentService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);
@@ -90,12 +87,12 @@ public class WexPaymentService extends WexService {
 				
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 		} catch(RemoteException exc) {
 			throw ExceptionFactory.createServiceUnavailableForEntityException(exc, WexEntity.PAYMENT_SCHEDULE);

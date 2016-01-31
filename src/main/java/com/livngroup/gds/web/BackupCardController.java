@@ -14,7 +14,6 @@ import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
 import com.livngroup.gds.response.GeneralResponse;
-import com.livngroup.gds.service.WebResponseService;
 import com.livngroup.gds.service.WexBackupCardService;
 
 import io.swagger.annotations.Api;
@@ -30,9 +29,6 @@ public class BackupCardController extends WexController {
 	@Autowired
 	@Qualifier("wexBackupCardService")
 	private WexBackupCardService wexBackupCardService;
-
-	@Autowired
-	private WebResponseService responseService;
 
 	@Override
 	protected WexEntity getEntytyType() {
@@ -64,7 +60,7 @@ public class BackupCardController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.TRANSACTION);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 		
@@ -83,7 +79,7 @@ public class BackupCardController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.TRANSACTION);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 		

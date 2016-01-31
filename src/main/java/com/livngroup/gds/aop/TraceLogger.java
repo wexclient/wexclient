@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.livngroup.gds.response.CallResponse;
 
 @Aspect
@@ -16,12 +18,13 @@ import com.livngroup.gds.response.CallResponse;
 public class TraceLogger {
 
 	final protected Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@AfterReturning(
-			pointcut="execution(* com.livngroup.gds.service..Wex*(..))",
+			pointcut="execution(public * com.livngroup.gds.service.Wex*.*(..))",
 			returning="result")
 	public void traceWexApiCall(JoinPoint joinPoint, Object result) {
-		if (logger.isInfoEnabled()) {
+		if (logger.isInfoEnabled() && (result instanceof CallResponse) ) {
+			Gson gson = new GsonBuilder().create();
 			LocalDateTime now = LocalDateTime.now();
 			
 			String formatTimestamp = "[" + now +"] ";
@@ -29,8 +32,8 @@ public class TraceLogger {
 			
 			logger.info("{} {} Call Result : {}", 
 					formatTimestamp, 
-					joinPoint.getTarget(), 
-					callResoponse == null ? "EMPTY" : callResoponse.getMessage());
+					joinPoint.toString(), 
+					callResoponse == null ? "EMPTY" : gson.toJson(callResoponse));
 		}
 	}
 

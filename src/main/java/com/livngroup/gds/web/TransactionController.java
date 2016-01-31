@@ -28,7 +28,6 @@ import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
-import com.livngroup.gds.service.WebResponseService;
 import com.livngroup.gds.service.WexPurchaseLogService;
 import com.livngroup.gds.service.WexTransactionService;
 import com.livngroup.gds.util.GdsDateUtil;
@@ -46,9 +45,6 @@ public class TransactionController extends WexController {
 	@Autowired
 	WexTransactionService transactionService;
 
-	@Autowired
-	private WebResponseService responseService;
-	
 	@Override
 	protected WexEntity getEntytyType() {
 		return WexEntity.TRANSACTION;
@@ -77,7 +73,7 @@ public class TransactionController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.TRANSACTION);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
@@ -107,7 +103,7 @@ public class TransactionController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.TRANSACTION);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
@@ -135,7 +131,7 @@ public class TransactionController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.TRANSACTION);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
@@ -150,21 +146,24 @@ public class TransactionController extends WexController {
 	@ApiResponse(code=406, message="Not acceptable", response=ErrorResponse.class)})
 	@RequestMapping(value="/dispute/get", produces="application/json", method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Object> getDisputedTransactions(@RequestParam String bankNo, 
-														@RequestParam String compNo, 
-														@RequestParam String uniqueId,
-														@RequestParam String openOnly,
-														@RequestParam String fromDate,
-														@RequestParam String toDate) throws WexAppException {
+													@RequestParam String compNo, 
+													@RequestParam String uniqueId,
+													@RequestParam(value="openOnly", required=false) String openOnly,
+													@RequestParam(value="fromDate", required=false) String fromDate,
+													@RequestParam(value="toDate", required=false) String toDate) throws WexAppException {
 		ResponseEntity<Object> response;		
 		
 		assertNotNull("bankNo", bankNo);
 		assertNotNull("compNo", compNo);
+		assertNotNull("uniqueId", uniqueId);
+		if(fromDate != null) assertDateFormat("fromDate", fromDate);
+		if(toDate != null) assertDateFormat("toDate", toDate);
 
 		CallResponse result = transactionService.getDisputedTransactions(bankNo, compNo, uniqueId, openOnly, fromDate, toDate);
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.TRANSACTION);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
@@ -195,7 +194,7 @@ public class TransactionController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.TRANSACTION);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
@@ -225,7 +224,7 @@ public class TransactionController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.TRANSACTION);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.TRANSACTION);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 

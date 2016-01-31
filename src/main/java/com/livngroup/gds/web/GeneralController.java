@@ -22,7 +22,6 @@ import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.WexAppException;
 import com.livngroup.gds.response.CallResponse;
 import com.livngroup.gds.response.ErrorResponse;
-import com.livngroup.gds.service.WebResponseService;
 import com.livngroup.gds.service.WexGeneralService;
 import com.livngroup.gds.service.WexTransactionService;
 import com.livngroup.gds.util.Validator;
@@ -39,9 +38,6 @@ public class GeneralController extends WexController {
 	@Autowired
 	WexGeneralService generalService;
 
-	@Autowired
-	private WebResponseService responseService;
-	
 	@Override
 	protected WexEntity getEntytyType() {
 		return WexEntity.TRANSACTION;
@@ -58,18 +54,15 @@ public class GeneralController extends WexController {
 														@RequestParam String compNo, 
 														@RequestParam String uniqueId) throws WexAppException {
 		ResponseEntity<Object> response;
+		assertNumber("bankNo", bankNo);
+		assertNumber("compNo", compNo);
 		
-		if(Validator.isNumber(bankNo) && Validator.isNumber(compNo)) {
-			CallResponse result = generalService.deleteAuthorization(bankNo, compNo, null, null, uniqueId, null);
-			if(result.getOk()) {
-				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
-			} else {
-				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.GENERAL);
-				response = new ResponseEntity<Object>(warnRes, result.getStatus());
-			}
+		CallResponse result = generalService.deleteAuthorization(bankNo, compNo, null, null, uniqueId, null);
+		if(result.getOk()) {
+			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse errRes = responseService.getErrorResponseDefault("One of input values should be a number.\nPlease check again the value of input parameter(s).");
-			response = new ResponseEntity<Object>(errRes, HttpStatus.NOT_ACCEPTABLE);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.GENERAL);
+			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
 		return response;
@@ -95,7 +88,7 @@ public class GeneralController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.GENERAL);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.GENERAL);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
@@ -121,7 +114,7 @@ public class GeneralController extends WexController {
 		if(result.getOk()) {
 			response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 		} else {
-			ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.GENERAL);
+			ErrorResponse warnRes = getErrorResponse(result, WexEntity.GENERAL);
 			response = new ResponseEntity<Object>(warnRes, result.getStatus());
 		}
 
@@ -147,7 +140,7 @@ public class GeneralController extends WexController {
 			if(result.getOk()) {
 				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 			} else {
-				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.GENERAL);
+				ErrorResponse warnRes = getErrorResponse(result, WexEntity.GENERAL);
 				response = new ResponseEntity<Object>(warnRes, result.getStatus());
 			}
 
@@ -173,7 +166,7 @@ public class GeneralController extends WexController {
 			if(result.getOk()) {
 				response = new ResponseEntity<Object>(result.getResult(), result.getStatus());
 			} else {
-				ErrorResponse warnRes = responseService.getErrorResponse(result, WexEntity.GENERAL);
+				ErrorResponse warnRes = getErrorResponse(result, WexEntity.GENERAL);
 				response = new ResponseEntity<Object>(warnRes, result.getStatus());
 			}
 

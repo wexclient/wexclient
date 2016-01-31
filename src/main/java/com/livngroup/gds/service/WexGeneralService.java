@@ -54,9 +54,6 @@ public class WexGeneralService extends WexService {
 		return WexEntity.GENERAL;
 	}
 
-	@Autowired
-	private CallResponseService callResponseService;
-
 	/*
 	 * DeleteAuthorization
 	 */
@@ -84,12 +81,12 @@ public class WexGeneralService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -124,12 +121,12 @@ public class WexGeneralService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -165,12 +162,12 @@ public class WexGeneralService extends WexService {
 
 				BackupCardResponseCode resultCode = result.getResponseCode();
 				if(BackupCardResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -205,12 +202,12 @@ public class WexGeneralService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -243,12 +240,12 @@ public class WexGeneralService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -281,12 +278,12 @@ public class WexGeneralService extends WexService {
 
 				PurchaseLogResponseCodeEnum resultCode = result.getResponseCode();
 				if(PurchaseLogResponseCodeEnum.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
@@ -323,12 +320,12 @@ public class WexGeneralService extends WexService {
 
 				PLogResponseCode resultCode = result.getResponseCode();
 				if(PLogResponseCode.Success.equals(resultCode)) {
-					response = callResponseService.getCallSuccessResponse(result);
+					response = getCallSuccessResponse(result);
 				} else {
-					response = callResponseService.getCallFailResponse(resultCode.getValue(), result.getDescription());
+					response = getCallFailResponse(resultCode.getValue(), result.getDescription());
 				}
 			} else {
-				response = callResponseService.getCallFailDefaultResponse();
+				response = getCallFailDefaultResponse();
 			}
 			
 		} catch(RemoteException exc) {
