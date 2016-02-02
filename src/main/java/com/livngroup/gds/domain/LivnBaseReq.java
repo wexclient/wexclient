@@ -5,7 +5,12 @@ public class LivnBaseReq {
 	String	companyNumber;
 	String	purchaseLogUniqueID;
 	
+	public LivnBaseReq() {
+		super();
+	}
+	
 	public LivnBaseReq(String bankNumber, String companyNumber, String purchaseLogUniqueID) {
+		super();
 		this.bankNumber = bankNumber;
 		this.companyNumber = companyNumber;
 		this.purchaseLogUniqueID = purchaseLogUniqueID;

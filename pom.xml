@@ -29,6 +29,7 @@
     	<springfox-swagger2.version>2.0.2</springfox-swagger2.version>
     	<springfox-swagger-ui.version>2.0.2</springfox-swagger-ui.version>
     	<apache.commons.version>3.4</apache.commons.version>
+
 	</properties>
 
 	<dependencies>
@@ -193,8 +194,12 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${apache.commons.version}</version>
 		</dependency>
-        	
-        		
+
+		<!--dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency-->
+
 	</dependencies>
 	
 	<build>

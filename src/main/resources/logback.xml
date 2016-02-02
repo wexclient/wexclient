@@ -12,6 +12,8 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
     <!-- To enable JMX Management -->
     <jmxConfigurator/>
 
+    <appender name="wexPayloadTreadlocalAppender" class="com.livngroup.gds.aop.WexPayloadTreadlocalAppender" />
+
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%-5level %logger{0} - %msg%n</pattern>
@@ -41,18 +43,24 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
         </encoder>
     </appender>
 
-    <logger name="org.springframework" level="error"/>
-    <logger name="org.hibernate" level="error"/>
-    <logger name="com.aocsolutions.encompasswebservices" level="error"/>
-    <logger name="org.apache.axis2" level="error"/>
-    <logger name="org.apache.axiom" level="error"/>
-	<logger name="org.mockito" level="error"/>
-	<logger name="com.mangofactory.swagger" level="error"/>
-	<logger name="springfox.documentation" level="error"/>
-	<logger name="httpclient.wire" level="error"/>
-	<logger name="org.apache.commons.httpclient" level="error"/>
-    <logger name="com.livngroup.gds.service" level="debug"/>
-    <logger name="com.livngroup.gds.controller" level="debug"/>
+    <logger name="org.springframework" level="error" />
+    <logger name="org.hibernate" level="error" />
+    <logger name="com.aocsolutions.encompasswebservices" level="error" />
+    <logger name="org.apache.axis2" level="error" />
+    <logger name="org.apache.axiom" level="error" />
+	<logger name="org.mockito" level="error" />
+	<logger name="com.mangofactory.swagger" level="error" />
+	<logger name="springfox.documentation" level="error" />
+	<logger name="httpclient.wire" level="error" />
+	<logger name="org.apache.commons.httpclient" level="error" />
+    <logger name="com.livngroup.gds.service" level="debug" />
+    <logger name="com.livngroup.gds.controller" level="debug" />
+	<logger name="performance-monitor" level="off" />
+
+    <logger name="request-response-logger" level="off" />
+    <logger name="httpclient.wire.content" level="off">
+    	<appender-ref ref="wexPayloadTreadlocalAppender" />
+    </logger>
 
     <if condition='property("spring.profiles.active").equals("dev") || property("spring.profiles.active").equals("")'>
         <then>
@@ -60,6 +68,10 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
                 <appender-ref ref="console"/>
                 <appender-ref ref="FILE"/>
             </root>
+            
+		    <logger name="request-response-logger" level="trace" />
+		    <logger name="httpclient.wire.content" level="debug" />
+		    
 		    <logger name="performance-monitor" level="trace">
 		    	<appender-ref ref="FILE-PERFORMANCE" />
 		    </logger>
@@ -70,9 +82,6 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
             <root level="error">
                 <appender-ref ref="FILE"/>
             </root>
-		    <logger name="performance-monitor" level="off">
-		    	<appender-ref ref="FILE-PERFORMANCE" />
-		    </logger>
         </then>
     </if>
 

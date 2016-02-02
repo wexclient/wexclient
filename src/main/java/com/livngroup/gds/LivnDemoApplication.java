@@ -14,6 +14,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
@@ -38,6 +40,8 @@ import com.livngroup.gds.repositories.LivnAccountRepository;
 
 @Configuration
 @EnableAutoConfiguration
+@EnableAspectJAutoProxy
+//@EnableLoadTimeWeaving
 @SpringBootApplication
 @ImportResource(locations = "classpath:wex-client-rest-app-context.xml")
 @ComponentScan(basePackages = "com.livngroup.gds")
