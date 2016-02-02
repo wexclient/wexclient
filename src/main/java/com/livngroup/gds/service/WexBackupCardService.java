@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +20,6 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardOr
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardRequest;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.BackupCardResponseCode;
-import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLog;
-import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLogRequest;
-import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLogResponse;
-import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.CreatePurchaseLogResponseE;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCards;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsInternational;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetBackupCardsInternationalResponse;
@@ -39,8 +34,6 @@ import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPresetBac
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.GetPresetBackupCardsWithImagePdfResponse;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.OrderBackupCards;
 import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.OrderBackupCardsResponse;
-import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.PurchaseLogResponseCodeEnum;
-import com.aocsolutions.encompasswebservices.PurchaseLogServiceStub.User;
 import com.livngroup.gds.domain.BackupCard;
 import com.livngroup.gds.domain.WexEntity;
 import com.livngroup.gds.exception.ExceptionFactory;

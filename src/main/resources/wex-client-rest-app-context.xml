@@ -29,6 +29,8 @@
 	    <beans:constructor-arg name="targetEndpoint" value="${encompass.purchase-log-service-target-endpoint}" />
 	</beans:bean>
 
+	<beans:bean id="DUMMY" class="com.livngroup.gds.domain.LivnBaseReq" />
+
 	<beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <beans:property name="host" value="${mail.host}" />
         <beans:property name="port" value="${mail.port}" />
