@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 
-public class WexPayloadTreadlocalAppender extends AppenderBase<ILoggingEvent> {
+public class WexPayloadThreadlocalAppender extends AppenderBase<ILoggingEvent> {
 
 	@Override
 	protected void append(ILoggingEvent eventObject) {
